@@ -1,0 +1,2 @@
+# SupermarketProject
+ This is a project of a site  used by supermarket employes who will be helped to do tasks such as: register and update information about products (descripition, price, stock), sells products (generating invoices for the sale of  products), register and update personal information about customers, register and manager point's cards,  and others small details around this. As a complement, the administrator will be able to register  and update  usernames and passwords as well as cancelling point's cards.
