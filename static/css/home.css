@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+body{
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: url(../imagens/fundoFrutasVerduras.jpeg) no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center; /*centraliza horizontalemte*/
+    align-items: center; /*centraliza verticalmente*/
+}
+img {
+    transform: scale(1.5); /* Aumenta a imagem em 50% */
+    margin: auto; /* Mantém a centralização horizontal */
+}
+a {
+    position: absolute; /* Posição absoluta em relação ao contêiner pai (div) */
+    top: 65%; /* Posiciona no meio verticalmente */
+    left: 50%; /* Posiciona no meio horizontalmente */
+    transform: translate(-50%, -50%); /* Move de volta pela metade da largura e altura do elemento */
+    color:black;
+    font-weight: bold;
+}
+a:hover {
+    font-size: 30px;
+}

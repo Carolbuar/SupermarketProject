@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Registo Cliente Mercadona</title>
+        <link rel="stylesheet" href="/static/css/registarCliente.css">
+         <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
+    </head>
+    <body>
+        <h1>Atualizar Dados do Cliente</h1>
+        
+        {% for cliente in bdtClientes %}
+        <form action="/atualizarDadosC" method="post">
+            
+            <p>NIF: <input type="text" name="nif" value="{{ cliente[0] }}" size="9" readonly></p>
+            <p>Nome: <input type="text" name="nome" value="{{ cliente[1] }}" size="100" required></p>
+            <p>Morada: <input type="text" name="morada" value="{{ cliente[2] }}" size="200" required></p>
+            <p>Email: <input type="text" name="email" value="{{ cliente[3] }}" size="50" required></p>
+            <p>Telefone: <input type="text" name="telefone" value="{{ cliente[4] }}" size="20" required></p>
+            <p>Número do Cartão Mercadona<input type="text" name="n_cartao" value="{{ cliente[5] }}" size="12" readonly></p>
+        
+                 
+            <input type="submit" value="Submeter">
+            <input type="button" value="Voltar" onclick="window.history.go(-1)">
+            <br><br>
+            
+        </form>
+        {% endfor %}
+    </body>
+</html>

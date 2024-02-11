@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Registo Cliente Mercadona</title>
+        <link rel="stylesheet" href="/static/css/registarCliente.css">
+        <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
+    </head>
+    <body>
+        <h1>Registo de Novo Cartão Mercadona</h1><br>
+        <!-- o metodo post envia os dados de uma página para a outra de forma escondida
+            o metodo get envia os dados para a página seguinte pela barra de endereço-->
+        <!-- <h3>Verificar Cadastro</h3> 
+
+        <form action="/verificarCliente" method="post">
+            <br><br>
+            <p>NIF: <input type="text" name="nif" size="9" required></p>
+            <br><br>
+            <input type="submit" value="Verificar">
+            <input type="reset" value="Limpar">
+            <input type="button" value="Voltar" onclick="window.history.go(-1)">
+            <br><br>-->
+
+        {% set msg_cliente_naoRegistado = get_flashed_messages(category_filter=["cliente_naoRegistado"]) %}
+        {% set msg_cliente_jaComCartao= get_flashed_messages(category_filter=["cliente_jaComCartao"]) %}
+        {% set msg_cartao_associadoComSucesso= get_flashed_messages(category_filter=["cartao_associadoComSucesso"]) %}
+
+        {% if msg_cliente_naoRegistado %}
+            <div class="flash_cliente_naoRegistado">
+                {{msg_cliente_naoRegistado[0]}}
+            </div>
+        {% endif %}
+        {% if msg_cliente_jaComCartao %}
+            <div class="flash_cliente_jaComCartao">
+                {{msg_cliente_jaComCartao[0]}}
+            </div>
+        {% endif %}
+        {% if msg_cartao_associadoComSucesso %}
+            <div class="flash_cartao_associadoComSucesso">
+                {{msg_cartao_associadoComSucesso[0]}}
+            </div>
+        {% endif %}
+
+        <h3>Associar Cartão</h3> 
+        <form action="/registarCartao" method="post">
+            <br><br>
+            <p>NIF: <input type="text" name="nif" size="9" required></p>
+            <p>Número do Cartao: <input type="text" name="n_cartao" size="12" required></p>
+            <br><br>
+            <input type="submit" value="Associar Cartao">
+            <input type="button" value="Registar Cliente" onclick="window.location='/registarCliente'">
+            <input type="reset" value="Limpar">
+            <input type="button" value="Homepage" onclick="window.location='/homepage'">
+            <br><br>       
+       
+            
+        </form>
+
+    </body>
+</html>

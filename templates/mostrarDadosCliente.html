@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Dados Cliente Mercadona</title>
+        <link rel="stylesheet" href="/static/css/registarCliente.css">
+         <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
+    </head>
+    <body>
+               
+        <h1>Dados do Cliente</h1>
+        <!-- o metodo post envia os dados de uma página para a outra de forma escondida
+            o metodo get envia os dados para a página seguinte pela barra de endereço-->
+        {% for cliente in bdtClientes %}
+        <p>NIF: {{ cliente[0] }}</p>
+        <p>Nome: {{ cliente[1] }}</p>
+        <p>Morada: {{ cliente[2] }}</p>
+        <p>Email: {{ cliente[3] }}</p>
+        <p>Telefone: {{ cliente[4] }}</p>
+        <p>Número Cartão Mercadona: {{ cliente[5] }}</p>
+                
+        
+        <form action="/atualizarDadosCliente" method="post">
+            
+            <input type="hidden" name="nif_display" value="{{ cliente[0] }}" size="9" readonly>
+                  
+                 
+            <input type="submit" value="Atualizar Registo">
+            <input type="button" value="Homepage" onclick="window.location='/homepage'">
+            <br><br>
+            
+        </form>
+        {% endfor %}
+
+    </body>
+</html>

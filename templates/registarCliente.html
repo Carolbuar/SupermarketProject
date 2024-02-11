@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Registo Cliente Mercadona</title>
+        <link rel="stylesheet" href="/static/css/registarCliente.css">
+         <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
+    </head>
+    <body>
+        {% set msg_cliente_jaComRegisto= get_flashed_messages(category_filter=["cliente_jaComRegisto"]) %}
+        {% set msg_cliente_registadoComSucesso= get_flashed_messages(category_filter=["cliente_registadoComSucesso"]) %}
+
+        {% if msg_cliente_jaComRegisto %}
+            <div class="flash_cliente_jaComRegisto">
+                {{msg_cliente_jaComRegisto[0]}}
+            </div>
+        {% endif %}
+        {% if msg_cliente_registadoComSucesso %}
+            <div class="flash_cliente_registadoComSucesso">
+                {{msg_cliente_registadoComSucesso[0]}}
+            </div>
+        {% endif %}
+
+        <h1>Registo de Clientes</h1>
+        <!-- o metodo post envia os dados de uma página para a outra de forma escondida
+            o metodo get envia os dados para a página seguinte pela barra de endereço-->
+        
+         
+        <form action="/registarCliente" method="post">
+        <br></br>
+        <p>NIF: <input type="text" name="nif" size="9" required></p>
+        <p>Nome: <input type="text" name="nome" size="100" required></p>
+        <p>Morada: <input type="text" name="morada" size="200" required></p>
+        <p>Email: <input type="email" name="email" size="50" required></p>
+        <p>Telefone: <input type="text" name="telefone" size="20" required></p>
+        <br></br> 
+            
+            <!--O botao submit envia os dados para a pagina inserir.php o reset limpa
+                os dados de todos os campos -->
+        <input type="submit" value="Registar">
+        <input type="reset" value="Limpar">
+        <input type="button" value="Homepage" onclick="window.location='/homepage'">
+        <br><br>
+            
+        </form>
+
+    </body>
+</html>

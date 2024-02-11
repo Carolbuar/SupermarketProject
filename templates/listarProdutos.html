@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Dados Cliente Mercadona</title>
+        <link rel="stylesheet" href="/static/css/registarCliente.css">
+         <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
+    </head>
+    <body>
+
+        
+        <h2>Listagem dos Produtos</h2>
+        <br><br>
+        <input type="button" value="Listar todos os produtos" onclick="window.open('/listarTodosProdutos')">
+        <input type="button" value="Listar por Categoria" onclick="window.open('/listarProdutosPorCategoria')">
+        <input type="button" value="Listar por Codigo" onclick="window.open('/listarProdutoPorCodigo')">
+        <input type="button" value="Homepage" onclick="window.location='/homepage'">
+        <br><br>
+        {% for produto in bdtProdutos %}
+        <p> Codigo: {{ produto[0] }}</p>
+        <p>Descrição: {{ produto[1] }}</p>
+        <p>Valor: {{ produto[2] }}</p>
+        <p>Stock: {{ produto[3] }}</p>
+        <p>Categorias: {{ produto[4] }}</p>
+        <p>Foto:<br> <img width=80 src="{{ produto[5] }}"></p>
+        <br><br>
+        {% endfor %}
+
+    </body>
+</html>
