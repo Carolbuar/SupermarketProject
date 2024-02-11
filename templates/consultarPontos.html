@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Consultar Pontos - Mercadona</title>
+        <link rel="stylesheet" href="/static/css/registarCliente.css">
+         <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
+    </head>
+    <body>
+
+        {% set msg_cliente_semRegisto= get_flashed_messages(category_filter=["cliente_semRegisto"]) %}
+
+        {% if msg_cliente_semRegisto %}
+            <div class="flash_cliente_semRegisto">
+                {{msg_cliente_semRegisto[0]}}
+            </div>
+        {% endif %}
+               
+        <h1>Consultar Pontos</h1>
+        <!-- o metodo post envia os dados de uma página para a outra de forma escondida
+            o metodo get envia os dados para a página seguinte pela barra de endereço-->
+        
+        <form action="/mostrarPontos" method="post">
+        <br></br>
+        <p>NÚMERO DO CARTÃO: <input type="text" name="n_cartao" size="20" required></p>
+        <br></br>
+
+             
+        <input type="submit" value="Consultar">
+        <input type="reset" value="Limpar">
+        <input type="button" value="Homepage" onclick="window.location='/homepage'">
+        <br><br>
+            
+        </form>
+
+    </body>
+</html>

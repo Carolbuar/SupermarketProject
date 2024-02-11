@@ -287,6 +287,40 @@ def verificarCliente():
 
     return redirect("/registarCartao")
 
+@app.route("/consultarPontosCartao")
+def renderConsultarPontos():
+    return render_template("consultarPontos.html")
+    
+@app.route("/mostrarPontos", methods=['POST'])
+def consultarPontos():
+    n_cartao = int(request.form.get('n_cartao'))
+    
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "SELECT * FROM t_cartao WHERE n_cartao = %s;"
+        cursor.execute(sql, (n_cartao,))
+        bdtPontos=cursor.fetchall()
+        cursor.close()
+
+        if bdtPontos:
+            # Calcular o valor total dos  pontos
+            # [0][2] -> numero cartao e pontos
+            pontos = bdtPontos[0][2]
+            valor_total = pontos*10
+            return render_template("mostrarPontos.html", bdtPontos=bdtPontos, valor_total=valor_total)
+        else:
+            flash('CLIENTE NÃO POSSUI CARTÃO','cliente_semRegisto')
+
+    conexao.close()
+    return render_template("consultarPontos.html")
+
 # #CRUD
 
 # #create
