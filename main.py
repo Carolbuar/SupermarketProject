@@ -1,18 +1,25 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, session, url_for
 import mysql.connector
 import json
 
 app=Flask(__name__)
 #criar a 1 pagina do site
 
-#Antes de usar o flash, certifique-se de inicializar a extensão no seu aplicativo Flask. 
+#Adding a secret key to our app - is used to secure the session cookie 
 app.secret_key = 'caroline'
+#define o tipo de armazenamento a ser usado para armazenar dados de sessão no Flask.
+#Quando você configura a aplicação Flask para usar o armazenamento de sessão no sistema de arquivos, as informações de sessão são salvas em arquivos no sistema de arquivos do servidor.
+app.session_interface = 'filesystem'
 
 #route -> 
 #funcao -> o que vc quer exibir naquela pagina
 @app.route("/")
-def home():
+def renderHome():
     return render_template("home.html")
+
+def verificar_autenticacao():
+    if 'usuario_autenticado' not in session:
+        return redirect("/login")
 
 @app.route("/login")
 def login():
@@ -23,20 +30,38 @@ def login2():
     username=request.form.get('username')
     password=request.form.get('password')
 
-    with open('usuarios.json') as usuariosTemp:
-        usuarios = json.load(usuariosTemp)
-        cont =0
-        for usuario in usuarios:
-            cont +=1
-            if usuario['username']== username and usuario['password'] == password:
-                return render_template("homepage.html")
-            if cont>= len(usuarios):
-                flash ('DADOS INVÁLIDOS')
-                return redirect("/login")
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "select * from t_login;"
+        cursor.execute(sql)
+        bdtLogin=cursor.fetchall()
+
+        for cliente in bdtLogin:
+            
+            if cliente[0]==username and cliente[1]==password:
+                    session['usuario_autenticado'] = True
+                    return render_template("homepage.html")
+
+        flash ('DADOS INVÁLIDOS')
+        return redirect("/login")
             
 @app.route("/homepage")
 def homepage():
+    verificar_autenticacao()
     return render_template("homepage.html")
+
+@app.route('/logout')
+def logout():
+    session['usuario_autenticado'] = False
+    return redirect("/login")
+    
             
 @app.route("/registarCliente")
 def renderRegistarCliente():
