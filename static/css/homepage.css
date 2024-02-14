@@ -1,7 +1,9 @@
 @charset "UTF-8";
 
 body{
+
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
-    
+    background: url(../imagens/corroios-mobile.jpg) no-repeat;
+    background-size: cover;    
 }

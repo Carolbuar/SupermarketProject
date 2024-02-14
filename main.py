@@ -228,6 +228,71 @@ def listarProdutos():
     conexao.close()
     return render_template("listarProdutos.html", bdtProdutos=bdtProdutos)
 
+@app.route("/listarTodosProdutos")
+def listarTodosProdutos():
+
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "SELECT * FROM t_produto;"
+        cursor.execute(sql)
+        bdtProdutos=cursor.fetchall()
+
+    conexao.commit()
+    cursor.close()
+    conexao.close()
+    return render_template("listarTodosProdutos.html", bdtProdutos=bdtProdutos)
+
+
+@app.route("/listarProdutosPorCategoria")
+def listarProdutosPorCategoria():
+
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "SELECT * FROM t_produto;"
+        cursor.execute(sql)
+        bdtProdutos=cursor.fetchall()
+
+    conexao.commit()
+    cursor.close()
+    conexao.close()
+    return render_template("listarProdutosPorCategoria.html", bdtProdutos=bdtProdutos)
+
+@app.route("/listarProdutoPorCodigo")
+def listarProdutoPorCodigo():
+
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "SELECT * FROM t_produto;"
+        cursor.execute(sql)
+        bdtProdutos=cursor.fetchall()
+
+    conexao.commit()
+    cursor.close()
+    conexao.close()
+    return render_template("listarProdutoPorCodigo.html", bdtProdutos=bdtProdutos)
+
+
 @app.route("/registarCartao")
 def registarCartao():
     return render_template("registarCartao.html")
