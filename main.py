@@ -207,7 +207,7 @@ def registarProduto():
         return redirect("/registarProduto")
 
     
-@app.route("/listarProdutos")
+@app.route("/listarProdutos", methods=['GET', 'POST'])
 def listarProdutos():
 
     conexao = mysql.connector.connect(
@@ -227,6 +227,49 @@ def listarProdutos():
     cursor.close()
     conexao.close()
     return render_template("listarProdutos.html", bdtProdutos=bdtProdutos)
+
+@app.route("/listarProdutosPorCategoria", methods=['GET', 'POST'])
+def listarProdutosPorCategoria():
+ 
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "SELECT * FROM t_produto;"
+        cursor.execute(sql)
+        bdtProdutos=cursor.fetchall()
+ 
+    conexao.commit()
+    cursor.close()
+    conexao.close()
+    return render_template("listarProdutos.html", bdtProdutos=bdtProdutos)
+
+@app.route("/listarProdutosPorCodigo", methods=['GET', 'POST'])
+def listarProdutosPorCodigo():
+    idProduto=request.form.get('id_prod')
+ 
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "SELECT * FROM t_produto WHERE id_produto = %s;"
+        cursor.execute(sql, (idProduto,))
+        bdtProdutoEspecifico=cursor.fetchall()
+ 
+    conexao.commit()
+    cursor.close()
+    conexao.close()
+    return render_template("listarProdutos.html", bdtProdutoEspecifico=bdtProdutoEspecifico)
 
 @app.route("/registarCartao")
 def registarCartao():

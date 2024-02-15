@@ -11,18 +11,52 @@
         
         <h2>Listagem dos Produtos</h2>
         <br><br>
-        <input type="button" value="Listar todos os produtos" onclick="window.open('/listarTodosProdutos')">
-        <input type="button" value="Listar por Categoria" onclick="window.open('/listarProdutosPorCategoria')">
-        <input type="button" value="Listar por Codigo" onclick="window.open('/listarProdutoPorCodigo')">
-        <input type="button" value="Homepage" onclick="window.location='/homepage'">
+        <input type="button" value="Homepage" onclick="window.location='/homepage'"><br></br>
+        <form action="/listarProdutosPorCodigo" method="post">
+            <p>Código Produto: <input type="text" name="id_produto" size="9" required></p>
+            <br></br>
+            <input type="submit" value="Listar por Codigo"> 
+
+        </form>
+        <form action="/listarProdutosPorCategoria" method="post">
+            <br></br>
+            <p>Categoria: 
+                <select name="categoria" required>
+                <option value="valor1">Frutas&Legumes</option>
+                <option value="valor2">Carnes&Peixes</option>
+                <option value="valor2">Limpeza</option>
+                <option value="valor2">Conservas</option>
+                <option value="valor2">Mercearia</option>
+                <option value="valor2">Bebidas</option>
+                </select>
+            </p>
+            <br></br>
+            <input type="submit" value="Listar por Categoria">
+        </form>
+        <form action="/listarProdutos" method="post">
+            <br></br>
+            <input type="submit" value="Listar todos os produtos">
+            <br><br>
         <br><br>
+        </form>
+        
         {% for produto in bdtProdutos %}
         <p> Codigo: {{ produto[0] }}</p>
         <p>Descrição: {{ produto[1] }}</p>
         <p>Valor: {{ produto[2] }}</p>
         <p>Stock: {{ produto[3] }}</p>
         <p>Categorias: {{ produto[4] }}</p>
-        <p>Foto:<br> <img width=80 src="{{ produto[5] }}"></p>
+        <p>Foto:<br> <img width=80 src="{{ produto[5]}}"></p>
+        <br><br>
+        {% endfor %}
+
+        {% for produto in bdtProdutoEspecifico %}
+        <p> Codigo: {{ produto[0] }}</p>
+        <p>Descrição: {{ produto[1] }}</p>
+        <p>Valor: {{ produto[2] }}</p>
+        <p>Stock: {{ produto[3] }}</p>
+        <p>Categorias: {{ produto[4] }}</p>
+        <p>Foto:<br> <img width=80 src="{{ produto[5]}}"></p>
         <br><br>
         {% endfor %}
 
