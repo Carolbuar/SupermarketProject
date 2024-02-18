@@ -22,11 +22,11 @@ def verificar_autenticacao():
         return redirect("/login")
 
 @app.route("/login")
-def login():
+def renderLogin():
     return render_template("login.html")
 
 @app.route("/login", methods=['POST'])
-def login2():
+def login():
     username=request.form.get('username')
     password=request.form.get('password')
 
