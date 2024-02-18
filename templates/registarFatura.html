@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Registo Fatura Mercadona</title>
+        <link rel="stylesheet" href="/static/css/registarCliente.css">
+        
+    </head>
+    <body>
+        <h1>Registo de Nova Fatura Mercadona</h1><br>
+        
+
+        {% set msg_fatura_naoRegistado = get_flashed_messages(category_filter=["fatura_naoRegistado"]) %}
+        
+        {% if msg_fatura_naoRegistado %}
+            <div class="flash_fatura_naoRegistado">
+                {{msg_cliente_naoRegistado[0]}}
+            </div>
+        {% endif %}
+
+        <h3>Registar Fatura</h3> 
+
+        <form action="/registarFatura" method="post">
+            <br><br>
+            <p>NIF: <input type="text" name="nif" size="9" required></p>
+            <input type="submit" value="Iniciar Fatura">
+        </form>
+
+        <form action="/registarLinhaFatura" method="post">
+            <p>Código do Produto: <input type="text" name="id_produto" size="11" required></p>
+        <!-- imprime a descricao -->
+            
+        </form>
+
+        <form action="/registarLinhaFatura2" method="post">
+            <p>Quantidade: <input type="text" name="qtd" size="11" required></p>
+            <!-- imprime o valor -->
+        </form>
+
+        <form action="/registarFatura" method="post">
+            <br><br>
+            <p>NIF: <input type="text" name="nif" size="9" required></p>
+            <p>Data: <input type="datetime" name="data" required></p>
+            
+            <br><br>
+            <input type="submit" value="Associar Cartao">
+            <input type="button" value="Registar Cliente" onclick="window.location='/registarCliente'">
+            <input type="reset" value="Limpar">
+            <input type="button" value="Homepage" onclick="window.location='/homepage'">
+            <br><br>       
+       
+            
+        </form>
+
+    </body>
+</html>

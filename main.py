@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, flash
 import mysql.connector
 import json
@@ -206,7 +207,6 @@ def registarProduto():
      
         return redirect("/registarProduto")
 
-    
 @app.route("/listarProdutos", methods=['GET', 'POST'])
 def listarProdutos():
 
@@ -230,6 +230,7 @@ def listarProdutos():
 
 @app.route("/listarProdutosPorCategoria", methods=['GET', 'POST'])
 def listarProdutosPorCategoria():
+    categoria=request.form.get('categoria')
  
     conexao = mysql.connector.connect(
         host='localhost',
@@ -237,17 +238,17 @@ def listarProdutosPorCategoria():
         password='',
         database='mercadona'
     )
- 
+
     if conexao.is_connected():
         cursor = conexao.cursor()
-        sql = "SELECT * FROM t_produto;"
-        cursor.execute(sql)
-        bdtProdutos=cursor.fetchall()
+        sql = "SELECT * FROM t_produto WHERE categoria = %s;"
+        cursor.execute(sql, (categoria,))
+        bdtProdutosCategoria=cursor.fetchall()
  
     conexao.commit()
     cursor.close()
     conexao.close()
-    return render_template("listarProdutos.html", bdtProdutos=bdtProdutos)
+    return render_template("listarProdutos.html", bdtProdutosCategoria=bdtProdutosCategoria)
 
 @app.route("/listarProdutosPorCodigo", methods=['GET', 'POST'])
 def listarProdutosPorCodigo():
@@ -259,6 +260,8 @@ def listarProdutosPorCodigo():
         password='',
         database='mercadona'
     )
+
+    bdtProdutoEspecifico = []
  
     if conexao.is_connected():
         cursor = conexao.cursor()
@@ -269,6 +272,7 @@ def listarProdutosPorCodigo():
     conexao.commit()
     cursor.close()
     conexao.close()
+    
     return render_template("listarProdutos.html", bdtProdutoEspecifico=bdtProdutoEspecifico)
 
 @app.route("/registarCartao")
@@ -363,6 +367,34 @@ def consultarPontos():
 
     conexao.close()
     return render_template("consultarPontos.html")
+
+@app.route("/registarFatura")
+def renderRegistarFatura():
+    return render_template("registarFatura.html")
+
+@app.route("/registarFatura", methods=['GET', 'POST'])
+def registarFatura():
+    nif=request.form.get('nif')
+    data_atual = datetime.now().strftime("%Y-%m-%d")
+ 
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "INSERT INTO t_fatura (nif,data) VALUES (%s,%s);"
+        cursor.execute(sql, (nif, data_atual,))
+        
+ 
+    conexao.commit()
+    cursor.close()
+    conexao.close()
+    
+    return render_template("registarFatura.html")
 
 # #CRUD
 

@@ -1,64 +1,94 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Dados Cliente Mercadona</title>
+        <title>Dados Produtos Mercadona</title>
         <link rel="stylesheet" href="/static/css/registarCliente.css">
          <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
         <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
     </head>
     <body>
 
-        
-        <h2>Listagem dos Produtos</h2>
-        <br><br>
-        <input type="button" value="Homepage" onclick="window.location='/homepage'"><br></br>
-        <form action="/listarProdutosPorCodigo" method="post">
-            <p>Código Produto: <input type="text" name="id_produto" size="9" required></p>
-            <br></br>
-            <input type="submit" value="Listar por Codigo"> 
-
-        </form>
-        <form action="/listarProdutosPorCategoria" method="post">
-            <br></br>
-            <p>Categoria: 
-                <select name="categoria" required>
-                <option value="valor1">Frutas&Legumes</option>
-                <option value="valor2">Carnes&Peixes</option>
-                <option value="valor2">Limpeza</option>
-                <option value="valor2">Conservas</option>
-                <option value="valor2">Mercearia</option>
-                <option value="valor2">Bebidas</option>
-                </select>
-            </p>
-            <br></br>
-            <input type="submit" value="Listar por Categoria">
-        </form>
-        <form action="/listarProdutos" method="post">
-            <br></br>
-            <input type="submit" value="Listar todos os produtos">
+        <div class="top-bar"></div>
+            <h2>Listagem dos Produtos</h2>
             <br><br>
-        <br><br>
-        </form>
-        
-        {% for produto in bdtProdutos %}
-        <p> Codigo: {{ produto[0] }}</p>
-        <p>Descrição: {{ produto[1] }}</p>
-        <p>Valor: {{ produto[2] }}</p>
-        <p>Stock: {{ produto[3] }}</p>
-        <p>Categorias: {{ produto[4] }}</p>
-        <p>Foto:<br> <img width=80 src="{{ produto[5]}}"></p>
-        <br><br>
-        {% endfor %}
+            <input type="button" value="Homepage" onclick="window.location='/homepage'"><br></br>
+            <form action="/listarProdutosPorCodigo" method="post">
+                <p>Código Produto: <input type="text" name="id_prod" size="9" required></p>
+                <br></br>
+                <input type="submit" value="Listar por Codigo"> 
 
-        {% for produto in bdtProdutoEspecifico %}
-        <p> Codigo: {{ produto[0] }}</p>
-        <p>Descrição: {{ produto[1] }}</p>
-        <p>Valor: {{ produto[2] }}</p>
-        <p>Stock: {{ produto[3] }}</p>
-        <p>Categorias: {{ produto[4] }}</p>
-        <p>Foto:<br> <img width=80 src="{{ produto[5]}}"></p>
-        <br><br>
-        {% endfor %}
+            </form>
+            <form action="/listarProdutosPorCategoria" method="post">
+                <br></br>
+                <p>Categoria: 
+                    <select name="categoria" required>
+                    <option value="Frutas&Legumes">Frutas&Legumes</option>
+                    <option value="Carnes&Peixes">Carnes&Peixes</option>
+                    <option value="Limpeza">Limpeza</option>
+                    <option value="Conservas">Conservas</option>
+                    <option value="Mercearia">Mercearia</option>
+                    <option value="Bebidas">Bebidas</option>
+                    </select>
+                </p>
+                <input type="submit" value="Listar por Categoria">
+            </form>
+            <form action="/listarProdutos" method="post">
+                <br></br>
+                <input type="submit" value="Listar todos os produtos">
+                <br><br>
+            </form>
+        </div>
+        
+        {% if bdtProdutos !=null %}
+            {% if bdtProdutos|length > 0 %}
+                {% for produto in bdtProdutos %}
+                <p> Codigo: {{ produto[0] }}</p>
+                <p>Descrição: {{ produto[1] }}</p>
+                <p>Valor: {{ produto[2] }}</p>
+                <p>Stock: {{ produto[3] }}</p>
+                <p>Categorias: {{ produto[4] }}</p>
+                <p>Foto:<br> <img width=80 src="{{ produto[5]}}"></p>
+                <br><br>
+                {% endfor %}
+                {% set bdtProdutos = null %}
+            {% else %}
+                <p>Nenhum produto encontrado.</p>
+            {% endif %}
+        {% endif %}
+
+        {% if bdtProdutoEspecifico !=null %}
+            {% if bdtProdutoEspecifico|length > 0 %}
+                {% for produto in bdtProdutoEspecifico %}
+                <p> Codigo: {{ produto[0] }}</p>
+                <p>Descrição: {{ produto[1] }}</p>
+                <p>Valor: {{ produto[2] }}</p>
+                <p>Stock: {{ produto[3] }}</p>
+                <p>Categorias: {{ produto[4] }}</p>
+                <p>Foto:<br> <img width=80 src="{{ produto[5]}}"></p>
+                <br><br>
+                {% endfor %}
+                {% set bdtProdutoEspecifico = null %}
+            {% else %}
+                <p>Nenhum produto encontrado.</p>
+            {% endif %}
+        {% endif %}
+
+        {% if bdtProdutosCategoria !=null %}
+            {% if bdtProdutosCategoria|length > 0 %}
+                {% for produto in bdtProdutosCategoria %}
+                <p> Codigo: {{ produto[0] }}</p>
+                <p>Descrição: {{ produto[1] }}</p>
+                <p>Valor: {{ produto[2] }}</p>
+                <p>Stock: {{ produto[3] }}</p>
+                <p>Categorias: {{ produto[4] }}</p>
+                <p>Foto:<br> <img width=80 src="{{ produto[5]}}"></p>
+                <br><br>
+                {% endfor %}
+                {% set bdtProdutosCategoria = null %}
+            {% else %}
+                <p>Nenhum produto encontrado.</p>
+            {% endif %}
+        {% endif %}
 
     </body>
 </html>
