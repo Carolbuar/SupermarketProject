@@ -14,14 +14,12 @@
             <input type="button" value="Homepage" onclick="window.location='/homepage'"><br></br>
             <form action="/listarProdutosPorCodigo" method="post">
                 <p>Código Produto: <input type="text" name="id_prod" size="9" required></p>
-                <br></br>
                 <input type="submit" value="Listar por Codigo"> 
-
             </form>
             <form action="/listarProdutosPorCategoria" method="post">
-                <br></br>
                 <p>Categoria: 
                     <select name="categoria" required>
+                    <option value="" disabled selected>Selecione a categoria</option>
                     <option value="Frutas&Legumes">Frutas&Legumes</option>
                     <option value="Carnes&Peixes">Carnes&Peixes</option>
                     <option value="Limpeza">Limpeza</option>
@@ -33,22 +31,20 @@
                 <input type="submit" value="Listar por Categoria">
             </form>
             <form action="/listarProdutos" method="post">
-                <br></br>
                 <input type="submit" value="Listar todos os produtos">
-                <br><br>
             </form>
         </div>
         
         {% if bdtProdutos !=null %}
             {% if bdtProdutos|length > 0 %}
                 {% for produto in bdtProdutos %}
+                <p><img width=80 src="{{ produto[5]}}"></p>
+                <p>{{ produto[1] }}</p>
+                <p>{{ produto[2] }}€</p>
                 <p> Codigo: {{ produto[0] }}</p>
-                <p>Descrição: {{ produto[1] }}</p>
-                <p>Valor: {{ produto[2] }}</p>
                 <p>Stock: {{ produto[3] }}</p>
-                <p>Categorias: {{ produto[4] }}</p>
-                <p>Foto:<br> <img width=80 src="{{ produto[5]}}"></p>
-                <br><br>
+                <p>Categoria: {{ produto[4] }}</p>
+                <br></br>
                 {% endfor %}
                 {% set bdtProdutos = null %}
             {% else %}
@@ -59,13 +55,13 @@
         {% if bdtProdutoEspecifico !=null %}
             {% if bdtProdutoEspecifico|length > 0 %}
                 {% for produto in bdtProdutoEspecifico %}
+                <p><img width=80 src="{{ produto[5]}}"></p>
+                <p>{{ produto[1] }}</p>
+                <p>{{ produto[2] }}</p>
                 <p> Codigo: {{ produto[0] }}</p>
-                <p>Descrição: {{ produto[1] }}</p>
-                <p>Valor: {{ produto[2] }}</p>
                 <p>Stock: {{ produto[3] }}</p>
-                <p>Categorias: {{ produto[4] }}</p>
-                <p>Foto:<br> <img width=80 src="{{ produto[5]}}"></p>
-                <br><br>
+                <p>Categoria: {{ produto[4] }}</p>
+                <br></br>
                 {% endfor %}
                 {% set bdtProdutoEspecifico = null %}
             {% else %}
@@ -76,13 +72,13 @@
         {% if bdtProdutosCategoria !=null %}
             {% if bdtProdutosCategoria|length > 0 %}
                 {% for produto in bdtProdutosCategoria %}
-                <p> Codigo: {{ produto[0] }}</p>
-                <p>Descrição: {{ produto[1] }}</p>
-                <p>Valor: {{ produto[2] }}</p>
+                <p><img width=80 src="{{ produto[5]}}"></p>
+                <p>{{ produto[1] }}</p>
+                <p>{{ produto[2] }}</p>
+                <p>Codigo: {{ produto[0] }}</p>
                 <p>Stock: {{ produto[3] }}</p>
-                <p>Categorias: {{ produto[4] }}</p>
-                <p>Foto:<br> <img width=80 src="{{ produto[5]}}"></p>
-                <br><br>
+                <p>Categoria: {{ produto[4] }}</p>
+                <br></br>
                 {% endfor %}
                 {% set bdtProdutosCategoria = null %}
             {% else %}
