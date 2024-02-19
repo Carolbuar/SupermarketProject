@@ -1,10 +1,11 @@
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, session
 import mysql.connector
 import json
+from flask_bcrypt import Bcrypt
 
 app=Flask(__name__)
-#criar a 1 pagina do site
+bcrypt = Bcrypt(app)
 
 #Antes de usar o flash, certifique-se de inicializar a extensão no seu aplicativo Flask. 
 app.secret_key = 'caroline'
@@ -15,28 +16,98 @@ app.secret_key = 'caroline'
 def home():
     return render_template("home.html")
 
+
+def verificar_autenticacao():
+    if 'usuario_autenticado' not in session or not session['usuario_autenticado']:
+        return redirect("/login")
+
 @app.route("/login")
-def login():
+def renderLogin():
     return render_template("login.html")
 
 @app.route("/login", methods=['POST'])
-def login2():
+def login():
     username=request.form.get('username')
     password=request.form.get('password')
 
-    with open('usuarios.json') as usuariosTemp:
-        usuarios = json.load(usuariosTemp)
-        cont =0
-        for usuario in usuarios:
-            cont +=1
-            if usuario['username']== username and usuario['password'] == password:
-                return render_template("homepage.html")
-            if cont>= len(usuarios):
-                flash ('DADOS INVÁLIDOS')
-                return redirect("/login")
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "select * from t_login WHERE username = %s;"
+        cursor.execute(sql, (username,))
+        user=cursor.fetchone()
+
+        # if username == user[0] and password==user[1]:
+        #     session['usuario_autenticado'] = True
+        #     return render_template("homepage.html")
+
+        if user and bcrypt.check_password_hash(user[1], password):
+            session['usuario_autenticado'] = True
+            return render_template("homepage.html")
+
+        flash ('DADOS INVÁLIDOS')
+        return redirect("/login")
+    
+@app.route('/logout')
+def logout():
+    session['usuario_autenticado'] = False
+    return redirect("/login")
+
+@app.route("/homepageAdmin")
+def renderHomepageAdmin():
+    return render_template("homepageAdmin.html")
+
+@app.route("/registarUsuario")
+def renderRegistarUsuario():
+    return render_template("registarUsuario.html")
+
+@app.route("/registarUsuario", methods=['POST'])
+def registarUsuario():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "select * from t_login;"
+        cursor.execute(sql)
+        bdtLogin=cursor.fetchall()
+
+        for user in bdtLogin:
+            
+            if user[0]==username:
+                    flash('USERNAME JÁ UTILIZADO','usernameUtilizado')
+                    return redirect("/registarUsuario")
+                
+    if conexao.is_connected():
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        sql = "INSERT INTO t_login (username, password) VALUES (%s, %s);"
+        cursor.execute(sql, (username, hashed_password,))
+
+        conexao.commit()
+
+        flash('USUARIO REGISTADO COM SUCESSO!', 'usuario_registadoComSucesso')
+        
+        cursor.close()
+        conexao.close()
+     
+        return redirect("/registarUsuario")
             
 @app.route("/homepage")
 def homepage():
+    verificar_autenticacao()
     return render_template("homepage.html")
             
 @app.route("/registarCliente")

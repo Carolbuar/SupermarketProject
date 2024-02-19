@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Administrador</title>
+        <link rel="stylesheet" href="/static/css/homepage.css">
+        <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
+    </head>
+    <body>
+        {% set message1 = get_flashed_messages(category_filter=["usernameUtilizado"]) %}
+        {% set message2 = get_flashed_messages(category_filter=["usuario_registadoComSucesso"]) %}
+
+        {% if message1 %}
+            <div class="flash_alerta">
+                {{message1[0]}}
+            </div>
+        {% endif %}
+
+        {% if message2 %}
+            <div class="flash_alerta">
+                {{message2[0]}}
+            </div>
+        {% endif %}
+
+        <div id="form_fundo">
+            <h1>REGISTO NOVO USUARIO</h1>
+            <!-- o metodo post envia os dados de uma página para a outra de forma escondida
+                o metodo get envia os dados para a página seguinte pela barra de endereço-->
+            <div id="form_frente">
+                <form action="/registarUsuario" method="post">
+                    <p>Username: <input type="text" name="username" size="10" required></p>
+                    <p>Password: <input type="password" name="password" size="80" required></p><br>
+                    <!--O botao submit envia os dados para a pagina destinada o reset limpa 
+                        os dados de todos os campos -->
+                        <input type="submit" value="Registar">
+                        <input type="reset" value="Limpar">
+                        <input type="button" value="Homepage" onclick="window.location='/homepage'">
+                    <!-- <input type="button" value="Voltar" onclick="window.history.go(-1)"> -->
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
