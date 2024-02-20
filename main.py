@@ -476,7 +476,7 @@ def renderRegistarLinhaFatura2():
 
 @app.route("/registarLinhaFatura2", methods=['GET', 'POST'])
 def registarLinhaFatura2():
-    qtd=request.form.get('qtd')
+    qtd=float(request.form.get('qtd'))
     id_produto=session['id_produto']
      
     conexao = mysql.connector.connect(
