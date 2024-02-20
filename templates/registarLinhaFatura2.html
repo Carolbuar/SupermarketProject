@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Registo Fatura Mercadona</title>
+        <link rel="stylesheet" href="/static/css/registarCliente.css">
+        
+    </head>
+    <body>
+        <h1>Registo de Nova Fatura Mercadona</h1><br>
+        
+        <!-- {% if BdIdDescr|length > 0 %}
+            {{BdIdDescr}}
+        {% endif %} -->
+
+        {% for item in BdIdDescr %}
+            <p>{{ item[1] }}&nbsp;{{ item[2] }}</p>
+            {% set bdtProdutoEspecifico = null %}
+        {% endfor %}
+
+        <form action="/registarLinhaFatura2" method="post">
+            <p>Quantidade: <input type="text" name="qtd" size="11" required></p>
+        </form>
+
+        
+    </body>
+</html>

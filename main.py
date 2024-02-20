@@ -7,7 +7,7 @@ from flask_bcrypt import Bcrypt
 app=Flask(__name__)
 bcrypt = Bcrypt(app)
 
-#Antes de usar o flash, certifique-se de inicializar a extensão no seu aplicativo Flask. 
+
 app.secret_key = 'caroline'
 
 #route -> 
@@ -16,16 +16,11 @@ app.secret_key = 'caroline'
 def home():
     return render_template("home.html")
 
-
-def verificar_autenticacao():
-    if 'usuario_autenticado' not in session or not session['usuario_autenticado']:
-        return redirect("/login")
-
 @app.route("/login")
 def renderLogin():
     return render_template("login.html")
 
-@app.route("/login", methods=['POST'])
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     username=request.form.get('username')
     password=request.form.get('password')
@@ -43,25 +38,26 @@ def login():
         cursor.execute(sql, (username,))
         user=cursor.fetchone()
 
-        # if username == user[0] and password==user[1]:
-        #     session['usuario_autenticado'] = True
-        #     return render_template("homepage.html")
-
         if user and bcrypt.check_password_hash(user[1], password):
-            session['usuario_autenticado'] = True
-            return render_template("homepage.html")
-
-        flash ('DADOS INVÁLIDOS')
+            session['usuario_autenticado'] = username
+            return redirect("/homepage")
+        else:
+            flash ('DADOS INVÁLIDOS')
+            return redirect("/login")
+        
+def verificar_autenticacao():
+    if 'usuario_autenticado' not in session or not session['usuario_autenticado']:
         return redirect("/login")
     
 @app.route('/logout')
 def logout():
-    session['usuario_autenticado'] = False
+    session.pop('usuario_autenticado', None)
     return redirect("/login")
 
-@app.route("/homepageAdmin")
-def renderHomepageAdmin():
-    return render_template("homepageAdmin.html")
+@app.route("/homepage")
+def homepage():
+    verificar_autenticacao()
+    return render_template("homepage.html")
 
 @app.route("/registarUsuario")
 def renderRegistarUsuario():
@@ -104,11 +100,6 @@ def registarUsuario():
         conexao.close()
      
         return redirect("/registarUsuario")
-            
-@app.route("/homepage")
-def homepage():
-    verificar_autenticacao()
-    return render_template("homepage.html")
             
 @app.route("/registarCliente")
 def renderRegistarCliente():
@@ -439,15 +430,55 @@ def consultarPontos():
     conexao.close()
     return render_template("consultarPontos.html")
 
-@app.route("/registarFatura")
-def renderRegistarFatura():
-    return render_template("registarFatura.html")
+@app.route("/registarLinhaFatura")
+def renderRegistarLinhaFatura():
+    return render_template("registarLinhaFatura.html")
 
-@app.route("/registarFatura", methods=['GET', 'POST'])
-def registarFatura():
-    nif=request.form.get('nif')
-    data_atual = datetime.now().strftime("%Y-%m-%d")
+@app.route("/registarLinhaFatura", methods=['GET', 'POST'])
+def registarLinhaFatura():
+    id_produto=request.form.get('id_produto')
+    session['id_produto']=id_produto
+
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+
+    BdIdDescr = []
  
+    if conexao.is_connected():
+
+        cursor = conexao.cursor()
+        sql = "SELECT descricao FROM t_produto WHERE id_produto = %s;"
+        cursor.execute(sql, (id_produto,))
+        descricao = cursor.fetchone()
+    
+        sql1 = "INSERT INTO t_linhaFat (id_produto, descricao) VALUES (%s, %s);"
+        val= id_produto, descricao[0]
+        cursor.execute(sql1, val)
+        conexao.commit()
+
+        sql2 = "SELECT * FROM t_linhaFat WHERE id_produto = %s and qtd is null;"
+        cursor.execute(sql2, (id_produto,))
+        BdIdDescr= cursor.fetchall()
+
+        cursor.close()
+
+    conexao.close()
+    
+    return render_template("registarLinhaFatura2.html", BdIdDescr=BdIdDescr)
+
+@app.route("/registarLinhaFatura2")
+def renderRegistarLinhaFatura2():
+    return render_template("registarLinhaFatura2.html")
+
+@app.route("/registarLinhaFatura2", methods=['GET', 'POST'])
+def registarLinhaFatura2():
+    qtd=request.form.get('qtd')
+    id_produto=session['id_produto']
+     
     conexao = mysql.connector.connect(
         host='localhost',
         user='root',
@@ -457,15 +488,26 @@ def registarFatura():
  
     if conexao.is_connected():
         cursor = conexao.cursor()
-        sql = "INSERT INTO t_fatura (nif,data) VALUES (%s,%s);"
-        cursor.execute(sql, (nif, data_atual,))
-        
- 
-    conexao.commit()
-    cursor.close()
+
+        sql1 = "SELECT valor_venda FROM t_produto WHERE id_produto = %s;"
+        cursor.execute(sql1, (id_produto,))
+        valor_unit= cursor.fetchone()
+
+        valor_lf= qtd * valor_unit
+
+        sql = "INSERT INTO t_linhaFat (qtd, valor_linhaFat) VALUES (%s, %s) WHERE qtd is null;"
+        cursor.execute(sql, (qtd, valor_lf,))
+        conexao.commit()
+
+        sql2 = "SELECT * FROM t_linhaFat"
+        cursor.execute(sql2, (id_produto,))
+        BdtLinhaFatura= cursor.fetchall()
+
+        cursor.close()
+    
     conexao.close()
     
-    return render_template("registarFatura.html")
+    return render_template("registarLinhaFatura.html", BdtLinhaFatura=BdtLinhaFatura)
 
 # #CRUD
 

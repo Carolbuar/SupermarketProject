@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Registo Fatura Mercadona</title>
+        <link rel="stylesheet" href="/static/css/registarCliente.css">
+        
+    </head>
+    <body>
+        <h1>Registo de Nova Fatura Mercadona</h1><br>
+        
+        <!-- {% set msg_fatura_Registado = get_flashed_messages(category_filter=["fatura_Registado"]) %}
+        {% set msg_fatura_naoRegistado = get_flashed_messages(category_filter=["fatura_naoRegistado"]) %}
+        
+        {% if msg_fatura_naoRegistado %}
+            <div class="flash_fatura_naoRegistado">
+                {{msg_cliente_naoRegistado[0]}}
+            </div>
+        {% endif %}
+
+        {% if msg_fatura_Registado %}
+            <div class="flash_fatura_Registado">
+                {{msg_fatura_Registado[0]}}
+            </div>
+        {% endif %} -->
+
+        <h3>Registar Fatura</h3> 
+
+        {% for item in BdtLinhaFatura %}
+            <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
+            {% set BdtLinhaFatura = null %}
+        {% endfor %}
+
+        <form action="/registarLinhaFatura" method="post">
+            <p>Código do Produto: <input type="text" name="id_produto" size="11" required></p>
+            <input type="submit" value="Buscar">
+        </form>
+
+               
+    </body>
+</html>
