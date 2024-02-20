@@ -8,21 +8,6 @@
     <body>
         <h1>Registo de Nova Fatura Mercadona</h1><br>
         
-        <!-- {% set msg_fatura_Registado = get_flashed_messages(category_filter=["fatura_Registado"]) %}
-        {% set msg_fatura_naoRegistado = get_flashed_messages(category_filter=["fatura_naoRegistado"]) %}
-        
-        {% if msg_fatura_naoRegistado %}
-            <div class="flash_fatura_naoRegistado">
-                {{msg_cliente_naoRegistado[0]}}
-            </div>
-        {% endif %}
-
-        {% if msg_fatura_Registado %}
-            <div class="flash_fatura_Registado">
-                {{msg_fatura_Registado[0]}}
-            </div>
-        {% endif %} -->
-
         <h3>Registar Fatura</h3> 
 
         {% for item in BdtLinhaFatura %}
@@ -30,7 +15,6 @@
             {% set BdtLinhaFatura = null %}
         {% endfor %}
 
-        
         <form action="/registarFatura" method="post">
             <br><br>
             <p>NIF: <input type="text" name="nif" size="9" required></p>

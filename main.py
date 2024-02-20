@@ -430,6 +430,39 @@ def consultarPontos():
     conexao.close()
     return render_template("consultarPontos.html")
 
+@app.route("/registarFatura")
+def renderRegistarFatura():
+    return render_template("registarFatura.html")
+
+@app.route("/registarFatura", methods=['POST'])
+def registarFatura():
+    nif=request.form.get('nif')
+    data_atual = datetime.now().strftime("%Y-%m-%d")
+         
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    cursor = conexao.cursor()
+
+    sql = "INSERT INTO t_fatura (nif,data) VALUES (%s,%s);"
+    cursor.execute(sql, (nif, data_atual,))
+    conexao.commit()
+
+    sql = "SELECT id_fatura FROM t_fatura WHERE data= %s and nif=%s;"
+    cursor.execute(sql, (data_atual, nif,))
+    id_fatura_raw = cursor.fetchone()
+    id_fatura = id_fatura_raw[0]
+    session['id_fatura']=id_fatura
+
+    cursor.close()
+    conexao.close()
+    
+    return redirect("/registarLinhaFatura")
+
 @app.route("/registarLinhaFatura")
 def renderRegistarLinhaFatura():
     return render_template("registarLinhaFatura.html")
@@ -438,6 +471,7 @@ def renderRegistarLinhaFatura():
 def registarLinhaFatura():
     id_produto=request.form.get('id_produto')
     session['id_produto']=id_produto
+    id_fatura=session['id_fatura']
 
     conexao = mysql.connector.connect(
         host='localhost',
@@ -446,29 +480,29 @@ def registarLinhaFatura():
         database='mercadona'
     )
 
-    BdIdDescr = []
- 
-    if conexao.is_connected():
+    bdIdDescr=[]
 
-        cursor = conexao.cursor()
-        sql = "SELECT descricao FROM t_produto WHERE id_produto = %s;"
-        cursor.execute(sql, (id_produto,))
-        descricao = cursor.fetchone()
-    
-        sql1 = "INSERT INTO t_linhaFat (id_produto, descricao) VALUES (%s, %s);"
-        val= id_produto, descricao[0]
-        cursor.execute(sql1, val)
-        conexao.commit()
+    cursor = conexao.cursor()
+    sql = "SELECT descricao FROM t_produto WHERE id_produto = %s;"
+    cursor.execute(sql, (id_produto,))
+    descricao = cursor.fetchone()
 
-        sql2 = "SELECT * FROM t_linhaFat WHERE id_produto = %s and qtd is null;"
-        cursor.execute(sql2, (id_produto,))
-        BdIdDescr= cursor.fetchall()
+    sql1 = "INSERT INTO t_linhaFat (id_produto, descricao, id_fatura) VALUES (%s, %s, %s);"
+    val= (id_produto, descricao[0],id_fatura)
+    cursor.execute(sql1, val)
+    conexao.commit()
 
-        cursor.close()
+    sql2 = "SELECT * FROM t_linhaFat WHERE id_produto = %s and qtd is null LIMIT 1;"
+    cursor.execute(sql2, (id_produto,))
+    bdIdDescr = cursor.fetchall()
+    id_linhaFatura= bdIdDescr[0][0]
+    session['id_linhaFatura'] = id_linhaFatura
+
+    cursor.close()
 
     conexao.close()
     
-    return render_template("registarLinhaFatura2.html", BdIdDescr=BdIdDescr)
+    return render_template("registarLinhaFatura2.html", bdIdDescr=bdIdDescr)
 
 @app.route("/registarLinhaFatura2")
 def renderRegistarLinhaFatura2():
@@ -476,8 +510,9 @@ def renderRegistarLinhaFatura2():
 
 @app.route("/registarLinhaFatura2", methods=['GET', 'POST'])
 def registarLinhaFatura2():
-    qtd=float(request.form.get('qtd'))
+    qtd=int(request.form.get('qtd'))
     id_produto=session['id_produto']
+    id_linhaFat=session['id_linhaFatura']
      
     conexao = mysql.connector.connect(
         host='localhost',
@@ -485,22 +520,25 @@ def registarLinhaFatura2():
         password='',
         database='mercadona'
     )
+
+    BdtLinhaFatura=[]
  
     if conexao.is_connected():
         cursor = conexao.cursor()
 
         sql1 = "SELECT valor_venda FROM t_produto WHERE id_produto = %s;"
         cursor.execute(sql1, (id_produto,))
-        valor_unit= cursor.fetchone()
+        valor_unit_raw = cursor.fetchone()
+        valor_unit = float(valor_unit_raw[0])
 
         valor_lf= qtd * valor_unit
 
-        sql = "INSERT INTO t_linhaFat (qtd, valor_linhaFat) VALUES (%s, %s) WHERE qtd is null;"
-        cursor.execute(sql, (qtd, valor_lf,))
+        sql = "UPDATE t_linhaFat SET qtd = %s, valor_linhaFat=%s WHERE id_linhaFat = %s;"
+        cursor.execute(sql, (qtd, valor_lf, id_linhaFat,))
         conexao.commit()
 
         sql2 = "SELECT * FROM t_linhaFat"
-        cursor.execute(sql2, (id_produto,))
+        cursor.execute(sql2)
         BdtLinhaFatura= cursor.fetchall()
 
         cursor.close()
@@ -508,6 +546,40 @@ def registarLinhaFatura2():
     conexao.close()
     
     return render_template("registarLinhaFatura.html", BdtLinhaFatura=BdtLinhaFatura)
+
+# @app.route("/finalizarFatura")
+# def renderFinalizarFatura():
+#     return render_template("finalizarFatura.html")
+
+@app.route("/finalizarFatura", methods=['GET','POST'])
+def finalizarFatura():
+    id_fatura=session['id_fatura']
+             
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    cursor = conexao.cursor()
+
+    sql = "SELECT count(*) from t_linhaFat where id_fatura=%s;"
+    cursor.execute(sql, (id_fatura,))
+    qtd_total_itens = cursor.fetchone()[0]
+    
+    sql1 = "SELECT sum(valor_linhaFat) from t_linhaFat where id_fatura=%s;"
+    cursor.execute(sql1, (id_fatura,))
+    valor_total_itens = cursor.fetchone()[0]  
+   
+    sql1 = "UPDATE t_fatura SET valor_fatura = %s WHERE id_linhaFat = %s;"
+    cursor.execute(sql1, (valor_total_itens, id_fatura,))
+    conexao.commit()
+
+    cursor.close()
+    conexao.close()
+    
+    return redirect("/registarLinhaFatura")
 
 # #CRUD
 

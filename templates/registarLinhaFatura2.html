@@ -7,19 +7,18 @@
     </head>
     <body>
         <h1>Registo de Nova Fatura Mercadona</h1><br>
-        
-        <!-- {% if BdIdDescr|length > 0 %}
-            {{BdIdDescr}}
-        {% endif %} -->
 
-        {% for item in BdIdDescr %}
+        <h2>Fatura nº {{session['id_fatura']}}</h2><br>
+
+        <h3>Registar Produtos</h3> 
+
+        {% for item in bdIdDescr %}
             <p>{{ item[1] }}&nbsp;{{ item[2] }}</p>
-            {% set bdtProdutoEspecifico = null %}
         {% endfor %}
-
+        
         <form action="/registarLinhaFatura2" method="post">
             <p>Quantidade: <input type="text" name="qtd" size="11" required></p>
-            <input type="submit" value="Buscar">
+            <input type="submit" value="Incluir">
         </form>
 
         

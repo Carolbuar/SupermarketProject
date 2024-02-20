@@ -10,18 +10,18 @@
 
         <h2>Fatura nº {{session['id_fatura']}}</h2><br>
         
-        <h3>Registar Produtos</h3> 
+        <h3>Fatura Final</h3> 
 
         {% for item in BdtLinhaFatura %}
             <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
+            {% set BdtLinhaFatura = null %}
         {% endfor %}
 
-        <form action="/registarLinhaFatura" method="post">
-            <p>Código do Produto: <input type="text" name="id_produto" size="11" required></p>
-            <input type="submit" value="Registar Produto">
-            <input type="button" value="Finalizar Fatura" onclick="window.location='/finalizarFatura'">
-        </form>
+        <h3>Quantidade Total de Itens:</h3>{{qtd_total_itens}}
+        <h3>Valor Total de Itens:</h3>{{valor_total_itens}}
 
+
+        <input type="button" value="Homepage" onclick="window.location='/homepage'">
                
     </body>
 </html>
