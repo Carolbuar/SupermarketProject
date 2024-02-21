@@ -1,7 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, flash, session
 import mysql.connector
-import json
 from flask_bcrypt import Bcrypt
 
 app=Flask(__name__)
@@ -337,6 +336,32 @@ def listarProdutosPorCodigo():
     
     return render_template("listarProdutos.html", bdtProdutoEspecifico=bdtProdutoEspecifico)
 
+@app.route("/listarProdutosValidadeProxima")
+def renderListarProdutosValidadeProxima():
+    return render_template("listarProdutosValidade.html")
+
+@app.route("/listarProdutosValidadeProxima", methods=['POST'])
+def listarProdutosValidadeProxima():
+    
+    bdtProdutosValidadeProxima=[]
+ 
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "SELECT * FROM t_produto WHERE data_validade <= DATE_ADD(CURDATE(), INTERVAL 3 DAY);"
+        cursor.execute(sql)
+        bdtProdutosValidadeProxima=cursor.fetchall()
+
+        cursor.close()
+        conexao.close()
+        return render_template("listarProdutosValidade.html", bdtProdutosValidadeProxima=bdtProdutosValidadeProxima)
+
 @app.route("/registarCartao")
 def registarCartao():
     return render_template("registarCartao.html")
@@ -400,7 +425,7 @@ def verificarCliente():
 def renderConsultarPontos():
     return render_template("consultarPontos.html")
     
-@app.route("/mostrarPontos", methods=['POST'])
+@app.route("/consultarPontos", methods=['POST'])
 def consultarPontos():
     n_cartao = int(request.form.get('n_cartao'))
     
@@ -422,10 +447,10 @@ def consultarPontos():
             # Calcular o valor total dos  pontos
             # [0][2] -> numero cartao e pontos
             pontos = bdtPontos[0][2]
-            valor_total = pontos*10
+            valor_total = pontos*1
             return render_template("mostrarPontos.html", bdtPontos=bdtPontos, valor_total=valor_total)
         else:
-            flash('CLIENTE NÃO POSSUI CARTÃO','cliente_semRegisto')
+            flash('CARTÃO INEXISTENTE OU INATIVO','cartaoNaoExistente')
 
     conexao.close()
     return render_template("consultarPontos.html")
@@ -437,7 +462,7 @@ def renderRegistarFatura():
 @app.route("/registarFatura", methods=['POST'])
 def registarFatura():
     nif=request.form.get('nif')
-    data_atual = datetime.now().strftime("%Y-%m-%d")
+    data_atual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
          
     conexao = mysql.connector.connect(
         host='localhost',
@@ -480,8 +505,6 @@ def registarLinhaFatura():
         database='mercadona'
     )
 
-    bdIdDescr=[]
-
     cursor = conexao.cursor()
     sql = "SELECT descricao FROM t_produto WHERE id_produto = %s;"
     cursor.execute(sql, (id_produto,))
@@ -513,7 +536,12 @@ def registarLinhaFatura2():
     qtd=int(request.form.get('qtd'))
     id_produto=session['id_produto']
     id_linhaFat=session['id_linhaFatura']
-     
+    id_fatura=session['id_fatura']
+
+    if qtd <= 0:
+        flash('A QUANTIDADE DEVE SER MAIOR DO QUE ZERO','qtdMenorQzero')
+        return redirect("/registarLinhaFatura2")
+
     conexao = mysql.connector.connect(
         host='localhost',
         user='root',
@@ -521,7 +549,7 @@ def registarLinhaFatura2():
         database='mercadona'
     )
 
-    BdtLinhaFatura=[]
+    bdtLinhaFatura=[]
  
     if conexao.is_connected():
         cursor = conexao.cursor()
@@ -530,22 +558,23 @@ def registarLinhaFatura2():
         cursor.execute(sql1, (id_produto,))
         valor_unit_raw = cursor.fetchone()
         valor_unit = float(valor_unit_raw[0])
-
+        
         valor_lf= qtd * valor_unit
 
         sql = "UPDATE t_linhaFat SET qtd = %s, valor_linhaFat=%s WHERE id_linhaFat = %s;"
         cursor.execute(sql, (qtd, valor_lf, id_linhaFat,))
         conexao.commit()
 
-        sql2 = "SELECT * FROM t_linhaFat"
-        cursor.execute(sql2)
-        BdtLinhaFatura= cursor.fetchall()
+        sql2 = "SELECT * FROM t_linhaFat WHERE id_fatura=%s"
+        cursor.execute(sql2,(id_fatura,))
+        bdtLinhaFatura= cursor.fetchall()
+        session['produtosDaFatura'] = bdtLinhaFatura
 
         cursor.close()
     
     conexao.close()
     
-    return render_template("registarLinhaFatura.html", BdtLinhaFatura=BdtLinhaFatura)
+    return render_template("registarLinhaFatura.html", bdtLinhaFatura=bdtLinhaFatura)
 
 # @app.route("/finalizarFatura")
 # def renderFinalizarFatura():
@@ -564,7 +593,7 @@ def finalizarFatura():
  
     cursor = conexao.cursor()
 
-    sql = "SELECT count(*) from t_linhaFat where id_fatura=%s;"
+    sql = "SELECT sum(qtd) from t_linhaFat where id_fatura=%s;"
     cursor.execute(sql, (id_fatura,))
     qtd_total_itens = cursor.fetchone()[0]
     
@@ -572,38 +601,38 @@ def finalizarFatura():
     cursor.execute(sql1, (id_fatura,))
     valor_total_itens = cursor.fetchone()[0]  
    
-    sql1 = "UPDATE t_fatura SET valor_fatura = %s WHERE id_linhaFat = %s;"
-    cursor.execute(sql1, (valor_total_itens, id_fatura,))
+    sql2 = "UPDATE t_fatura SET valor_fatura = %s WHERE id_fatura = %s;"
+    cursor.execute(sql2, (valor_total_itens, id_fatura,))
     conexao.commit()
+
+    if valor_total_itens>10:
+
+        pontos=int(valor_total_itens/10)
+
+        sql3 = "SELECT nif FROM t_fatura WHERE id_fatura = %s;"
+        cursor.execute(sql3, (id_fatura,))
+        nif_raw= cursor.fetchone()
+        nif=nif_raw[0]
+
+        sql4 = "UPDATE t_cartao SET pontos = %s WHERE nif = %s;"
+        cursor.execute(sql4, (pontos, nif,))
+        conexao.commit()
+
 
     cursor.close()
     conexao.close()
     
-    return redirect("/registarLinhaFatura")
+    return render_template("finalizarFatura.html", qtd_total_itens=qtd_total_itens, valor_total_itens=valor_total_itens)
 
-# #CRUD
-
-# #create
-# comando = 'INSERT INTO t_cliente (nif,nome,morada,email,telefone) values (586954721, "Caroline Budal Arins", "Rua da Alegria - 15", "carolba@hotmail.com", "985444165")'
-# cursor.execute(comando)
-# conexao.commit() #edita o banco de dados
-
-# #read
-# comando = f'SELECT * FROM t_cliente'
-# cursor.execute(comando)
-# resultado = cursor.fetchall() #ler o banco de dados
-# print(resultado)
-
-# #update
-# comando = 'UPDATE t_cliente SET telefone= "" WHERE nif='
-# cursor.execute(comando)
-# conexao.commit() #edita o banco de dados
-
-# #delete
-# comando = 'DELETE FROM t_cliente WHERE nif='
-# cursor.execute(comando)
-# conexao.commit() #edita o banco de dados
-
+@app.route("/finalizarFatura2", methods=['GET','POST'])
+def finalizarFatura2():
+    session.pop('id_fatura', None)
+    session.pop('id_produto', None)
+    session.pop('id_linhaFatura', None)
+    session.pop('produtosDaFatura', None)
+    
+    
+    return redirect("/homepage")
 
 #colocar o site no ar
 if __name__=="__main__":

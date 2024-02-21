@@ -10,14 +10,9 @@
         
         <h3>Registar Fatura</h3> 
 
-        {% for item in BdtLinhaFatura %}
-            <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
-            {% set BdtLinhaFatura = null %}
-        {% endfor %}
-
         <form action="/registarFatura" method="post">
             <br><br>
-            <p>NIF: <input type="text" name="nif" size="9" required></p>
+            <p>NIF: <input type="text" name="nif" size="9"></p>
             <input type="submit" value="Iniciar Fatura">
         </form>
 

@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Dados Produtos Mercadona</title>
+        <link rel="stylesheet" href="/static/css/registarCliente.css">
+         <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
+    </head>
+    <body>
+        <!-- {% set msg_produtosNaDataValidade= get_flashed_messages(category_filter=["data_validade"]) %}
+        {% if msg_produtosNaDataValidade %}
+            <div class="flash_data_validade">
+                {{msg_produtosNaDataValidade[0]}}
+            </div>
+        {% endif %} -->
+        <h2>Listagem dos Produtos com Validade Próxima</h2>
+
+        <form action="/listarProdutosValidadeProxima" method="post">
+
+            <br><br>
+            <input type="submit" value="Gerar" >
+            <br></br>
+        </form>
+        {% for produto in bdtProdutosValidadeProxima %}
+            <p>Cód. Produto: {{ produto[0] }}</p>
+            <p>Descrição: {{ produto[1] }}</p>
+            <p>Stock: {{ produto[3] }}</p>
+            <p>Validade: {{ produto[6] }}</p>
+        {% endfor %}
+
+    </body>
+</html>

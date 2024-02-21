@@ -8,11 +8,11 @@
     </head>
     <body>
 
-        {% set msg_cliente_semRegisto= get_flashed_messages(category_filter=["cliente_semRegisto"]) %}
+        {% set msg_cartaoInexistente= get_flashed_messages(category_filter=["cartaoNaoExistente"]) %}
 
-        {% if msg_cliente_semRegisto %}
-            <div class="flash_cliente_semRegisto">
-                {{msg_cliente_semRegisto[0]}}
+        {% if msg_cartaoInexistente %}
+            <div class="flash_cartaoInexistente">
+                {{msg_cartaoInexistente[0]}}
             </div>
         {% endif %}
                
@@ -20,7 +20,7 @@
         <!-- o metodo post envia os dados de uma página para a outra de forma escondida
             o metodo get envia os dados para a página seguinte pela barra de endereço-->
         
-        <form action="/mostrarPontos" method="post">
+        <form action="/consultarPontos" method="post">
         <br></br>
         <p>NÚMERO DO CARTÃO: <input type="text" name="n_cartao" size="20" required></p>
         <br></br>

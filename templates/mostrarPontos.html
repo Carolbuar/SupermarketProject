@@ -11,12 +11,11 @@
         <h1>Consultar Pontos</h1>
         <!-- o metodo post envia os dados de uma página para a outra de forma escondida
             o metodo get envia os dados para a página seguinte pela barra de endereço-->
-        {% for cliente in bdtPontos %}
-        <b>Número do Cartão: </b>{{ cliente[0] }}</br>
-        <b>Nif: </b>{{ cliente[1] }}</br><br>
-        <b>Pontos: </b>{{ cliente[2] }}</br>
+        {% for cartao in bdtPontos %}
+        <b>Número do Cartão: </b>{{ cartao[0] }}</br>
+        <b>Nif: </b>{{ cartao[1] }}</br><br>
+        <b>Pontos: </b>{{ cartao[2] }}</br>
         <b>Valor Total Pontos: </b>{{valor_total}}€</br>      
-        
         <br><br>
         <input type="button" value="Homepage" onclick="window.location='/homepage'">
         {% endfor %}

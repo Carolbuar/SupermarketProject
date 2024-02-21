@@ -10,7 +10,11 @@
 
         <h2>Fatura nº {{session['id_fatura']}}</h2><br>
 
-        <h3>Registar Produtos</h3> 
+        <h3>Registo dos Produtos</h3> 
+
+        {% for item in session['produtosDaFatura'] %}
+            <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
+        {% endfor %}
 
         {% for item in bdIdDescr %}
             <p>{{ item[1] }}&nbsp;{{ item[2] }}</p>
@@ -18,6 +22,12 @@
         
         <form action="/registarLinhaFatura2" method="post">
             <p>Quantidade: <input type="text" name="qtd" size="11" required></p>
+            {% set msg_qtdMenorQzero= get_flashed_messages(category_filter=["qtdMenorQzero"]) %}
+            {% if msg_qtdMenorQzero %}
+            <div class="flash_qtd_menorQzero">
+                {{msg_qtdMenorQzero[0]}}
+            </div>
+            {% endif %}
             <input type="submit" value="Incluir">
         </form>
 
