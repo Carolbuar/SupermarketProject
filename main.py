@@ -477,8 +477,8 @@ def registarFatura():
     cursor.execute(sql, (nif, data_atual,))
     conexao.commit()
 
-    sql = "SELECT id_fatura FROM t_fatura WHERE data= %s and nif=%s;"
-    cursor.execute(sql, (data_atual, nif,))
+    sql1 = "SELECT id_fatura FROM t_fatura WHERE data= %s and nif=%s;"
+    cursor.execute(sql1, (data_atual, nif,))
     id_fatura_raw = cursor.fetchone()
     id_fatura = id_fatura_raw[0]
     session['id_fatura']=id_fatura
@@ -576,14 +576,10 @@ def registarLinhaFatura2():
     
     return render_template("registarLinhaFatura.html", bdtLinhaFatura=bdtLinhaFatura)
 
-# @app.route("/finalizarFatura")
-# def renderFinalizarFatura():
-#     return render_template("finalizarFatura.html")
-
 @app.route("/finalizarFatura", methods=['GET','POST'])
 def finalizarFatura():
     id_fatura=session['id_fatura']
-             
+                 
     conexao = mysql.connector.connect(
         host='localhost',
         user='root',
@@ -596,41 +592,107 @@ def finalizarFatura():
     sql = "SELECT sum(qtd) from t_linhaFat where id_fatura=%s;"
     cursor.execute(sql, (id_fatura,))
     qtd_total_itens = cursor.fetchone()[0]
+    session['qtdItens']=qtd_total_itens
     
     sql1 = "SELECT sum(valor_linhaFat) from t_linhaFat where id_fatura=%s;"
     cursor.execute(sql1, (id_fatura,))
-    valor_total_itens = cursor.fetchone()[0]  
-   
+    valor_total_itens = cursor.fetchone()[0]
+    session['valorFatura']=valor_total_itens
+
+    sql4 = "SELECT nif FROM t_fatura WHERE id_fatura = %s;"
+    cursor.execute(sql4, (id_fatura,))
+    nif_raw= cursor.fetchone()
+    nif=nif_raw[0]
+    session['nif']=nif
+
+    sql3 = "SELECT * from t_cartao where nif=%s;"
+    cursor.execute(sql3, (nif,))
+    valorCartao = cursor.fetchone()[3]  
+
     sql2 = "UPDATE t_fatura SET valor_fatura = %s WHERE id_fatura = %s;"
     cursor.execute(sql2, (valor_total_itens, id_fatura,))
     conexao.commit()
 
-    if valor_total_itens>10:
 
-        pontos=int(valor_total_itens/10)
-
-        sql3 = "SELECT nif FROM t_fatura WHERE id_fatura = %s;"
-        cursor.execute(sql3, (id_fatura,))
-        nif_raw= cursor.fetchone()
-        nif=nif_raw[0]
-
-        sql4 = "UPDATE t_cartao SET pontos = %s WHERE nif = %s;"
-        cursor.execute(sql4, (pontos, nif,))
-        conexao.commit()
-
+    sql6 = "SELECT * from t_cartao where nif=%s;"
+    cursor.execute(sql6, (nif,))
+    valorAtual = cursor.fetchone()[3]
+    
 
     cursor.close()
     conexao.close()
     
-    return render_template("finalizarFatura.html", qtd_total_itens=qtd_total_itens, valor_total_itens=valor_total_itens)
+    return render_template("finalizarFatura.html", qtd_total_itens=qtd_total_itens, valor_total_itens=valor_total_itens, valorAtual=valorAtual)
+
+@app.route("/utilizarValorCartao", methods=['GET','POST'])
+def utilizarValorCartao():
+    valorAutilizar=float(request.form.get('valorCartaoAutilizar'))
+    valorFatura=float(session['valorFatura'])
+    id_fatura=session['id_fatura']
+    qtd_total_itens=session['qtdItens']
+    nif=session['nif']
+
+    novoValorFatura=valorFatura-valorAutilizar
+    session['valorFatura']=novoValorFatura
+
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    cursor = conexao.cursor()
+    
+    sql = "UPDATE t_fatura SET valor_fatura = %s WHERE id_fatura = %s;"
+    cursor.execute(sql, (novoValorFatura, id_fatura,))
+    conexao.commit()
+
+    sql1 = "UPDATE t_cartao SET valorCartao= valorCartao - %s WHERE nif = %s;"
+    cursor.execute(sql1, (valorAutilizar, nif,))
+    conexao.commit()
+
+    sql2 = "SELECT valorCartao from t_cartao where nif=%s;"
+    cursor.execute(sql2, (nif,))
+    novoValorCartao = cursor.fetchone()[0]
+    
+    cursor.close()
+    conexao.close()
+    
+    return render_template("finalizarFatura.html", valor_total_itens=novoValorFatura,qtd_total_itens=qtd_total_itens, valorAtual=novoValorCartao)
 
 @app.route("/finalizarFatura2", methods=['GET','POST'])
 def finalizarFatura2():
+    valorFaturaFinal=session['valorFatura']
+    nif=session['nif']
+
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+
+    if valorFaturaFinal>10:
+
+        valorCartao=int(valorFaturaFinal/10)
+
+        cursor = conexao.cursor()
+        sql = "UPDATE t_cartao SET valorCartao= valorCartao + %s WHERE nif = %s;"
+        cursor.execute(sql, (valorCartao, nif,))
+        conexao.commit()
+        cursor.close()
+
     session.pop('id_fatura', None)
     session.pop('id_produto', None)
     session.pop('id_linhaFatura', None)
     session.pop('produtosDaFatura', None)
+    session.pop('novoValorFatura', None)
+    session.pop('valorFatura', None)
+    session.pop('nif', None)
+    session.pop('qtdItens', None)
     
+    conexao.close()
     
     return redirect("/homepage")
 

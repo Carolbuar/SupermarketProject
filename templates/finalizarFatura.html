@@ -18,6 +18,15 @@
 
         <h3>Quantidade Total de Itens:</h3>{{qtd_total_itens}}
         <h3>Valor Total:</h3>{{valor_total_itens}}€
+        <h3>Valor Cartao de Pontos:</h3>{{valorAtual}}€
+
+        <form action="/utilizarValorCartao" method="post">
+            <br></br>
+            <p>Valor: <input type="text" name="valorCartaoAutilizar" size="5" required></p>
+            <br></br>
+            <input type="submit" value="Utilizar">
+        </form>
+
         <br><br>
         <input type="button" value="Voltar" onclick="window.location='/registarLinhaFatura'">
         <input type="button" value="Finalizar" onclick="window.location='/finalizarFatura2'">
