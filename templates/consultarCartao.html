@@ -3,8 +3,7 @@
         <meta charset="utf-8">
         <title>Consultar Pontos - Mercadona</title>
         <link rel="stylesheet" href="/static/css/registarCliente.css">
-         <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
-        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
+       
     </head>
     <body>
 
@@ -16,11 +15,9 @@
             </div>
         {% endif %}
                
-        <h1>Consultar Pontos</h1>
-        <!-- o metodo post envia os dados de uma página para a outra de forma escondida
-            o metodo get envia os dados para a página seguinte pela barra de endereço-->
-        
-        <form action="/consultarPontos" method="post">
+        <h1>Dados do Cartao</h1>
+               
+        <form action="/consultarCartao" method="post">
         <br></br>
         <p>NÚMERO DO CARTÃO: <input type="text" name="n_cartao" size="20" required></p>
         <br></br>

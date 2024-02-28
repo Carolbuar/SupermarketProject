@@ -1,24 +1,18 @@
 <html>
-    <!-- dentro do head apenas defino a linguagem o título-->
     <head>
         <meta charset="utf-8">
         <title>Cartão Mercadona</title>
         <link rel="stylesheet" href="/static/css/homepage.css">
-        <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
-        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
     </head>
-    <!-- tudo o que aparece dentro da página tem de estar no body-->
     <body>
-        <!-- cabeçalho maior do site -->
         <h1>Gestão Cartão Mercadona</h1>
-        <!--br (abreviatura de break) cria quebra de linha-->
         <br>
         <!-- cada hiperligação utiliza a tag a -->
         <a href="/dadosCliente" target="_self">Dados do Cliente</a><br><br>
         <a href="/registarCliente" target="_self">Registar Cliente</a><br><br>
         <a href="/registarCartao" target="_self">Registar Cartão</a><br><br>
-        <a href="/cancelarCartao" target="_self">Cancelar Cartão</a><br><br>
-        <a href="/consultarPontosCartao" target="_self">Consultar Pontos do Cartão</a><br><br>
+        <a href="/cancelarCartao" target="_self">Cancelar/Substituir Cartão</a><br><br>
+        <a href="/consultarCartao" target="_self">Consultar Dados Cartão</a><br><br>
         <a href="/listarProdutos" target="_self">Listagem de Produtos</a><br><br>
         <a href="/registarProduto" target="_self">Registar Novo Produto</a><br><br>
         <a href="/registarFatura" target="_self">Registar Fatura</a><br><br>
@@ -27,7 +21,7 @@
         {% if username == admin %}
         <h2>Gestão Administrador</h2>
         <a href="/registarUsuario" target="_self">Registar Dados para Login</a><br><br>
-        <a href="/desativarUsuario" target="_self">Desativar Usuario</a><br><br>
+        <a href="/listarUsuarios" target="_self">Desativar Usuario</a><br><br>
         <a href="/desativarCliente" target="_self">Desativar Cliente</a><br><br>
         <a href="/desativarProduto" target="_self">Desativar Produto</a><br><br>
         <br>

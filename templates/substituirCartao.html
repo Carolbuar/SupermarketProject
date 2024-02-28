@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Dados Cliente Mercadona</title>
+        
+    </head>
+    <body>
+        {% set msg_cartaoSubstituidoComSucesso= get_flashed_messages(category_filter=['cartaoSubstituidoComSucesso']) %}
+
+        {% if msg_cartaoSubstituidoComSucesso %}
+            <div class="flash_cartaoSubstituidoComSucesso">
+                {{msg_cartaoSubstituidoComSucesso[0]}}
+            </div>
+        {% endif %} 
+
+        <h1>Dados do Cartão</h1>
+                
+        <form action="/substituirNumeroCartao" method="post">
+            <p>Nº CARTÃO: <input type="text" name="n_cartao" size="12" value="{{ n_cartao }}" required></p>
+            <p>NOVO CARTAO: <input type="text" name="novo_cartao" size="12" required></p>
+            <input type="submit" value="Substituir">
+            <input type="reset" value="Limpar">
+            <input type="button" value="Homepage" onclick="window.location='/homepage'">
+            <input type="button" value="Voltar" onclick="window.history.go(-1)">
+        </form>
+            
+    </body>
+</html>

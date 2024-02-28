@@ -1,11 +1,10 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, flash, session
 import mysql.connector
 from flask_bcrypt import Bcrypt
 
 app=Flask(__name__)
 bcrypt = Bcrypt(app)
-
 
 app.secret_key = 'caroline'
 
@@ -41,7 +40,7 @@ def login():
             session['usuario_autenticado'] = username
             return redirect("/homepage")
         else:
-            flash ('DADOS INVÁLIDOS')
+            flash ('DADOS INVÁLIDOS', 'dadosInvalidosLogin')
             return redirect("/login")
         
 def verificar_autenticacao():
@@ -176,7 +175,6 @@ def dadosCliente():
     conexao.close()
     return render_template("dadosCliente.html")
     
-        
 @app.route("/atualizarDadosCliente", methods=['POST'])
 def atualizarDadosCliente():
     nif = int(request.form.get('nif_display'))
@@ -368,6 +366,7 @@ def registarCartao():
 
 @app.route("/registarCartao", methods=['POST'])
 def verificarCliente():
+    
     nif = int(request.form.get('nif'))
     n_cartao = request.form.get('n_cartao')
     
@@ -421,12 +420,105 @@ def verificarCliente():
 
     return redirect("/registarCartao")
 
-@app.route("/consultarPontosCartao")
-def renderConsultarPontos():
-    return render_template("consultarPontos.html")
+@app.route("/cancelarCartao")
+def rendercancelarCartao():
+    return render_template("cancelarCartao.html")
+
+@app.route("/cancelarCartao", methods=['POST','GET'])
+def cancelarCartao():
+    n_cartao = request.form.get('n_cartao')
     
-@app.route("/consultarPontos", methods=['POST'])
-def consultarPontos():
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+    
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "SELECT ativo FROM t_cartao WHERE n_cartao = %s;"
+        cursor.execute(sql, (n_cartao,))
+        ativo=cursor.fetchone()[0]
+
+        if ativo=='1':
+            flash ('CARTÃO JÁ CONSTA CANCELADO', 'cartaoJaConstaCancelado')
+        else:
+            sql1 = "UPDATE t_cartao SET ativo = '1' WHERE n_cartao = %s;"
+            cursor.execute(sql1, (n_cartao,))
+            conexao.commit()
+            flash ('CARTÃO CANCELADO COM SUSCESSO!', 'cartaoCanceladoComSucesso')
+
+    cursor.close()
+    conexao.close()
+
+    return redirect("/cancelarCartao")
+
+@app.route("/substituirCartao", methods=['GET', 'POST'])
+def substituirCartao():
+    n_cartao=request.form.get('n_cartao')
+    return render_template("substituirCartao.html", n_cartao=n_cartao)
+
+@app.route("/substituirNumeroCartao", methods=['POST','GET'])
+def substituirNumeroCartao():
+    n_cartao = request.form.get('n_cartao')
+    novo_cartao = request.form.get('novo_cartao')
+
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+    
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+
+        sql3 = "SELECT ativo FROM t_cartao WHERE n_cartao = %s;"
+        cursor.execute(sql3, (n_cartao,))
+        ativo=cursor.fetchone()[0]
+
+        if ativo=='1':
+        
+            sql = "SELECT nif FROM t_cliente WHERE n_cartao = %s;"
+            cursor.execute(sql, (n_cartao,))
+            nif=cursor.fetchone()
+            
+            sql2 = "UPDATE t_cliente SET n_cartao = %s WHERE nif=%s;"
+            cursor.execute(sql2, (novo_cartao,nif,))
+            conexao.commit()
+
+            sql4 = "SELECT valorCartao FROM t_cartao WHERE n_cartao = %s;"
+            cursor.execute(sql4, (n_cartao,))
+            valorCartao=cursor.fetchone()[0]
+
+            sql5 = "UPDATE t_cartao SET valorCartao = %s WHERE n_cartao=%s;"
+            cursor.execute(sql5, (valorCartao,novo_cartao,))
+            conexao.commit()
+
+            sql6 = "UPDATE t_cartao SET valorCartao = 0 WHERE n_cartao=%s;"
+            cursor.execute(sql6, (n_cartao,))
+            conexao.commit()
+
+            cursor.close()
+
+            flash('CARTAO SUBSTITUÍDO COM SUCESSO!', 'cartaoSubstituidoComSucesso')
+            return render_template('substituirCartao.html')
+
+        else:
+            flash('CARTAO AINDA ATIVO. CANCELE-O ANTES DE O SUBSTITUIR.', 'cartaoAindaAtivo')
+            return render_template('cancelarCartao.html')
+    
+    conexao.close()
+
+    return redirect("/homepage")
+
+@app.route("/consultarCartao")
+def renderConsultarPontos():
+    return render_template("consultarCartao.html")
+    
+@app.route("/consultarCartao", methods=['POST'])
+def consultarCartao():
     n_cartao = int(request.form.get('n_cartao'))
     
     conexao = mysql.connector.connect(
@@ -448,12 +540,12 @@ def consultarPontos():
             # [0][2] -> numero cartao e pontos
             pontos = bdtPontos[0][2]
             valor_total = pontos*1
-            return render_template("mostrarPontos.html", bdtPontos=bdtPontos, valor_total=valor_total)
+            return render_template("mostrarDadosCartao.html", bdtPontos=bdtPontos, valor_total=valor_total)
         else:
             flash('CARTÃO INEXISTENTE OU INATIVO','cartaoNaoExistente')
 
     conexao.close()
-    return render_template("consultarPontos.html")
+    return render_template("consultarCartao.html")
 
 @app.route("/registarFatura")
 def renderRegistarFatura():
@@ -696,6 +788,73 @@ def finalizarFatura2():
     
     return redirect("/homepage")
 
+@app.route("/listarUsuarios")
+def listarUsuarios():
+    
+    bdtLogin=[]
+ 
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "SELECT * FROM t_login;"
+        cursor.execute(sql)
+        bdtLogin=cursor.fetchall()
+
+        cursor.close()
+        conexao.close()
+    
+    return render_template("listarUsuarios.html", bdtLogin=bdtLogin)
+
+@app.route("/desativarUsuario", methods=['GET','POST'])
+def desativarUsuario():
+    username = request.form.get('username')
+    
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "UPDATE t_login SET ativo='1' WHERE username = %s;"
+        cursor.execute(sql, (username,))
+        conexao.commit()
+        cursor.close()
+        
+    conexao.close()
+    
+    return redirect("/listarUsuarios")
+
+@app.route("/ativarUsuario", methods=['GET','POST'])
+def ativarUsuario():
+    username = request.form.get('username')
+    
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "UPDATE t_login SET ativo='0' WHERE username = %s;"
+        cursor.execute(sql, (username,))
+        conexao.commit()
+        cursor.close()
+        
+    conexao.close()
+    
+    return redirect("/listarUsuarios")
+    
 #colocar o site no ar
 if __name__=="__main__":
     app.run(debug=True)

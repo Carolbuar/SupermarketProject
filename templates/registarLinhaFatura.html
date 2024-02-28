@@ -19,7 +19,15 @@
         <form action="/registarLinhaFatura" method="post">
             <p>Código do Produto: <input type="text" name="id_produto" size="11" required></p>
             <input type="submit" value="Registar Produto">
-            <input type="button" value="Finalizar Fatura" onclick="window.location='/finalizarFatura'">
+            {% if session['produtosDaFatura'] %}
+                <input type="button" value="Finalizar Fatura" onclick="window.location.href='/finalizarFatura'">
+            {%endif%}
+        </form>
+        <form action="/cancelarFatura" method="post">
+            <input type="submit" value="Cancelar Fatura">
+        </form>
+        <form action="/cancelarProduto" method="post">
+            <input type="submit" value="Cancelar Produto">
         </form>
 
                

@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Dados do Usuario para Login</title>
+        <link rel="stylesheet" href="/static/css/registarCliente.css">
+        
+    </head>
+    <body>
+
+        <h1>Dados dos Usuarios para Login</h1>
+        
+        {% for usuario in bdtLogin %}
+            {% if usuario[2] == '1' %}
+                <span style="color: red;">Username: {{ usuario[0] }} - Usuário desativado</span>
+            {% else %}
+                <span style="color: black;">Username: {{ usuario[0] }}</span>
+            {% endif %}
+            
+            {% if usuario[2] == '1' %}
+                <form action="/ativarUsuario" method="post">
+                    <input type="hidden" name="username" value="{{ usuario[0] }}">
+                    <input type="submit" value="Ativar">
+                </form>
+            {% else %}
+                <form action="/desativarUsuario" method="post">
+                    <input type="hidden" name="username" value="{{ usuario[0] }}">
+                    <input type="submit" value="Desativar">
+                </form>
+            {% endif %}
+
+        {% endfor %}  
+
+        <input type="button" value="Homepage" onclick="window.location.href='/homepage'">
+
+    </body>
+</html>

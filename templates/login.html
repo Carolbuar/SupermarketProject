@@ -3,14 +3,13 @@
         <meta charset="utf-8">
         <title>Login Colaborador Mercadona</title>
         <link rel="stylesheet" href="../static/css/login.css">
-        <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
-        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
     </head>
     <body>
-        {% set message = get_flashed_messages() %}
-        {% if message %}
+        {% set msg_dadosInvalidosLogin= get_flashed_messages(category_filter=['dadosInvalidosLogin']) %}
+
+        {% if msg_dadosInvalidosLogin %}
             <div class="flash_alerta">
-                {{message[0]}}
+                {{msg_dadosInvalidosLogin[0]}}
             </div>
         {% endif %}
 

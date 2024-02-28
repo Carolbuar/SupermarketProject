@@ -3,17 +3,21 @@
         <meta charset="utf-8">
         <title>Consultar Pontos - Mercadona</title>
         <link rel="stylesheet" href="/static/css/registarCliente.css">
-         <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
-        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
+        
     </head>
     <body>
                
-        <h1>Consultar Pontos</h1>
-        <!-- o metodo post envia os dados de uma página para a outra de forma escondida
-            o metodo get envia os dados para a página seguinte pela barra de endereço-->
+        <h1>Dados do Cartao</h1>
+        
         {% for cartao in bdtPontos %}
         <b>Número do Cartão: </b>{{ cartao[0] }}</br>
-        <b>Nif: </b>{{ cartao[1] }}</br><br>
+        <b>Nif: </b>{{ cartao[1] }}</br>
+        <b>Situação: </b>
+            {% if cartao[3]==0 %}
+                ATIVO</br><br>
+            {% else%}
+                DESATIVADO</br><br>
+            {% endif%}
         <b>Pontos: </b>{{ cartao[2] }}</br>
         <b>Valor Total Pontos: </b>{{valor_total}}€</br>      
         <br><br>

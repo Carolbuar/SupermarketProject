@@ -3,7 +3,7 @@
 body{
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
-    background: url(../imagens/fundoFrutasVerduras.jpeg) no-repeat;
+    background: url(../imagens/fundoFrutasVerduras_1200_200.jpeg) no-repeat;
     background-size: cover;
     display: flex;
     justify-content: center; /*centraliza horizontalemte*/
