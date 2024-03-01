@@ -1,9 +1,11 @@
-<html>
+<!DOCTYPE html>
+<html lang="pt">
     <head>
         <meta charset="utf-8">
-        <title>Registo Cliente Mercadona</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="shortcut icon" href="static/imagens/logotipo.ico" type="image/x-icon">
+        <title>Mercadona</title>
         <link rel="stylesheet" href="/static/css/registarCliente.css">
-       
     </head>
     <body>
         <h1>Atualizar Dados do Cliente</h1>
@@ -16,8 +18,7 @@
             <p>Morada: <input type="text" name="morada" value="{{ cliente[2] }}" size="200" required></p>
             <p>Email: <input type="text" name="email" value="{{ cliente[3] }}" size="50" required></p>
             <p>Telefone: <input type="text" name="telefone" value="{{ cliente[4] }}" size="20" required></p>
-            <p>Número do Cartão Mercadona<input type="text" name="n_cartao" value="{{ cliente[5] }}" size="12" readonly></p>
-        
+                    
                  
             <input type="submit" value="Submeter">
             <input type="button" value="Voltar" onclick="window.history.go(-1)">
@@ -26,4 +27,7 @@
         </form>
         {% endfor %}
     </body>
+    <footer>
+        <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>
+    </footer>
 </html>

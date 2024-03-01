@@ -36,11 +36,15 @@ def login():
         cursor.execute(sql, (username,))
         user=cursor.fetchone()
 
-        if user and bcrypt.check_password_hash(user[1], password):
-            session['usuario_autenticado'] = username
-            return redirect("/homepage")
+        if user[2]=='0':
+            if user and bcrypt.check_password_hash(user[1], password):
+                session['usuario_autenticado'] = username
+                return redirect("/homepage")
+            else:
+                flash ('DADOS INVÁLIDOS', 'dadosInvalidosLogin')
+                return redirect("/login")
         else:
-            flash ('DADOS INVÁLIDOS', 'dadosInvalidosLogin')
+            flash ('USUARIO INATIVO. CONTACTE O ADMINISTRADOR!', 'usuarioInativoLogin')
             return redirect("/login")
         
 def verificar_autenticacao():
@@ -50,7 +54,7 @@ def verificar_autenticacao():
 @app.route('/logout')
 def logout():
     session.pop('usuario_autenticado', None)
-    return redirect("/login")
+    return redirect("/")
 
 @app.route("/homepage")
 def homepage():
@@ -63,6 +67,7 @@ def renderRegistarUsuario():
 
 @app.route("/registarUsuario", methods=['POST'])
 def registarUsuario():
+    verificar_autenticacao()
     username = request.form.get('username')
     password = request.form.get('password')
 
@@ -105,6 +110,7 @@ def renderRegistarCliente():
 
 @app.route("/registarCliente", methods=['POST'])
 def registarCliente():
+    verificar_autenticacao()
     nif = int(request.form.get('nif'))
     nome = request.form.get('nome')
     morada = request.form.get('morada')
@@ -148,9 +154,10 @@ def registarCliente():
 @app.route("/dadosCliente")
 def renderDadosCliente():
     return render_template("dadosCliente.html")
-    
+
 @app.route("/mostrarDadosCliente", methods=['POST'])
 def dadosCliente():
+    verificar_autenticacao()
     nif = int(request.form.get('nif'))
     
     conexao = mysql.connector.connect(
@@ -174,9 +181,10 @@ def dadosCliente():
 
     conexao.close()
     return render_template("dadosCliente.html")
-    
+
 @app.route("/atualizarDadosCliente", methods=['POST'])
 def atualizarDadosCliente():
+    verificar_autenticacao()
     nif = int(request.form.get('nif_display'))
 
     conexao = mysql.connector.connect(
@@ -200,6 +208,7 @@ def atualizarDadosCliente():
 
 @app.route("/atualizarDadosC", methods=['POST'])
 def atualizarDadosC():
+    verificar_autenticacao()
     nif = int(request.form.get('nif'))
     nome = request.form.get('nome')
     morada = request.form.get('morada')
@@ -238,6 +247,7 @@ def renderRegistarProduto():
 
 @app.route("/registarProduto", methods=['POST'])
 def registarProduto():
+    verificar_autenticacao()
     descricao = request.form.get('descricao')
     valor_venda= request.form.get('valor_venda')
     stock = request.form.get('stock')
@@ -268,6 +278,7 @@ def registarProduto():
 
 @app.route("/listarProdutos", methods=['GET', 'POST'])
 def listarProdutos():
+    verificar_autenticacao()
 
     conexao = mysql.connector.connect(
         host='localhost',
@@ -278,17 +289,18 @@ def listarProdutos():
  
     if conexao.is_connected():
         cursor = conexao.cursor()
-        sql = "SELECT * FROM t_produto;"
+        sql = "SELECT * FROM t_produto WHERE ativo='0';"
         cursor.execute(sql)
         bdtProdutos=cursor.fetchall()
-
-    conexao.commit()
-    cursor.close()
+        conexao.commit()
+        cursor.close()
+    
     conexao.close()
     return render_template("listarProdutos.html", bdtProdutos=bdtProdutos)
 
 @app.route("/listarProdutosPorCategoria", methods=['GET', 'POST'])
 def listarProdutosPorCategoria():
+    verificar_autenticacao()
     categoria=request.form.get('categoria')
  
     conexao = mysql.connector.connect(
@@ -300,19 +312,20 @@ def listarProdutosPorCategoria():
 
     if conexao.is_connected():
         cursor = conexao.cursor()
-        sql = "SELECT * FROM t_produto WHERE categoria = %s;"
+        sql = "SELECT * FROM t_produto WHERE categoria = %s and ativo='0';"
         cursor.execute(sql, (categoria,))
         bdtProdutosCategoria=cursor.fetchall()
- 
-    conexao.commit()
-    cursor.close()
+        conexao.commit()
+        cursor.close()
+    
     conexao.close()
     return render_template("listarProdutos.html", bdtProdutosCategoria=bdtProdutosCategoria)
 
 @app.route("/listarProdutosPorCodigo", methods=['GET', 'POST'])
 def listarProdutosPorCodigo():
+    verificar_autenticacao()
     idProduto=request.form.get('id_prod')
- 
+     
     conexao = mysql.connector.connect(
         host='localhost',
         user='root',
@@ -324,7 +337,7 @@ def listarProdutosPorCodigo():
  
     if conexao.is_connected():
         cursor = conexao.cursor()
-        sql = "SELECT * FROM t_produto WHERE id_produto = %s;"
+        sql = "SELECT * FROM t_produto WHERE id_produto = %s and ativo='0';"
         cursor.execute(sql, (idProduto,))
         bdtProdutoEspecifico=cursor.fetchall()
  
@@ -333,6 +346,85 @@ def listarProdutosPorCodigo():
     conexao.close()
     
     return render_template("listarProdutos.html", bdtProdutoEspecifico=bdtProdutoEspecifico)
+    
+@app.route("/listarProdutosAdm", methods=['GET', 'POST'])
+def listarProdutosAdm():
+    verificar_autenticacao()
+    idProduto=request.form.get('id_prod')
+     
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+
+    bdtProdutosAdm = []
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "SELECT * FROM t_produto WHERE id_produto = %s;"
+        cursor.execute(sql, (idProduto,))
+        bdtProdutosAdm=cursor.fetchall()
+        cursor.close()
+    
+    conexao.close()
+    
+    return render_template("desativarProduto.html", bdtProdutosAdm=bdtProdutosAdm)
+ 
+@app.route("/desativarProduto")
+def desativarProduto():
+    return render_template("desativarProduto.html")
+
+@app.route("/desativarProduto2", methods=['GET','POST'])
+def desativarProduto2():
+    verificar_autenticacao()
+    codProduto = request.form.get('codigoProduto')
+    
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "UPDATE t_produto SET ativo='1' WHERE id_produto = %s;"
+        cursor.execute(sql, (codProduto,))
+        conexao.commit()
+        cursor.close()
+        
+    conexao.close()
+
+    flash('PRODUTO DESATIVADO COM SUCESSO!','produtoDesativadoComSucesso')
+    
+    return redirect("/desativarProduto")
+
+@app.route("/ativarProduto", methods=['GET','POST'])
+def ativarProduto():
+    verificar_autenticacao()
+    codProduto = request.form.get('codigoProduto')
+    
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+ 
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+        sql = "UPDATE t_produto SET ativo='0' WHERE id_produto = %s;"
+        cursor.execute(sql, (codProduto,))
+        conexao.commit()
+        cursor.close()
+        
+    conexao.close()
+
+    flash('PRODUTO ATIVADO COM SUCESSO!','produtoAtivadoComSucesso')
+    
+    return redirect("/desativarProduto")
 
 @app.route("/listarProdutosValidadeProxima")
 def renderListarProdutosValidadeProxima():
@@ -340,7 +432,7 @@ def renderListarProdutosValidadeProxima():
 
 @app.route("/listarProdutosValidadeProxima", methods=['POST'])
 def listarProdutosValidadeProxima():
-    
+    verificar_autenticacao()
     bdtProdutosValidadeProxima=[]
  
     conexao = mysql.connector.connect(
@@ -366,7 +458,7 @@ def registarCartao():
 
 @app.route("/registarCartao", methods=['POST'])
 def verificarCliente():
-    
+    verificar_autenticacao()
     nif = int(request.form.get('nif'))
     n_cartao = request.form.get('n_cartao')
     
@@ -426,6 +518,7 @@ def rendercancelarCartao():
 
 @app.route("/cancelarCartao", methods=['POST','GET'])
 def cancelarCartao():
+    verificar_autenticacao()
     n_cartao = request.form.get('n_cartao')
     
     conexao = mysql.connector.connect(
@@ -456,11 +549,13 @@ def cancelarCartao():
 
 @app.route("/substituirCartao", methods=['GET', 'POST'])
 def substituirCartao():
+    verificar_autenticacao()
     n_cartao=request.form.get('n_cartao')
     return render_template("substituirCartao.html", n_cartao=n_cartao)
 
 @app.route("/substituirNumeroCartao", methods=['POST','GET'])
 def substituirNumeroCartao():
+    verificar_autenticacao()
     n_cartao = request.form.get('n_cartao')
     novo_cartao = request.form.get('novo_cartao')
 
@@ -482,7 +577,7 @@ def substituirNumeroCartao():
         
             sql = "SELECT nif FROM t_cliente WHERE n_cartao = %s;"
             cursor.execute(sql, (n_cartao,))
-            nif=cursor.fetchone()
+            nif=cursor.fetchone()[0]
             
             sql2 = "UPDATE t_cliente SET n_cartao = %s WHERE nif=%s;"
             cursor.execute(sql2, (novo_cartao,nif,))
@@ -519,6 +614,7 @@ def renderConsultarPontos():
     
 @app.route("/consultarCartao", methods=['POST'])
 def consultarCartao():
+    verificar_autenticacao()
     n_cartao = int(request.form.get('n_cartao'))
     
     conexao = mysql.connector.connect(
@@ -586,6 +682,7 @@ def renderRegistarLinhaFatura():
 
 @app.route("/registarLinhaFatura", methods=['GET', 'POST'])
 def registarLinhaFatura():
+    verificar_autenticacao()
     id_produto=request.form.get('id_produto')
     session['id_produto']=id_produto
     id_fatura=session['id_fatura']
@@ -625,6 +722,7 @@ def renderRegistarLinhaFatura2():
 
 @app.route("/registarLinhaFatura2", methods=['GET', 'POST'])
 def registarLinhaFatura2():
+    verificar_autenticacao()
     qtd=int(request.form.get('qtd'))
     id_produto=session['id_produto']
     id_linhaFat=session['id_linhaFatura']
@@ -670,6 +768,7 @@ def registarLinhaFatura2():
 
 @app.route("/finalizarFatura", methods=['GET','POST'])
 def finalizarFatura():
+    verificar_autenticacao()
     id_fatura=session['id_fatura']
                  
     conexao = mysql.connector.connect(
@@ -718,6 +817,7 @@ def finalizarFatura():
 
 @app.route("/utilizarValorCartao", methods=['GET','POST'])
 def utilizarValorCartao():
+    verificar_autenticacao()
     valorAutilizar=float(request.form.get('valorCartaoAutilizar'))
     valorFatura=float(session['valorFatura'])
     id_fatura=session['id_fatura']
@@ -755,6 +855,7 @@ def utilizarValorCartao():
 
 @app.route("/finalizarFatura2", methods=['GET','POST'])
 def finalizarFatura2():
+    verificar_autenticacao()
     valorFaturaFinal=session['valorFatura']
     nif=session['nif']
 
@@ -790,7 +891,7 @@ def finalizarFatura2():
 
 @app.route("/listarUsuarios")
 def listarUsuarios():
-    
+    verificar_autenticacao()
     bdtLogin=[]
  
     conexao = mysql.connector.connect(
@@ -813,6 +914,7 @@ def listarUsuarios():
 
 @app.route("/desativarUsuario", methods=['GET','POST'])
 def desativarUsuario():
+    verificar_autenticacao()
     username = request.form.get('username')
     
     conexao = mysql.connector.connect(
@@ -835,6 +937,7 @@ def desativarUsuario():
 
 @app.route("/ativarUsuario", methods=['GET','POST'])
 def ativarUsuario():
+    verificar_autenticacao()
     username = request.form.get('username')
     
     conexao = mysql.connector.connect(

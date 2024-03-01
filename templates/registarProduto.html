@@ -1,50 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="registarCliente.css">
-    <title>Registrar Produto - Mercadona</title>
-</head>
-<body>
-    <section class="main-content">
+<html lang="pt">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="shortcut icon" href="static/imagens/logotipo.ico" type="image/x-icon">
+        <title>Mercadona</title>
+        <link rel="stylesheet" href="registarCliente.css">
+    </head>
+    <body>
+        <section class="main-content">
 
-        {% set msg_produto_registadoComSucesso= get_flashed_messages(category_filter=["produto_registadoComSucesso"]) %}
+            {% set msg_produto_registadoComSucesso= get_flashed_messages(category_filter=["produto_registadoComSucesso"]) %}
 
-        {% if msg_produto_registadoComSucesso %}
-            <div class="flash_produto_registadoComSucesso">
-                {{msg_produto_registadoComSucesso[0]}}
-            </div>
-        {% endif %}
+            {% if msg_produto_registadoComSucesso %}
+                <div class="flash_produto_registadoComSucesso">
+                    {{msg_produto_registadoComSucesso[0]}}
+                </div>
+            {% endif %}
 
-        <h2>Registrar Produto</h2>
+            <h2>Registrar Produto</h2>
 
-        <form action="/registarProduto" method="POST">
-            <label for="descricao">Descrição do Produto:</label>
-            <input type="text" id="descricao" name="descricao" required>
-            <br><br>
-            <label for="valor_venda">Valor de Venda:</label>
-            <input type="text" id="valor_venda" name="valor_venda" required>
-            <br><br>
-            <label for="stock">Estoque:</label>
-            <input type="text" id="stock" name="stock" required>
-            <br><br>
-            <label for="categoria">Categoria:</label>
-            <input type="text" id="categoria" name="categoria" required>
-            <br><br>
-            <label for="foto">Foto:</label>
-            <br>
-            <input type="textarea" id="foto" name="foto">
-            <br><br>
-            <button type="submit">Registar Produto</button>
-            <button type="reset">Limpar</button>
-            <button onclick="window.location='/homepage'">Homepage</button>
-            <br><br>
-        </form>
-    </section>
+            <form action="/registarProduto" method="POST">
+                <label for="descricao">Descrição do Produto:</label>
+                <input type="text" id="descricao" name="descricao" required>
+                <br><br>
+                <label for="valor_venda">Valor de Venda:</label>
+                <input type="text" id="valor_venda" name="valor_venda" required>
+                <br><br>
+                <label for="stock">Estoque:</label>
+                <input type="text" id="stock" name="stock" required>
+                <br><br>
+                <label for="categoria">Categoria:</label>
+                <input type="text" id="categoria" name="categoria" required>
+                <br><br>
+                <label for="foto">Foto:</label>
+                <br>
+                <input type="textarea" id="foto" name="foto">
+                <br><br>
+                <button type="submit">Registar Produto</button>
+                <button type="reset">Limpar</button>
+                <button onclick="window.location='/homepage'">Homepage</button>
+                <br><br>
+            </form>
+        </section>
 
+    </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>
     </footer>
-</body>
 </html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="shortcut icon" href="static/imagens/logotipo.ico" type="image/x-icon">
+        <title>Mercadona</title>
+        <link rel="stylesheet" href="/static/css/registarCliente.css">
+    </head>
+    <body>
+
+        <div class="top-bar"></div>
+            <h2>Desativar Produto</h2>
+            <br><br>
+            <form action="/listarProdutosAdm" method="post">
+                <p>Código Produto: <input type="text" name="id_prod" size="9" required></p>
+                <input type="submit" value="Listar Produto">
+                <input type="button" value="Homepage" onclick="window.location='/homepage'">
+            </form>
+        </div>
+
+        {% set msg_produtoAtivadoComSucesso= get_flashed_messages(category_filter=['produtoAtivadoComSucesso']) %}
+        {% set msg_produtoDesativadoComSucesso= get_flashed_messages(category_filter=['produtoDesativadoComSucesso']) %}
+
+        {% if msg_produtoAtivadoComSucesso %}
+            <div class="flash_produtoAtivadoComSucesso">
+                {{msg_produtoAtivadoComSucesso[0]}}
+            </div>
+        {% endif %}
+
+        {% if msg_produtoDesativadoComSucesso %}
+            <div class="flash_produtoDesativadoComSucesso">
+                {{msg_produtoDesativadoComSucesso[0]}}
+            </div>
+        {% endif %}
+
+        {% if bdtProdutosAdm !=null %}
+            {% if bdtProdutosAdm|length > 0 %}
+                {% for produto in bdtProdutosAdm %}
+                    {% if produto[7] == '1' %}
+                        <span style="color: red;">
+                            <p><img width=80 src="{{ produto[5]}}"></p>
+                            <p>{{ produto[1] }}</p>
+                            <p>{{ produto[2] }}€</p>
+                            <p> Codigo: {{ produto[0] }}</p>
+                            <p>Stock: {{ produto[3] }}</p>
+                            <p>Categoria: {{ produto[4] }}</p>
+                            <p>Data Validade: {{ produto[6] }}</p>
+                            <p>Situação: 
+                                {% if produto[7]=='0' %}
+                                    ATIVO</br><br>
+                                {% else%}
+                                    DESATIVADO</br><br>
+                                {% endif%}</p>
+                        </span>
+                    {% else %}
+                        <span style="color: black;">
+                            <p><img width=80 src="{{ produto[5]}}"></p>
+                            <p>{{ produto[1] }}</p>
+                            <p>{{ produto[2] }}€</p>
+                            <p> Codigo: {{ produto[0] }}</p>
+                            <p>Stock: {{ produto[3] }}</p>
+                            <p>Categoria: {{ produto[4] }}</p>
+                            <p>Data Validade: {{ produto[6] }}</p>
+                            <p>Situação: 
+                                {% if produto[7]=='0' %}
+                                    ATIVO</br><br>
+                                {% else%}
+                                    DESATIVADO</br><br>
+                                {% endif%}</p>
+                            </p>
+                        </span>
+                    {% endif %}
+                            
+                    {% if produto[7] == '1' %}
+                        <form action="/ativarProduto" method="post">
+                            <input type="hidden" name="codigoProduto" value="{{ produto[0] }}">
+                            <input type="submit" value="Ativar">
+                        </form>
+                    {% else %}
+                        <form action="/desativarProduto2" method="post">
+                            <input type="hidden" name="codigoProduto" value="{{ produto[0] }}">
+                            <input type="submit" value="Desativar">
+                        </form>
+                    {% endif %}
+                {% set bdtProdutos = null %}
+                {% endfor %}
+            {% else %}
+                <p>Nenhum produto encontrado!</p>
+            {% endif %}  
+        {% endif %}  
+    </body>
+    <footer>
+        <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>
+    </footer>
+</html>

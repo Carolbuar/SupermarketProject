@@ -1,15 +1,25 @@
-<html>
+<!DOCTYPE html>
+<html lang="pt">
     <head>
         <meta charset="utf-8">
-        <title>Login Colaborador Mercadona</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="shortcut icon" href="static/imagens/logotipo.ico" type="image/x-icon">
+        <title>Mercadona</title>
         <link rel="stylesheet" href="../static/css/login.css">
     </head>
     <body>
         {% set msg_dadosInvalidosLogin= get_flashed_messages(category_filter=['dadosInvalidosLogin']) %}
+        {% set msg_usuarioInativoLogin= get_flashed_messages(category_filter=['usuarioInativoLogin']) %}
 
         {% if msg_dadosInvalidosLogin %}
             <div class="flash_alerta">
                 {{msg_dadosInvalidosLogin[0]}}
+            </div>
+        {% endif %}
+
+        {% if msg_usuarioInativoLogin %}
+            <div class="flash_alerta">
+                {{msg_usuarioInativoLogin[0]}}
             </div>
         {% endif %}
 
@@ -30,4 +40,7 @@
             </div>
         </div>
     </body>
+    <footer>
+        <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>
+    </footer>
 </html>
