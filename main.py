@@ -49,7 +49,9 @@ def login():
         
 def verificar_autenticacao():
     if 'usuario_autenticado' not in session or not session['usuario_autenticado']:
-        return redirect("/login")
+        return False
+    else:
+        return True
     
 @app.route('/logout')
 def logout():
@@ -58,9 +60,12 @@ def logout():
 
 @app.route("/homepage")
 def homepage():
-    verificar_autenticacao()
-    return render_template("homepage.html")
-
+    if verificar_autenticacao()==True:
+        return render_template("homepage.html")
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
+       
 @app.route("/registarUsuario")
 def renderRegistarUsuario():
     return render_template("registarUsuario.html")
@@ -628,15 +633,13 @@ def consultarCartao():
         cursor = conexao.cursor()
         sql = "SELECT * FROM t_cartao WHERE n_cartao = %s;"
         cursor.execute(sql, (n_cartao,))
-        bdtPontos=cursor.fetchall()
+        bdtValorCartao=cursor.fetchall()
         cursor.close()
 
-        if bdtPontos:
-            # Calcular o valor total dos  pontos
-            # [0][2] -> numero cartao e pontos
-            pontos = bdtPontos[0][2]
-            valor_total = pontos*1
-            return render_template("mostrarDadosCartao.html", bdtPontos=bdtPontos, valor_total=valor_total)
+        if bdtValorCartao:
+            # [0][2] -> posicao da coluna valorCartao na base de dados
+            valor_total = bdtValorCartao[0][2]
+            return render_template("mostrarDadosCartao.html", bdtValorCartao=bdtValorCartao, valor_total=valor_total)
         else:
             flash('CARTÃO INEXISTENTE OU INATIVO','cartaoNaoExistente')
 
@@ -651,7 +654,9 @@ def renderRegistarFatura():
 def registarFatura():
     nif=request.form.get('nif')
     data_atual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-         
+    if 'produtosDaFatura' in session:
+        session.pop('produtosDaFatura', None)
+
     conexao = mysql.connector.connect(
         host='localhost',
         user='root',
@@ -682,7 +687,6 @@ def renderRegistarLinhaFatura():
 
 @app.route("/registarLinhaFatura", methods=['GET', 'POST'])
 def registarLinhaFatura():
-    verificar_autenticacao()
     id_produto=request.form.get('id_produto')
     session['id_produto']=id_produto
     id_fatura=session['id_fatura']
@@ -695,21 +699,29 @@ def registarLinhaFatura():
     )
 
     cursor = conexao.cursor()
-    sql = "SELECT descricao FROM t_produto WHERE id_produto = %s;"
+    sql = "SELECT descricao, ativo FROM t_produto WHERE id_produto = %s;"
     cursor.execute(sql, (id_produto,))
-    descricao = cursor.fetchone()
+    resultado= cursor.fetchone()
+    descricao= resultado[0]
+    ativo = resultado[1]
 
-    sql1 = "INSERT INTO t_linhaFat (id_produto, descricao, id_fatura) VALUES (%s, %s, %s);"
-    val= (id_produto, descricao[0],id_fatura)
-    cursor.execute(sql1, val)
-    conexao.commit()
+    if ativo=='0':
 
-    sql2 = "SELECT * FROM t_linhaFat WHERE id_produto = %s and qtd is null LIMIT 1;"
-    cursor.execute(sql2, (id_produto,))
-    bdIdDescr = cursor.fetchall()
-    id_linhaFatura= bdIdDescr[0][0]
-    session['id_linhaFatura'] = id_linhaFatura
+        sql1 = "INSERT INTO t_linhafat (id_produto, descricao, id_fatura) VALUES (%s, %s, %s);"
+        val= (id_produto, descricao, id_fatura)
+        cursor.execute(sql1, val)
+        conexao.commit()
 
+        sql2 = "SELECT * FROM t_linhafat WHERE id_produto = %s and qtd is null LIMIT 1;"
+        cursor.execute(sql2, (id_produto,))
+        bdIdDescr = cursor.fetchall()
+        id_linhaFatura= bdIdDescr[0][0]
+        session['id_linhaFatura'] = id_linhaFatura
+    
+    else: 
+        flash('PRODUTO DESATIVADO. SE PRECISO CONTACTE O ADMINISTRADOR', 'produtoDesativado')
+        return render_template("registarLinhaFatura.html")
+    
     cursor.close()
 
     conexao.close()
@@ -751,11 +763,11 @@ def registarLinhaFatura2():
         
         valor_lf= qtd * valor_unit
 
-        sql = "UPDATE t_linhaFat SET qtd = %s, valor_linhaFat=%s WHERE id_linhaFat = %s;"
+        sql = "UPDATE t_linhafat SET qtd = %s, valor_linhaFat=%s WHERE id_linhaFat = %s;"
         cursor.execute(sql, (qtd, valor_lf, id_linhaFat,))
         conexao.commit()
 
-        sql2 = "SELECT * FROM t_linhaFat WHERE id_fatura=%s"
+        sql2 = "SELECT * FROM t_linhafat WHERE id_fatura=%s"
         cursor.execute(sql2,(id_fatura,))
         bdtLinhaFatura= cursor.fetchall()
         session['produtosDaFatura'] = bdtLinhaFatura
@@ -766,9 +778,82 @@ def registarLinhaFatura2():
     
     return render_template("registarLinhaFatura.html", bdtLinhaFatura=bdtLinhaFatura)
 
+@app.route("/cancelarProduto", methods=['GET', 'POST'])
+def cancelarProduto():
+    id_linhaFat=request.form.get('lfParaCancelar')
+    id_fatura=session['id_fatura']
+
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+
+        sql1 = "DELETE FROM t_linhafat WHERE id_linhaFat = %s;"
+        cursor.execute(sql1, (id_linhaFat,))
+        conexao.commit()
+
+        sql2 = "SELECT * FROM t_linhafat WHERE id_fatura=%s"
+        cursor.execute(sql2,(id_fatura,))
+        bdtLinhaFatura= cursor.fetchall()
+        session['produtosDaFatura'] = bdtLinhaFatura
+
+        cursor.close()
+    
+    conexao.close()
+    
+    return render_template("registarLinhaFatura.html")
+
+@app.route("/cancelarFatura", methods=['GET', 'POST'])
+def cancelarFatura():
+    id_fatura=session['id_fatura']
+
+    conexao = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='mercadona'
+    )
+
+    if conexao.is_connected():
+        cursor = conexao.cursor()
+
+        sql2 = "SELECT * FROM t_linhafat WHERE id_fatura=%s"
+        cursor.execute(sql2,(id_fatura,))
+        bdtLinhaFatura= cursor.fetchall()
+
+        if bdtLinhaFatura and len(bdtLinhaFatura) > 0:
+            for lf in bdtLinhaFatura:
+                nlf=lf[0]
+                sql1 = "DELETE FROM t_linhafat WHERE id_linhaFat = %s;"
+                cursor.execute(sql1, (nlf,))
+                conexao.commit()
+
+        sql = "DELETE FROM t_fatura WHERE id_fatura = %s;"
+        cursor.execute(sql, (id_fatura,))
+        conexao.commit()
+        cursor.close()
+
+        session.pop('id_fatura', None)
+        session.pop('id_produto', None)
+        session.pop('id_linhaFatura', None)
+        session.pop('produtosDaFatura', None)
+        session.pop('valorFatura', None)
+        session.pop('nif', None)
+        session.pop('qtdItens', None)
+        session.pop('valorCartao', None)
+       
+    conexao.close()
+    
+    return render_template("registarFatura.html")
+
+
 @app.route("/finalizarFatura", methods=['GET','POST'])
 def finalizarFatura():
-    verificar_autenticacao()
     id_fatura=session['id_fatura']
                  
     conexao = mysql.connector.connect(
@@ -780,45 +865,43 @@ def finalizarFatura():
  
     cursor = conexao.cursor()
 
-    sql = "SELECT sum(qtd) from t_linhaFat where id_fatura=%s;"
+    sql = "SELECT sum(qtd) from t_linhafat where id_fatura=%s;"
     cursor.execute(sql, (id_fatura,))
     qtd_total_itens = cursor.fetchone()[0]
     session['qtdItens']=qtd_total_itens
     
-    sql1 = "SELECT sum(valor_linhaFat) from t_linhaFat where id_fatura=%s;"
+    sql1 = "SELECT sum(valor_linhaFat) from t_linhafat where id_fatura=%s;"
     cursor.execute(sql1, (id_fatura,))
     valor_total_itens = cursor.fetchone()[0]
-    session['valorFatura']=valor_total_itens
+    valor_total_fatura = round(valor_total_itens, 2)
+    session['valorFatura']=valor_total_fatura
 
     sql4 = "SELECT nif FROM t_fatura WHERE id_fatura = %s;"
     cursor.execute(sql4, (id_fatura,))
-    nif_raw= cursor.fetchone()
-    nif=nif_raw[0]
+    nif= cursor.fetchone()[0]
     session['nif']=nif
 
-    sql3 = "SELECT * from t_cartao where nif=%s;"
+    sql3 = "SELECT * from t_cartao where nif=%s and ativo='0';"
     cursor.execute(sql3, (nif,))
-    valorCartao = cursor.fetchone()[3]  
+    valorCartao = cursor.fetchone()[2] 
+    session['valorCartao'] = valorCartao
+
+    cursor.nextset()
 
     sql2 = "UPDATE t_fatura SET valor_fatura = %s WHERE id_fatura = %s;"
-    cursor.execute(sql2, (valor_total_itens, id_fatura,))
+    cursor.execute(sql2, (session['valorFatura'], id_fatura,))
     conexao.commit()
-
-
-    sql6 = "SELECT * from t_cartao where nif=%s;"
-    cursor.execute(sql6, (nif,))
-    valorAtual = cursor.fetchone()[3]
     
-
     cursor.close()
     conexao.close()
     
-    return render_template("finalizarFatura.html", qtd_total_itens=qtd_total_itens, valor_total_itens=valor_total_itens, valorAtual=valorAtual)
+    return render_template("finalizarFatura.html")
 
 @app.route("/utilizarValorCartao", methods=['GET','POST'])
 def utilizarValorCartao():
     verificar_autenticacao()
     valorAutilizar=float(request.form.get('valorCartaoAutilizar'))
+    session['valorUtilizado']=valorAutilizar
     valorFatura=float(session['valorFatura'])
     id_fatura=session['id_fatura']
     qtd_total_itens=session['qtdItens']
@@ -840,23 +923,24 @@ def utilizarValorCartao():
     cursor.execute(sql, (novoValorFatura, id_fatura,))
     conexao.commit()
 
-    sql1 = "UPDATE t_cartao SET valorCartao= valorCartao - %s WHERE nif = %s;"
+    sql1 = "UPDATE t_cartao SET valorCartao= valorCartao - %s WHERE nif = %s and ativo='0';"
     cursor.execute(sql1, (valorAutilizar, nif,))
     conexao.commit()
 
-    sql2 = "SELECT valorCartao from t_cartao where nif=%s;"
+    sql2 = "SELECT valorCartao from t_cartao where nif=%s and ativo='0';"
     cursor.execute(sql2, (nif,))
-    novoValorCartao = cursor.fetchone()[0]
+    session['valorCartao'] = cursor.fetchone()[0]
     
     cursor.close()
     conexao.close()
     
-    return render_template("finalizarFatura.html", valor_total_itens=novoValorFatura,qtd_total_itens=qtd_total_itens, valorAtual=novoValorCartao)
+    return render_template("finalizarFatura.html", qtd_total_itens=qtd_total_itens)
 
 @app.route("/finalizarFatura2", methods=['GET','POST'])
 def finalizarFatura2():
     verificar_autenticacao()
     valorFaturaFinal=session['valorFatura']
+    produtosDaFatura= session['produtosDaFatura']
     nif=session['nif']
 
     conexao = mysql.connector.connect(
@@ -866,25 +950,32 @@ def finalizarFatura2():
         database='mercadona'
     )
 
+    cursor = conexao.cursor()
     if valorFaturaFinal>10:
 
         valorCartao=int(valorFaturaFinal/10)
-
-        cursor = conexao.cursor()
-        sql = "UPDATE t_cartao SET valorCartao= valorCartao + %s WHERE nif = %s;"
+        sql = "UPDATE t_cartao SET valorCartao= valorCartao + %s WHERE nif = %s and ativo='0';"
         cursor.execute(sql, (valorCartao, nif,))
         conexao.commit()
-        cursor.close()
+    
+    for item in produtosDaFatura:
+        qtd=item[3]
+        id_produto=item[1]
+        sql1= "UPDATE t_produto SET stock= stock - %s WHERE id_produto = %s;"
+        cursor.execute(sql1, (qtd, id_produto,))
+        conexao.commit()
+    cursor.close() 
 
     session.pop('id_fatura', None)
     session.pop('id_produto', None)
     session.pop('id_linhaFatura', None)
     session.pop('produtosDaFatura', None)
-    session.pop('novoValorFatura', None)
     session.pop('valorFatura', None)
     session.pop('nif', None)
     session.pop('qtdItens', None)
-    
+    session.pop('valorCartao', None)
+    session.pop('valorUtilizado', None)
+           
     conexao.close()
     
     return redirect("/homepage")

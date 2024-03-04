@@ -11,17 +11,16 @@
                
         <h1>Dados do Cartao</h1>
         
-        {% for cartao in bdtPontos %}
+        {% for cartao in bdtValorCartao %}
         <b>Número do Cartão: </b>{{ cartao[0] }}</br>
         <b>Nif: </b>{{ cartao[1] }}</br>
         <b>Situação: </b>
-            {% if cartao[3]==0 %}
+            {% if cartao[3]=='0' %}
                 ATIVO</br><br>
             {% else%}
                 DESATIVADO</br><br>
             {% endif%}
-        <b>Pontos: </b>{{ cartao[2] }}</br>
-        <b>Valor Total Pontos: </b>{{valor_total}}€</br>      
+        <b>Valor Total Disponível: </b>{{valor_total}}€</br>      
         <br><br>
         <input type="button" value="Homepage" onclick="window.location='/homepage'">
         {% endfor %}

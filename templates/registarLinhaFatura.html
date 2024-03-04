@@ -15,8 +15,20 @@
         <h3>Registo dos Produtos</h3> 
 
         {% for item in session['produtosDaFatura'] %}
-            <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
+            <form action="/cancelarProduto" method="post">
+                {{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}
+                <input type="hidden" name="lfParaCancelar" value="{{ item[0] }}">
+                <input type="submit" value="X"><br><br>
+            </form>
         {% endfor %}
+
+        {% set msg_produtoDesativado= get_flashed_messages(category_filter=['produtoDesativado']) %}
+
+        {% if msg_produtoDesativado %}
+            <div class="flash_produtoDesativado">
+                {{msg_produtoDesativado[0]}}
+            </div>
+        {% endif %}
 
         <form action="/registarLinhaFatura" method="post">
             <p>Código do Produto: <input type="text" name="id_produto" size="11" required></p>
@@ -25,14 +37,7 @@
                 <input type="button" value="Finalizar Fatura" onclick="window.location.href='/finalizarFatura'">
             {%endif%}
         </form>
-        <form action="/cancelarFatura" method="post">
-            <input type="submit" value="Cancelar Fatura">
-        </form>
-        <form action="/cancelarProduto" method="post">
-            <input type="submit" value="Cancelar Produto">
-        </form>
-
-               
+                     
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

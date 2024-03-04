@@ -18,9 +18,9 @@
             <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
         {% endfor %}
 
-        <h3>Quantidade Total de Itens:</h3>{{qtd_total_itens}}
-        <h3>Valor Total:</h3>{{valor_total_itens}}€
-        <h3>Valor Cartao de Pontos:</h3>{{valorAtual}}€
+        <h3>Quantidade Total de Itens:</h3>{{session['qtdItens']}}
+        <h3>Valor Total:</h3>{{session['valorFatura']}}€
+        <h3>Valor Disponível no Cartão Promocional:</h3>{{session['valorCartao']}}€
 
         <form action="/utilizarValorCartao" method="post">
             <br></br>
@@ -28,13 +28,18 @@
             <br></br>
             <input type="submit" value="Utilizar">
         </form>
-
         <br><br>
-        <input type="button" value="Voltar" onclick="window.location='/registarLinhaFatura'">
-        <input type="button" value="Finalizar" onclick="window.location='/finalizarFatura2'">
-               
+        {% if 'valorUtilizado' not in session  %}
+            <form action="/cancelarFatura" method="post">
+                <input type="button" value="Voltar" onclick="window.location.href='/registarLinhaFatura'">
+                <input type="hidden" name="lfParaCancelar" value="{{session['id_fatura']}}">
+                <input type="submit" value="Cancelar Fatura">
+            </form>
+        {% endif %}
+        <input type="button" value="Finalizar" onclick="window.location.href='/finalizarFatura2'">
+                 
     </body>
     <footer>
-        <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>
+        <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p> 
     </footer>
 </html>

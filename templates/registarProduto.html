@@ -21,22 +21,33 @@
             <h2>Registrar Produto</h2>
 
             <form action="/registarProduto" method="POST">
-                <label for="descricao">Descrição do Produto:</label>
-                <input type="text" id="descricao" name="descricao" required>
+                <label>Descrição do Produto:</label>
+                <input type="text" name="descricao" required>
                 <br><br>
-                <label for="valor_venda">Valor de Venda:</label>
-                <input type="text" id="valor_venda" name="valor_venda" required>
+                <label>Valor de Venda:</label>
+                <input type="text" name="valor_venda" required>
                 <br><br>
-                <label for="stock">Estoque:</label>
-                <input type="text" id="stock" name="stock" required>
+                <label>Estoque:</label>
+                <input type="text" name="stock" required>
                 <br><br>
-                <label for="categoria">Categoria:</label>
-                <input type="text" id="categoria" name="categoria" required>
+                <label>Categoria:</label>
+                    <select name="categoria" required>
+                    <option value="" disabled selected>Selecione a categoria</option>
+                    <option value="Frutas&Legumes">Frutas&Legumes</option>
+                    <option value="Carnes&Peixes">Carnes&Peixes</option>
+                    <option value="Limpeza">Limpeza</option>
+                    <option value="Conservas">Conservas</option>
+                    <option value="Mercearia">Mercearia</option>
+                    <option value="Bebidas">Bebidas</option>
+                    </select>
                 <br><br>
-                <label for="foto">Foto:</label>
+                <label>Foto:</label>
                 <br>
-                <input type="textarea" id="foto" name="foto">
+                <input type="textarea" name="foto">
                 <br><br>
+                <label>Data Validade:</label>
+                <br>
+                <input type="date" name="data_validade" required><br><br>
                 <button type="submit">Registar Produto</button>
                 <button type="reset">Limpar</button>
                 <button onclick="window.location='/homepage'">Homepage</button>
