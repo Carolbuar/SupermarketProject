@@ -5,11 +5,11 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <link rel="shortcut icon" href="static/imagens/logotipo.ico" type="image/x-icon">
         <title>Mercadona</title>
-        <link rel="stylesheet" href="registarCliente.css">
+        <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
+        <h1 class="topbar">Registrar Produto</h1>
         <section class="main-content">
-
             {% set msg_produto_registadoComSucesso= get_flashed_messages(category_filter=["produto_registadoComSucesso"]) %}
 
             {% if msg_produto_registadoComSucesso %}
@@ -17,9 +17,6 @@
                     {{msg_produto_registadoComSucesso[0]}}
                 </div>
             {% endif %}
-
-            <h2>Registrar Produto</h2>
-
             <form action="/registarProduto" method="POST">
                 <label>Descrição do Produto:</label>
                 <input type="text" name="descricao" required>

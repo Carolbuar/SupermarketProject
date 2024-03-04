@@ -1,27 +1,85 @@
 {%extends "base.html"%}
 {%block title%}Mercadona{%endblock%}
 {%block linkCSS%}<link rel="stylesheet" href="/static/css/homepage.css">{%endblock%}
+{%block linkExtra%}<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">{%endblock%}
 {%block content%}
-    <h1>Gestão Cartão Mercadona</h1>
+    <h1 class="topbar">Gestão Cartão Mercadona</h1>
     <br>
-    <!-- cada hiperligação utiliza a tag a -->
-    <a href="/registarCliente" target="_self">Registar Cliente</a><br><br>
-    <a href="/dadosCliente" target="_self">Dados do Cliente</a><br><br>
-    <a href="/registarCartao" target="_self">Registar Cartão</a><br><br>
-    <a href="/consultarCartao" target="_self">Consultar Dados Cartão</a><br><br>
-    <a href="/cancelarCartao" target="_self">Cancelar/Substituir Cartão</a><br><br>
-    <a href="/listarProdutos" target="_self">Listagem de Produtos</a><br><br>
-    <a href="/registarFatura" target="_self">Registar Fatura</a><br><br>
-    <a href="/listarProdutosValidadeProxima" target="_self">Gerar Lista de Produtos Próximos da Validade</a><br><br>
-    
-    {% if username == admin %}
-    <h2>Gestão Administrador</h2>
-    <a href="/registarUsuario" target="_self">Registar Dados para Login</a><br><br>
-    <a href="/listarUsuarios" target="_self">Desativar Usuario</a><br><br>
-    <a href="/registarProduto" target="_self">Registar Novo Produto</a><br><br>
-    <a href="/desativarProduto" target="_self">Desativar/Ativar Produto</a><br><br>
-    {%endif%}
-    <a href="/logout" target="_self">Logout</a><br><br>
+    <div class="sidebar">
+        <div class="logo"></div>
+            <ul class="menu">
+                <li>
+                    <a href="/registarCliente" target="_self" class="botoes">
+                    <i class="uil uil-head-side"></i>
+                    <span>Registar Cliente</span></a>
+                </li><br>
+                <li>
+                    <a href="/dadosCliente" target="_self" class="botoes">
+                    <i class="uil uil-list-ul"></i>
+                    <span>Dados do Cliente</span></a>
+                </li><br>
+                <li>
+                    <a href="/registarCartao" target="_self" class="botoes">
+                    <i class="uil uil-credit-card"></i>
+                    <span>Registar Cartão</span></a>
+                </li><br>
+                <li>
+                    <a href="/consultarCartao" target="_self" class="botoes">
+                    <i class="uil uil-credit-card-search"></i>
+                    <span>Consultar Dados Cartão</span></a>
+                </li><br>
+                <li>
+                    <a href="/cancelarCartao" target="_self" class="botoes">
+                    <i class="uil uil-credit-card-search"></i>
+                    <span>Cancelar/Substituir Cartão</span></a>
+                </li><br>
+                <li>
+                    <a href="/listarProdutos" target="_self" class="botoes">
+                    <i class="uil uil-list-ul"></i>
+                    <span>Listagem de Produtos</span></a>
+                </li><br>
+                <li>
+                    <a href="/registarFatura" target="_self" class="botoes">
+                    <i class="uil uil-invoice"></i>
+                    <span>Registar Fatura</span></a>
+                </li><br>
+                <li>
+                    <a href="/listarProdutosValidadeProxima" target="_self" class="botoes">
+                    <i class="uil uil-calender"></i>
+                    <span>Lista de Produtos Próximos da Validade</span></a>
+                </li><br>
+
+                {% if username == admin %}
+                <li>
+                    <a href="/registarUsuario" target="_self" class="botaoAD">
+                    <i class="uil uil-head-side"></i>
+                    <span>Registar Dados para Login</span></a>
+                </li><br>
+                <li>
+                    <a href="/listarUsuarios" target="_self" class="botaoAD">
+                    <i class="uil uil-head-side"></i>
+                    <span>Desativar Usuario</span></a>
+                </li><br>
+                <li>
+                    <a href="/registarProduto" target="_self" class="botaoAD">
+                    <i class="uil uil-head-side"></i>
+                    <span>Registar Novo Produto</span></a>
+                </li><br>
+                <li>
+                    <a href="/desativarProduto" target="_self" class="botaoAD">
+                    <i class="uil uil-head-side"></i>
+                    <span>Desativar/Ativar Produto</span></a>
+                </li><br>
+                {%endif%}
+
+                <li>
+                    <a href="/logout" target="_self" class="botaoAD">
+                    <i class="uil uil-signout"></i>
+                    <span>Logout</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
 {%endblock%}
 {%block footer%}
     <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <link rel="shortcut icon" href="static/imagens/logotipo.ico" type="image/x-icon">
         <title>Mercadona</title>
-        <link rel="stylesheet" href="/static/css/homepage.css">
+        <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
         {% set message1 = get_flashed_messages(category_filter=["usernameUtilizado"]) %}
@@ -22,11 +22,8 @@
                 {{message2[0]}}
             </div>
         {% endif %}
-
+        <h1 class="topbar">REGISTO NOVO USUARIO</h1>
         <div id="form_fundo">
-            <h1>REGISTO NOVO USUARIO</h1>
-            <!-- o metodo post envia os dados de uma página para a outra de forma escondida
-                o metodo get envia os dados para a página seguinte pela barra de endereço-->
             <div id="form_frente">
                 <form action="/registarUsuario" method="post">
                     <p>Username: <input type="text" name="username" size="10" required></p>

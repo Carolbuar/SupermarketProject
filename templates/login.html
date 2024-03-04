@@ -1,6 +1,7 @@
 {%extends "base.html"%}
 {%block title%}Mercadona{%endblock%}
 {%block linkCSS%}<<link rel="stylesheet" href="../static/css/login.css">>{%endblock%}
+{%block linkExtra%}{%endblock%}
 {%block content%}
     {% set msg_dadosInvalidosLogin= get_flashed_messages(category_filter=['dadosInvalidosLogin']) %}
     {% set msg_usuarioInativoLogin= get_flashed_messages(category_filter=['usuarioInativoLogin']) %}

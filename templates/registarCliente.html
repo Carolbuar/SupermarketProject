@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <link rel="shortcut icon" href="static/imagens/logotipo.ico" type="image/x-icon">
         <title>Mercadona</title>
-        <link rel="stylesheet" href="/static/css/registarCliente.css">
+        <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
         {% set msg_cliente_jaComRegisto= get_flashed_messages(category_filter=["cliente_jaComRegisto"]) %}
@@ -22,31 +22,24 @@
             </div>
         {% endif %}
 
-        <h1>Registo de Clientes</h1>
-        <!-- o metodo post envia os dados de uma página para a outra de forma escondida
-            o metodo get envia os dados para a página seguinte pela barra de endereço-->
+        <h1 class="topbar">Registo de Clientes</h1>
         
-         
-        <form action="/registarCliente" method="post">
-        <br></br>
-        <p>NIF: <input type="text" name="nif" size="9" required></p>
-        <p>Nome: <input type="text" name="nome" size="100" required></p>
-        <p>Morada: <input type="text" name="morada" size="200"></p>
-        <p>Email: <input type="email" name="email" size="50"></p>
-        <p>Telefone: <input type="text" name="telefone" size="20"></p>
-        <br></br> 
-            
-            <!--O botao submit envia os dados para a pagina inserir.php o reset limpa
-                os dados de todos os campos -->
-        <input type="submit" value="Registar">
-        <input type="reset" value="Limpar">
-        <input type="button" value="Homepage" onclick="window.location='/homepage'">
-        <br><br>
-            
-        </form>
-
+        <div class="bloco">
+            <form action="/registarCliente" method="post">
+                <p>NIF: <input type="text" name="nif" size="9" required></p>
+                <p>Nome: <input type="text" name="nome" size="100" required></p>
+                <p>Morada: <input type="text" name="morada" size="100"></p>
+                <p>Email: <input type="email" name="email" size="50"></p>
+                <p>Telefone: <input type="text" name="telefone" size="20"></p>
+                <br><br>
+                <input type="submit" value="Registar" class="botao">
+                <input type="reset" value="Limpar" class="botao">
+                <input type="button" value="Homepage" onclick="window.location='/homepage'" class="botao">
+                <br><br>
+            </form>
+        </div>   
     </body>
     <footer>
-        <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>
+        <p >&copy; 2024 Mercadona. Todos os direitos reservados.</p>
     </footer>
 </html>

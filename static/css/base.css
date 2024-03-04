@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+body{
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-size: cover;
+    background-color:   rgb(188, 243, 191);
+    text-align: center;
+    margin-bottom: 100px;
+    
+}
+.topbar{
+    background-color:rgb(51, 115, 51);
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.botao{
+    background-color: rgb(51, 115, 51);
+    color: rgb(255, 247, 247);
+    text-align: center;
+    border-radius: 20px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 10px;
+}
+footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+}
+/*SCROLL BAR*/
+::-webkit-scrollbar{ 
+    background-color: #fff;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb{
+    background-color: rgb(188, 243, 191);
+    border-radius: .5rem;
+}
+::-webkit-scrollbar-thumb:hover{
+    background-color: rgb(51, 115, 51);
+}
