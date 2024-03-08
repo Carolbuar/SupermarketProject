@@ -8,7 +8,18 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-
+        <h1 class="topbar">Dados do Cliente</h1>
+        <main style="text-align: center;">
+            <form action="/mostrarDadosCliente" method="post">
+                <br></br>
+                <p>NIF: <input type="text" name="nif" size="9" required></p>
+                <br></br>
+                <input type="submit" value="Buscar" class="botao">
+                <input type="reset" value="Limpar" class="botao">
+                <input type="button" value="Homepage" onclick="window.location='/homepage'" class="botao">
+                <br><br>
+            </form>
+        </main>
         {% set msg_cliente_semRegisto= get_flashed_messages(category_filter=["cliente_semRegisto"]) %}
 
         {% if msg_cliente_semRegisto %}
@@ -16,24 +27,6 @@
                 {{msg_cliente_semRegisto[0]}}
             </div>
         {% endif %}
-               
-        <h1 class="topbar">Dados do Cliente</h1>
-        <!-- o metodo post envia os dados de uma página para a outra de forma escondida
-            o metodo get envia os dados para a página seguinte pela barra de endereço-->
-        
-        <form action="/mostrarDadosCliente" method="post">
-        <br></br>
-        <p>NIF: <input type="text" name="nif" size="9" required></p>
-        <br></br>
-
-             
-        <input type="submit" value="Buscar" class="botao">
-        <input type="reset" value="Limpar" class="botao">
-        <input type="button" value="Homepage" onclick="window.location='/homepage'" class="botao">
-        <br><br>
-            
-        </form>
-
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

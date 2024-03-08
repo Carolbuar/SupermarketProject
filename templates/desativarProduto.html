@@ -8,17 +8,15 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-
         <div class="top-bar"></div>
             <h2>Desativar Produto</h2>
             <br><br>
             <form action="/listarProdutosAdm" method="post">
                 <p>Código Produto: <input type="text" name="id_prod" size="9" required></p>
-                <input type="submit" value="Listar Produto">
-                <input type="button" value="Homepage" onclick="window.location='/homepage'">
+                <input type="submit" value="Listar Produto" class="botao">
+                <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
             </form>
         </div>
-
         {% set msg_produtoAtivadoComSucesso= get_flashed_messages(category_filter=['produtoAtivadoComSucesso']) %}
         {% set msg_produtoDesativadoComSucesso= get_flashed_messages(category_filter=['produtoDesativadoComSucesso']) %}
 
@@ -74,13 +72,13 @@
                             
                     {% if produto[7] == '1' %}
                         <form action="/ativarProduto" method="post">
-                            <input type="hidden" name="codigoProduto" value="{{ produto[0] }}">
-                            <input type="submit" value="Ativar">
+                            <input type="hidden" name="codigoProduto" value="{{ produto[0] }}" class="botao">
+                            <input type="submit" value="Ativar" class="botao">
                         </form>
                     {% else %}
                         <form action="/desativarProduto2" method="post">
-                            <input type="hidden" name="codigoProduto" value="{{ produto[0] }}">
-                            <input type="submit" value="Desativar">
+                            <input type="hidden" name="codigoProduto" value="{{ produto[0] }}" class="botao">
+                            <input type="submit" value="Desativar" class="botao">
                         </form>
                     {% endif %}
                 {% set bdtProdutos = null %}

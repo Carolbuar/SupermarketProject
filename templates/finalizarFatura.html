@@ -9,35 +9,42 @@
     </head>
     <body>
         <h1 class="topbar">Registo de Nova Fatura Mercadona</h1><br>
+        <main>
+            <h2>Fatura nº {{session['id_fatura']}}</h2><br>
+            <h3>Listagem dos Produtos</h3> <br>
+            {% for item in session['produtosDaFatura'] %}
+                <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
+            {% endfor %}
+            <br><br>
+            <h3>Quantidade Total de Itens: {{session['qtdItens']}}</h3>
+            <h3>Valor Total: {{session['valorFatura']}}€ </h3>
+            {% if session['nif'] != 0 %}
+                <h3>Valor Disponível no Cartão Promocional:</h3>{{session['valorCartao']}}€
+                {% set msg_valorCartaoInsuficiente= get_flashed_messages(category_filter=['valorCartaoInsuficiente']) %}
 
-        <h2>Fatura nº {{session['id_fatura']}}</h2><br>
-        
-        
-
-        {% for item in session['produtosDaFatura'] %}
-            <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
-        {% endfor %}
-
-        <h3>Quantidade Total de Itens:</h3>{{session['qtdItens']}}
-        <h3>Valor Total:</h3>{{session['valorFatura']}}€
-        <h3>Valor Disponível no Cartão Promocional:</h3>{{session['valorCartao']}}€
-
-        <form action="/utilizarValorCartao" method="post">
-            <br></br>
-            <p>Valor: <input type="text" name="valorCartaoAutilizar" size="5" required></p>
-            <br></br>
-            <input type="submit" value="Utilizar">
-        </form>
-        <br><br>
-        {% if 'valorUtilizado' not in session  %}
-            <form action="/cancelarFatura" method="post">
-                <input type="button" value="Voltar" onclick="window.location.href='/registarLinhaFatura'">
-                <input type="hidden" name="lfParaCancelar" value="{{session['id_fatura']}}">
-                <input type="submit" value="Cancelar Fatura">
-            </form>
-        {% endif %}
-        <input type="button" value="Finalizar" onclick="window.location.href='/finalizarFatura2'">
-                 
+                {% if msg_valorCartaoInsuficiente %}
+                <div class="flash_confirmacao">
+                    {{msg_valorCartaoInsuficiente[0]}}
+                </div>
+                {% endif %}
+                <form action="/utilizarValorCartao" method="post">
+                    <br></br>
+                    <p>Valor: <input type="text" name="valorCartaoAutilizar" size="5" required></p>
+                    <br></br>
+                    <input type="submit" value="Utilizar">
+                </form>
+            {%endif%}
+            <br><br>
+            {% if 'valorUtilizado' not in session  %}
+                <form action="/cancelarFatura" method="post">
+                    <input type="button" value="Voltar" class="botao" onclick="window.location.href='/registarLinhaFatura'">
+                    <input type="hidden" name="lfParaCancelar" value="{{session['id_fatura']}}" class="botao">
+                    <input type="submit" value="Cancelar Fatura" class="botao">
+                </form>
+            {% endif %}
+            <br><br>
+            <input type="button" value="Finalizar" class="botao" onclick="window.location.href='/finalizarFatura2'">
+        </main>       
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p> 

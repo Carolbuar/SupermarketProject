@@ -3,7 +3,7 @@
 {%block linkCSS%}<link rel="stylesheet" href="/static/css/homepage.css">{%endblock%}
 {%block linkExtra%}<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">{%endblock%}
 {%block content%}
-    <h1 class="topbar">Gestão Cartão Mercadona</h1>
+    <h1 class="topbar">Área de Gestão do Colaborador</h1>
     <br>
     <div class="sidebar">
         <div class="logo"></div>
@@ -49,7 +49,7 @@
                     <span>Lista de Produtos Próximos da Validade</span></a>
                 </li><br>
 
-                {% if username == admin %}
+                {% if session['usuario_autenticado'] == 'admin' %}
                 <li>
                     <a href="/registarUsuario" target="_self" class="botaoAD">
                     <i class="uil uil-head-side"></i>

@@ -8,6 +8,21 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
+        <h1 class="topbar">Cancelar Cartão</h1>
+        <main>  
+            <form action="/cancelarCartao" method="post">
+                <br>
+                <p>Nº CARTÃO: <input type="text" name="n_cartao" size="12" required></p>
+                <br>
+                <div class="botoes">
+                    <input type="submit" value="Cancelar" class="botao">
+                    <input type="button" value="Substituir" class="botao" onclick="window.location.href='/substituirCartao'">
+                    <input type="reset" value="Limpar" class="botao">
+                    <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
+                    <br><br>
+                </div>
+            </form>
+        </main>  
         {% set msg_cartaoCanceladoComSucesso= get_flashed_messages(category_filter=['cartaoCanceladoComSucesso']) %}
         {% set msg_cartaoJaConstaCancelado= get_flashed_messages(category_filter=['cartaoJaConstaCancelado']) %}
         {% set msg_cartaoAindaAtivo= get_flashed_messages(category_filter=['cartaoAindaAtivo']) %}
@@ -29,17 +44,6 @@
                 {{msg_cartaoAindaAtivo[0]}}
             </div>
         {% endif %} 
-
-        <h1 class="topbar">Cancelar Cartão</h1>
-                
-        <form action="/cancelarCartao" method="post">
-            <p>Nº CARTÃO: <input type="text" name="n_cartao" size="12" required></p>
-            <input type="submit" value="Cancelar">
-            <button type="button" onclick="window.location.href='/substituirCartao'">Substituir</button>
-            <input type="reset" value="Limpar">
-        <input type="button" value="Homepage" onclick="window.location='/homepage'">
-        </form>
-
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

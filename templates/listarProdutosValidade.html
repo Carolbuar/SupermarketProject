@@ -9,11 +9,10 @@
     </head>
     <body>
         <h1 class="topbar">Listagem dos Produtos com Validade Próxima</h1>
-
         <form action="/listarProdutosValidadeProxima" method="post">
             <br><br>
-            <input type="submit" value="Gerar Lista" >
-            <input type="button" value="Homepage" onclick="window.location.href='/homepage'"></br></br>
+            <input type="submit" value="Gerar Lista" class="botao">
+            <input type="button" value="Homepage" class="botao" onclick="window.location.href='/homepage'"></br></br>
         </form>
         {% for produto in bdtProdutosValidadeProxima %}
             <p>Cód. Produto: {{ produto[0] }}</p>

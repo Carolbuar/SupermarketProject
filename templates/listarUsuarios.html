@@ -8,9 +8,7 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-
         <h1 class="topbar">Dados dos Usuarios para Login</h1>
-        
         {% for usuario in bdtLogin %}
             {% if usuario[2] == '1' %}
                 <span style="color: red;">Username: {{ usuario[0] }} - Usuário desativado</span>
@@ -20,20 +18,18 @@
             
             {% if usuario[2] == '1' %}
                 <form action="/ativarUsuario" method="post">
-                    <input type="hidden" name="username" value="{{ usuario[0] }}">
-                    <input type="submit" value="Ativar">
+                    <input type="hidden" name="username" value="{{ usuario[0] }}" class="botao">
+                    <input type="submit" value="Ativar" class="botao">
                 </form>
             {% else %}
                 <form action="/desativarUsuario" method="post">
-                    <input type="hidden" name="username" value="{{ usuario[0] }}">
-                    <input type="submit" value="Desativar">
+                    <input type="hidden" name="username" value="{{ usuario[0] }}" class="botao">
+                    <input type="submit" value="Desativar" class="botao">
                 </form>
             {% endif %}
-
         {% endfor %}  
-
-        <input type="button" value="Homepage" onclick="window.location.href='/homepage'">
-
+        <br><br>
+        <input type="button" value="Homepage" class="botao" onclick="window.location.href='/homepage'">
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

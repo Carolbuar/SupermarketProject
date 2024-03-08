@@ -6,34 +6,44 @@
         <link rel="shortcut icon" href="static/imagens/logotipo.ico" type="image/x-icon">
         <title>Mercadona</title>
         <link rel="stylesheet" href="/static/css/base.css">
+        <style>
+            form {
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 16px; /* Para adicionar um espaçamento entre os elementos */
+            }
+            .botao {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .bold-text {
+                font-weight: bold;
+            }
+        </style>
     </head>
     <body>
         <h1 class="topbar">Registo de Nova Fatura Mercadona</h1><br>
-
-        <h2>Fatura nº {{session['id_fatura']}}</h2><br>
-
-        <h3>Registo dos Produtos</h3> 
-
-        {% for item in session['produtosDaFatura'] %}
-            <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
-        {% endfor %}
-
-        {% for item in bdIdDescr %}
-            <p>{{ item[1] }}&nbsp;{{ item[2] }}</p>
-        {% endfor %}
-        
-        <form action="/registarLinhaFatura2" method="post">
-            <p>Quantidade: <input type="text" name="qtd" size="11" required></p>
+        <main>
+            <h2>Fatura nº {{session['id_fatura']}}</h2><br>
+            <h3 class="bold-text">Registo dos Produtos</h3> 
+            {% for item in session['produtosDaFatura'] %}
+                <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
+            {% endfor %}
+            <br>
+            {% for item in bdIdDescr %}
+                {{ item[1] }}&nbsp;{{ item[2] }}
+            {% endfor %}
+            <form action="/registarLinhaFatura2" method="post">
+                <input type="text" placeholder="Insira a quantidade" name="qtd" style="background-color: greenyellow; margin-right: 15px;" required>
+                <input type="submit" value="Incluir" class="botao">
+            </form>
             {% set msg_qtdMenorQzero= get_flashed_messages(category_filter=["qtdMenorQzero"]) %}
             {% if msg_qtdMenorQzero %}
             <div class="flash_qtd_menorQzero">
                 {{msg_qtdMenorQzero[0]}}
             </div>
             {% endif %}
-            <input type="submit" value="Incluir">
-        </form>
-
-        
+        </main>
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

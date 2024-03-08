@@ -8,18 +8,18 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-        <h1 class="topbar">Registo de Nova Fatura Mercadona</h1><br>
-        
-        <h3>Registar Fatura</h3> 
-
-        <form action="/registarFatura" method="post">
-            <br><br>
-            <p>NIF: <input type="text" name="nif" size="9"></p>
-            <input type="submit" value="Iniciar Fatura">
-            <input type="button" value="Homepage" onclick="window.location.href='/homepage'">
-        </form>
-
-        
+        <h1 class="topbar">Registo de Fatura Mercadona</h1><br>
+        <main style="text-align: center;">
+            <form action="/registarFatura" method="post">
+                <br>
+                <p>NIF: <input type="text" name="nif" size="9"></p>
+                <br>
+                <div class="botoes">
+                    <input type="submit" value="Iniciar Fatura" class="botao">
+                    <input type="button" value="Homepage" class="botao" onclick="window.location.href='/homepage'">
+                </div>
+            </form>
+        </main>
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

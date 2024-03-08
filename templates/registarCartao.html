@@ -9,19 +9,21 @@
     </head>
     <body>
         <h1 class="topbar">Registo de Novo Cartão Mercadona</h1><br>
-        <!-- o metodo post envia os dados de uma página para a outra de forma escondida
-            o metodo get envia os dados para a página seguinte pela barra de endereço-->
-        <!-- <h3>Verificar Cadastro</h3> 
-
-        <form action="/verificarCliente" method="post">
-            <br><br>
-            <p>NIF: <input type="text" name="nif" size="9" required></p>
-            <br><br>
-            <input type="submit" value="Verificar">
-            <input type="reset" value="Limpar">
-            <input type="button" value="Voltar" onclick="window.history.go(-1)">
-            <br><br>-->
-
+        <main>
+            <form action="/registarCartao" method="post">
+                <br><br>
+                <p>NIF: <input type="text" name="nif" size="9" required></p>
+                <p>Número do Cartao: <input type="text" name="n_cartao" size="12" required></p>
+                <br><br>
+                <div class="botoes">
+                    <input type="submit" value="Associar Cartao" class="botao">
+                    <input type="button" value="Registar Cliente" class="botao" onclick="window.location='/registarCliente'">
+                    <input type="reset" value="Limpar" class="botao">
+                    <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
+                    <br><br>
+                </div>     
+            </form>
+        </main>
         {% set msg_cliente_naoRegistado = get_flashed_messages(category_filter=["cliente_naoRegistado"]) %}
         {% set msg_cliente_jaComCartao= get_flashed_messages(category_filter=["cliente_jaComCartao"]) %}
         {% set msg_cartao_associadoComSucesso= get_flashed_messages(category_filter=["cartao_associadoComSucesso"]) %}
@@ -41,22 +43,6 @@
                 {{msg_cartao_associadoComSucesso[0]}}
             </div>
         {% endif %}
-
-        <h3>Associar Cartão</h3> 
-        <form action="/registarCartao" method="post">
-            <br><br>
-            <p>NIF: <input type="text" name="nif" size="9" required></p>
-            <p>Número do Cartao: <input type="text" name="n_cartao" size="12" required></p>
-            <br><br>
-            <input type="submit" value="Associar Cartao">
-            <input type="button" value="Registar Cliente" onclick="window.location='/registarCliente'">
-            <input type="reset" value="Limpar">
-            <input type="button" value="Homepage" onclick="window.location='/homepage'">
-            <br><br>       
-       
-            
-        </form>
-
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

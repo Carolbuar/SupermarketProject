@@ -23,21 +23,22 @@
         {% endif %}
 
         <h1 class="topbar">Registo de Clientes</h1>
-        
-        <div class="bloco">
+        <main>
             <form action="/registarCliente" method="post">
                 <p>NIF: <input type="text" name="nif" size="9" required></p>
-                <p>Nome: <input type="text" name="nome" size="100" required></p>
-                <p>Morada: <input type="text" name="morada" size="100"></p>
+                <p>Nome: <input type="text" name="nome" size="70" required></p>
+                <p>Morada: <input type="text" name="morada" size="70"></p>
                 <p>Email: <input type="email" name="email" size="50"></p>
                 <p>Telefone: <input type="text" name="telefone" size="20"></p>
                 <br><br>
-                <input type="submit" value="Registar" class="botao">
-                <input type="reset" value="Limpar" class="botao">
-                <input type="button" value="Homepage" onclick="window.location='/homepage'" class="botao">
+                <div class="botoes">
+                    <input type="submit" value="Registar" class="botao">
+                    <input type="reset" value="Limpar" class="botao">
+                    <input type="button" value="Homepage" onclick="window.location='/homepage'" class="botao">
+                </div>
                 <br><br>
             </form>
-        </div>   
+        </main>   
     </body>
     <footer>
         <p >&copy; 2024 Mercadona. Todos os direitos reservados.</p>

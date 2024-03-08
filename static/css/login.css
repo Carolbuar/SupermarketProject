@@ -16,6 +16,15 @@ div.flash_alerta{
     text-align: center;
     width: 100%; 
 }
+div.flash_confirmacao{
+    position: fixed;
+    top: 0;
+    background-color: rgb(22, 200, 51);
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%; 
+}
 div#form_fundo{
     background-color: white;
     margin: 20% 35% 20% 35%;
@@ -28,7 +37,7 @@ div#form_fundo{
     justify-content: center;
 }
 div#form_frente{
-    background-color:rgb(50, 126, 50);
+    background-color:#00754D;
     margin: 15px;
     text-align: center;
     border-radius: 20px;
@@ -40,6 +49,7 @@ input{
     border-radius: 20px;
     font-size: 20px;
     font-weight: bold;
+    color: black;
 }
 input:focus{
     background-color: gray;
@@ -49,7 +59,7 @@ button{
     font-size: 20px;
     font-weight: bold;
     border-radius: 20px;
-    background-color:  rgb(51, 115, 51);
+    background-color: #00754D;
     color: white;
 }
 button:hover{
@@ -68,5 +78,5 @@ button:hover{
     border-radius: .5rem;
 }
 ::-webkit-scrollbar-thumb:hover{
-    background-color: rgb(51, 115, 51);
+    background-color: #00754D;
 }

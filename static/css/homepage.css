@@ -6,14 +6,16 @@
     box-sizing: border-box;
     border: none;
     outline: none;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Roboto", sans-serif, Arial, Helvetica;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
 }
 body{
     background: url(../imagens/lojaMaster.jpg) no-repeat;
     background-size: cover;
     background-position: center;
     height: 105vh;
-    font-size: 20px;
 }
 footer{
     position: fixed;
@@ -30,7 +32,7 @@ footer{
     top: 65px;
     left: 0;
     bottom: 0;
-    width: 300px;
+    width: 330px;
     height: calc(110vh - 65px);
     padding: 0 1.5rem;
     overflow: hidden;
@@ -38,11 +40,12 @@ footer{
     background-color: #fff;
 }
 .topbar{
-    background-color: rgb(51, 115, 51);
+    background-color:#00754D;
     color: white;
-    width: 100%;
+    padding: 10px;
     text-align: center;
-    padding: 10px 0;
+    text-shadow: 2px 2px 4px rgb(0, 0, 0);
+    font-size: 40px;
 }
 .logo{
     height: 20px;
@@ -57,19 +60,18 @@ footer{
     transition: all 0.5s ease-in-out;
 }
 .botoes{
-    background-color:  rgb(51, 115, 51);
+    background-color: #00754D;
     color: rgb(255, 247, 247);
     border-radius: 20px;
     text-decoration: none;
     display: flex;
-    font-size: 20px;
     cursor: pointer;
     padding: 5px;
-    font-size: 15px;
+    font-size: 40px;
     gap: 5px;
 }
 .botoes:hover{
-    background-color: rgb(110, 178, 114);
+    background-color: #00754D;
 }
 .botaoAD{
     background-color: #b12020;
@@ -96,5 +98,5 @@ footer{
     border-radius: .5rem;
 }
 ::-webkit-scrollbar-thumb:hover{
-    background-color: rgb(51, 115, 51);
+    background-color:#00754D;
 }

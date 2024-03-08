@@ -8,9 +8,7 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-               
         <h1 class="topbar">Dados do Cartao</h1>
-        
         {% for cartao in bdtValorCartao %}
         <b>Número do Cartão: </b>{{ cartao[0] }}</br>
         <b>Nif: </b>{{ cartao[1] }}</br>
@@ -24,7 +22,6 @@
         <br><br>
         <input type="button" value="Homepage" onclick="window.location='/homepage'">
         {% endfor %}
-
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

@@ -6,17 +6,28 @@
         <link rel="shortcut icon" href="static/imagens/logotipo.ico" type="image/x-icon">
         <title>Mercadona</title>
         <link rel="stylesheet" href="/static/css/base.css">
+        <style>
+            form {
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 16px; /* Para adicionar um espaçamento entre os elementos */
+            }
+            .botao {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        </style>
     </head>
     <body>
         <h1 class="topbar">Listagem dos Produtos</h1>
-        <div class="top-bar"></div>
-            <input type="button" value="Homepage" onclick="window.location='/homepage'"><br></br>
+        <main style="width: 1400px; text-align: center;" >
+            <br>
             <form action="/listarProdutosPorCodigo" method="post">
-                <p>Código Produto: <input type="text" name="id_prod" size="9" required></p>
-                <input type="submit" value="Listar por Codigo"> 
+                Código Produto: <input type="text" name="id_prod" size="9" required>
+                <input type="submit" value="Listar por Codigo" class="botao"> 
             </form>
             <form action="/listarProdutosPorCategoria" method="post">
-                <p>Categoria: 
+                Categoria: 
                     <select name="categoria" required>
                     <option value="" disabled selected>Selecione a categoria</option>
                     <option value="Frutas&Legumes">Frutas&Legumes</option>
@@ -26,13 +37,13 @@
                     <option value="Mercearia">Mercearia</option>
                     <option value="Bebidas">Bebidas</option>
                     </select>
-                </p>
-                <input type="submit" value="Listar por Categoria">
+                <input type="submit" value="Listar por Categoria" class="botao">
             </form>
             <form action="/listarProdutos" method="post">
-                <input type="submit" value="Listar todos os produtos">
+                <input type="submit" value="Listar todos os produtos" class="botao">
             </form>
-        </div>
+            <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'"><br></br>
+        </main>
         
         {% if bdtProdutos !=null %}
             {% if bdtProdutos|length > 0 %}
@@ -84,7 +95,6 @@
                 <p>Nenhum produto encontrado.</p>
             {% endif %}
         {% endif %}
-
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

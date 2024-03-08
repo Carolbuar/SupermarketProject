@@ -10,6 +10,7 @@ app.secret_key = 'caroline'
 
 #route -> 
 #funcao -> o que vc quer exibir naquela pagina
+@app.route("/home")
 @app.route("/")
 def home():
     return render_template("home.html")
@@ -56,23 +57,34 @@ def verificar_autenticacao():
 @app.route('/logout')
 def logout():
     session.pop('usuario_autenticado', None)
-    return redirect("/")
+    flash('LOGOUT EFETUADO COM SUCESSO!','logoutEfetuadoComSucesso')
+    return redirect("/login")
 
 @app.route("/homepage")
 def homepage():
     if verificar_autenticacao()==True:
-        return render_template("homepage.html")
+        pass
     else:
         flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
         return redirect('/login')
+    return render_template("homepage.html")
        
 @app.route("/registarUsuario")
 def renderRegistarUsuario():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     return render_template("registarUsuario.html")
 
 @app.route("/registarUsuario", methods=['POST'])
 def registarUsuario():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     username = request.form.get('username')
     password = request.form.get('password')
 
@@ -111,11 +123,20 @@ def registarUsuario():
             
 @app.route("/registarCliente")
 def renderRegistarCliente():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     return render_template("registarCliente.html")
 
 @app.route("/registarCliente", methods=['POST'])
 def registarCliente():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     nif = int(request.form.get('nif'))
     nome = request.form.get('nome')
     morada = request.form.get('morada')
@@ -158,11 +179,20 @@ def registarCliente():
     
 @app.route("/dadosCliente")
 def renderDadosCliente():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     return render_template("dadosCliente.html")
 
 @app.route("/mostrarDadosCliente", methods=['POST'])
 def dadosCliente():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     nif = int(request.form.get('nif'))
     
     conexao = mysql.connector.connect(
@@ -189,7 +219,11 @@ def dadosCliente():
 
 @app.route("/atualizarDadosCliente", methods=['POST'])
 def atualizarDadosCliente():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     nif = int(request.form.get('nif_display'))
 
     conexao = mysql.connector.connect(
@@ -213,7 +247,11 @@ def atualizarDadosCliente():
 
 @app.route("/atualizarDadosC", methods=['POST'])
 def atualizarDadosC():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     nif = int(request.form.get('nif'))
     nome = request.form.get('nome')
     morada = request.form.get('morada')
@@ -248,11 +286,20 @@ def atualizarDadosC():
 
 @app.route("/registarProduto")
 def renderRegistarProduto():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     return render_template("registarProduto.html")
 
 @app.route("/registarProduto", methods=['POST'])
 def registarProduto():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     descricao = request.form.get('descricao')
     valor_venda= request.form.get('valor_venda')
     stock = request.form.get('stock')
@@ -283,7 +330,11 @@ def registarProduto():
 
 @app.route("/listarProdutos", methods=['GET', 'POST'])
 def listarProdutos():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
 
     conexao = mysql.connector.connect(
         host='localhost',
@@ -305,7 +356,11 @@ def listarProdutos():
 
 @app.route("/listarProdutosPorCategoria", methods=['GET', 'POST'])
 def listarProdutosPorCategoria():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     categoria=request.form.get('categoria')
  
     conexao = mysql.connector.connect(
@@ -328,7 +383,11 @@ def listarProdutosPorCategoria():
 
 @app.route("/listarProdutosPorCodigo", methods=['GET', 'POST'])
 def listarProdutosPorCodigo():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     idProduto=request.form.get('id_prod')
      
     conexao = mysql.connector.connect(
@@ -354,7 +413,11 @@ def listarProdutosPorCodigo():
     
 @app.route("/listarProdutosAdm", methods=['GET', 'POST'])
 def listarProdutosAdm():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     idProduto=request.form.get('id_prod')
      
     conexao = mysql.connector.connect(
@@ -379,11 +442,20 @@ def listarProdutosAdm():
  
 @app.route("/desativarProduto")
 def desativarProduto():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     return render_template("desativarProduto.html")
 
 @app.route("/desativarProduto2", methods=['GET','POST'])
 def desativarProduto2():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     codProduto = request.form.get('codigoProduto')
     
     conexao = mysql.connector.connect(
@@ -408,7 +480,11 @@ def desativarProduto2():
 
 @app.route("/ativarProduto", methods=['GET','POST'])
 def ativarProduto():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     codProduto = request.form.get('codigoProduto')
     
     conexao = mysql.connector.connect(
@@ -433,11 +509,20 @@ def ativarProduto():
 
 @app.route("/listarProdutosValidadeProxima")
 def renderListarProdutosValidadeProxima():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     return render_template("listarProdutosValidade.html")
 
 @app.route("/listarProdutosValidadeProxima", methods=['POST'])
 def listarProdutosValidadeProxima():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     bdtProdutosValidadeProxima=[]
  
     conexao = mysql.connector.connect(
@@ -459,11 +544,20 @@ def listarProdutosValidadeProxima():
 
 @app.route("/registarCartao")
 def registarCartao():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     return render_template("registarCartao.html")
 
 @app.route("/registarCartao", methods=['POST'])
 def verificarCliente():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     nif = int(request.form.get('nif'))
     n_cartao = request.form.get('n_cartao')
     
@@ -519,11 +613,20 @@ def verificarCliente():
 
 @app.route("/cancelarCartao")
 def rendercancelarCartao():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     return render_template("cancelarCartao.html")
 
 @app.route("/cancelarCartao", methods=['POST','GET'])
 def cancelarCartao():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     n_cartao = request.form.get('n_cartao')
     
     conexao = mysql.connector.connect(
@@ -554,13 +657,21 @@ def cancelarCartao():
 
 @app.route("/substituirCartao", methods=['GET', 'POST'])
 def substituirCartao():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     n_cartao=request.form.get('n_cartao')
     return render_template("substituirCartao.html", n_cartao=n_cartao)
 
 @app.route("/substituirNumeroCartao", methods=['POST','GET'])
 def substituirNumeroCartao():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     n_cartao = request.form.get('n_cartao')
     novo_cartao = request.form.get('novo_cartao')
 
@@ -615,11 +726,20 @@ def substituirNumeroCartao():
 
 @app.route("/consultarCartao")
 def renderConsultarPontos():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     return render_template("consultarCartao.html")
     
 @app.route("/consultarCartao", methods=['POST'])
 def consultarCartao():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     n_cartao = int(request.form.get('n_cartao'))
     
     conexao = mysql.connector.connect(
@@ -648,10 +768,20 @@ def consultarCartao():
 
 @app.route("/registarFatura")
 def renderRegistarFatura():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     return render_template("registarFatura.html")
 
 @app.route("/registarFatura", methods=['POST'])
 def registarFatura():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     nif=request.form.get('nif')
     data_atual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     if 'produtosDaFatura' in session:
@@ -683,10 +813,20 @@ def registarFatura():
 
 @app.route("/registarLinhaFatura")
 def renderRegistarLinhaFatura():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     return render_template("registarLinhaFatura.html")
 
 @app.route("/registarLinhaFatura", methods=['GET', 'POST'])
 def registarLinhaFatura():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     id_produto=request.form.get('id_produto')
     session['id_produto']=id_produto
     id_fatura=session['id_fatura']
@@ -730,11 +870,20 @@ def registarLinhaFatura():
 
 @app.route("/registarLinhaFatura2")
 def renderRegistarLinhaFatura2():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     return render_template("registarLinhaFatura2.html")
 
 @app.route("/registarLinhaFatura2", methods=['GET', 'POST'])
 def registarLinhaFatura2():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     qtd=int(request.form.get('qtd'))
     id_produto=session['id_produto']
     id_linhaFat=session['id_linhaFatura']
@@ -780,6 +929,11 @@ def registarLinhaFatura2():
 
 @app.route("/cancelarProduto", methods=['GET', 'POST'])
 def cancelarProduto():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     id_linhaFat=request.form.get('lfParaCancelar')
     id_fatura=session['id_fatura']
 
@@ -810,6 +964,11 @@ def cancelarProduto():
 
 @app.route("/cancelarFatura", methods=['GET', 'POST'])
 def cancelarFatura():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     id_fatura=session['id_fatura']
 
     conexao = mysql.connector.connect(
@@ -851,9 +1010,13 @@ def cancelarFatura():
     
     return render_template("registarFatura.html")
 
-
 @app.route("/finalizarFatura", methods=['GET','POST'])
 def finalizarFatura():
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     id_fatura=session['id_fatura']
                  
     conexao = mysql.connector.connect(
@@ -879,12 +1042,15 @@ def finalizarFatura():
     sql4 = "SELECT nif FROM t_fatura WHERE id_fatura = %s;"
     cursor.execute(sql4, (id_fatura,))
     nif= cursor.fetchone()[0]
-    session['nif']=nif
+    session['nif']=int(nif)
 
-    sql3 = "SELECT * from t_cartao where nif=%s and ativo='0';"
-    cursor.execute(sql3, (nif,))
-    valorCartao = cursor.fetchone()[2] 
-    session['valorCartao'] = valorCartao
+    if session['nif'] != 0:
+        sql3 = "SELECT valorCartao from t_cartao where nif=%s and ativo='0';"
+        cursor.execute(sql3, (session['nif'],))
+        valorCartao = cursor.fetchone()[2] 
+        session['valorCartao'] = valorCartao
+    else:
+        session['valorCartao'] = '0'
 
     cursor.nextset()
 
@@ -899,13 +1065,22 @@ def finalizarFatura():
 
 @app.route("/utilizarValorCartao", methods=['GET','POST'])
 def utilizarValorCartao():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     valorAutilizar=float(request.form.get('valorCartaoAutilizar'))
     session['valorUtilizado']=valorAutilizar
     valorFatura=float(session['valorFatura'])
     id_fatura=session['id_fatura']
     qtd_total_itens=session['qtdItens']
     nif=session['nif']
+    valorCartao= session['valorCartao']
+    
+    if valorAutilizar>valorCartao:
+        flash('VALOR SUPERIOR AO DISPONÍVEL!', 'valorCartaoInsuficiente')
+        return render_template("finalizarFatura.html")
 
     novoValorFatura=valorFatura-valorAutilizar
     session['valorFatura']=novoValorFatura
@@ -938,7 +1113,11 @@ def utilizarValorCartao():
 
 @app.route("/finalizarFatura2", methods=['GET','POST'])
 def finalizarFatura2():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     valorFaturaFinal=session['valorFatura']
     produtosDaFatura= session['produtosDaFatura']
     nif=session['nif']
@@ -982,7 +1161,11 @@ def finalizarFatura2():
 
 @app.route("/listarUsuarios")
 def listarUsuarios():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     bdtLogin=[]
  
     conexao = mysql.connector.connect(
@@ -1005,7 +1188,11 @@ def listarUsuarios():
 
 @app.route("/desativarUsuario", methods=['GET','POST'])
 def desativarUsuario():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     username = request.form.get('username')
     
     conexao = mysql.connector.connect(
@@ -1028,7 +1215,11 @@ def desativarUsuario():
 
 @app.route("/ativarUsuario", methods=['GET','POST'])
 def ativarUsuario():
-    verificar_autenticacao()
+    if verificar_autenticacao()==True:
+        pass
+    else:
+        flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
+        return redirect('/login')
     username = request.form.get('username')
     
     conexao = mysql.connector.connect(

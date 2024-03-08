@@ -1,11 +1,18 @@
 {%extends "base.html"%}
 {%block title%}Mercadona{%endblock%}
-{%block linkCSS%}<<link rel="stylesheet" href="../static/css/login.css">>{%endblock%}
+{%block linkCSS%}<link rel="stylesheet" href="../static/css/login.css">{%endblock%}
 {%block linkExtra%}{%endblock%}
 {%block content%}
     {% set msg_dadosInvalidosLogin= get_flashed_messages(category_filter=['dadosInvalidosLogin']) %}
     {% set msg_usuarioInativoLogin= get_flashed_messages(category_filter=['usuarioInativoLogin']) %}
     {% set msg_usuarioNaoLogado= get_flashed_messages(category_filter=['usuarioNaoLogado']) %}
+    {% set msg_logoutEfetuadoComSucesso= get_flashed_messages(category_filter=['logoutEfetuadoComSucesso']) %}
+
+    {% if msg_logoutEfetuadoComSucesso %}
+        <div class="flash_confirmacao">
+            {{msg_logoutEfetuadoComSucesso[0]}}
+        </div>
+    {% endif %}
 
     {% if msg_usuarioNaoLogado %}
         <div class="flash_alerta">
@@ -27,15 +34,13 @@
 
     <div id="form_fundo">
         <h1>LOGIN</h1>
-        
         <div id="form_frente">
-            <form action="/login" id="login" method="post">
+            <form action="/login" method="post">
                 <p>Username: <input type="text" name="username" size="10" required></p>
-                <p>Password: <input type="password" name="password" size="10" required></p><br>
-                
+                <p>Password: <input type="password" name="password" size="10" required></p>
+                <br>
                 <button type="submit" id="btn_login">ENTRAR</button>
-                <button type="reset" id="btn_login">LIMPAR</button><br>
-                <!-- <input type="button" value="Voltar" onclick="window.history.go(-1)"> -->
+                <button type="reset" id="btn_login">LIMPAR</button>
             </form>
         </div>
     </div>
