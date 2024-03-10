@@ -8,15 +8,16 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-        <div class="top-bar"></div>
-            <h2>Desativar Produto</h2>
-            <br><br>
+        <h1 class="topbar">Desativar Produto</h1>
+        <main>
             <form action="/listarProdutosAdm" method="post">
-                <p>Código Produto: <input type="text" name="id_prod" size="9" required></p>
-                <input type="submit" value="Listar Produto" class="botao">
-                <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
+                <p style="text-align: center;">Código Produto: <input type="text" name="id_prod" size="9" required></p>
+                <div class="botoes">
+                    <input type="submit" value="Listar Produto" class="botao">
+                    <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
+                </div>
             </form>
-        </div>
+        </main>
         {% set msg_produtoAtivadoComSucesso= get_flashed_messages(category_filter=['produtoAtivadoComSucesso']) %}
         {% set msg_produtoDesativadoComSucesso= get_flashed_messages(category_filter=['produtoDesativadoComSucesso']) %}
 
@@ -46,9 +47,9 @@
                             <p>Data Validade: {{ produto[6] }}</p>
                             <p>Situação: 
                                 {% if produto[7]=='0' %}
-                                    ATIVO</br><br>
+                                    ATIVO
                                 {% else%}
-                                    DESATIVADO</br><br>
+                                    DESATIVADO
                                 {% endif%}</p>
                         </span>
                     {% else %}
@@ -62,9 +63,9 @@
                             <p>Data Validade: {{ produto[6] }}</p>
                             <p>Situação: 
                                 {% if produto[7]=='0' %}
-                                    ATIVO</br><br>
+                                    ATIVO
                                 {% else%}
-                                    DESATIVADO</br><br>
+                                    DESATIVADO
                                 {% endif%}</p>
                             </p>
                         </span>

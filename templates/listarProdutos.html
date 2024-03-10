@@ -20,7 +20,6 @@
                 background-color:  rgb(255, 255, 255);
                 border-radius: 10px;
                 box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.179);
-                width: 160px;
                 padding: 10px;
                 text-align: justify;
                 margin-right: 20px;
@@ -34,7 +33,6 @@
     <body>
         <h1 class="topbar">Listagem dos Produtos</h1>
         <main style="width: 1400px; text-align: center;" >
-            <br>
             <form action="/listarProdutosPorCodigo" method="post">
                 Código Produto: <input type="text" name="id_prod" size="9" required>
                 <input type="submit" value="Listar por Codigo" class="botao"> 
@@ -57,13 +55,12 @@
             </form>
             <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'"><br></br>
         </main>
-        <div style="margin: auto;">
-        {% if bdtProdutos !=null %}
+            {% if bdtProdutos !=null %}
             {% if bdtProdutos|length > 0 %}
             <div style="display: flex; flex-wrap: wrap;">
                 {% for produto in bdtProdutos %}
                 <div class="produtos">
-                    <table width="400">
+                    <table>
                         <tr>
                             <td rowspan="6" aling="center" valing="middle"><img width=80 src="{{ produto[5]}}"></td>
                             <td>Cód.:{{ produto[0] }}</td>
@@ -72,7 +69,7 @@
                             <td>{{ produto[1] }}</td>
                         </tr>
                         <tr>
-                            <td>{{ produto[2] }}€</td>
+                            <td>Preço: {{ produto[2] }}€</td>
                         </tr>
                         <tr>
                             <td>Stock: {{ produto[3] }}</td>
@@ -92,9 +89,8 @@
                 <p>Nenhum produto encontrado.</p>
             {% endif %}
         {% endif %}
-        </div>
+        
     
-
         {% if bdtProdutoEspecifico !=null %}
             {% if bdtProdutoEspecifico|length > 0 %}
                 {% for produto in bdtProdutoEspecifico %}
@@ -104,7 +100,6 @@
                 <p> Codigo: {{ produto[0] }}</p>
                 <p>Stock: {{ produto[3] }}</p>
                 <p>Categoria: {{ produto[4] }}</p>
-                <br></br>
                 {% endfor %}
                 {% set bdtProdutoEspecifico = null %}
             {% else %}
@@ -121,7 +116,6 @@
                 <p>Codigo: {{ produto[0] }}</p>
                 <p>Stock: {{ produto[3] }}</p>
                 <p>Categoria: {{ produto[4] }}</p>
-                <br></br>
                 {% endfor %}
                 {% set bdtProdutosCategoria = null %}
             {% else %}

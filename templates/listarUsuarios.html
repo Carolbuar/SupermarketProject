@@ -9,27 +9,29 @@
     </head>
     <body>
         <h1 class="topbar">Dados dos Usuarios para Login</h1>
-        {% for usuario in bdtLogin %}
-            {% if usuario[2] == '1' %}
-                <span style="color: red;">Username: {{ usuario[0] }} - Usuário desativado</span>
-            {% else %}
-                <span style="color: black;">Username: {{ usuario[0] }}</span>
-            {% endif %}
-            
-            {% if usuario[2] == '1' %}
-                <form action="/ativarUsuario" method="post">
-                    <input type="hidden" name="username" value="{{ usuario[0] }}" class="botao">
-                    <input type="submit" value="Ativar" class="botao">
-                </form>
-            {% else %}
-                <form action="/desativarUsuario" method="post">
-                    <input type="hidden" name="username" value="{{ usuario[0] }}" class="botao">
-                    <input type="submit" value="Desativar" class="botao">
-                </form>
-            {% endif %}
-        {% endfor %}  
-        <br><br>
-        <input type="button" value="Homepage" class="botao" onclick="window.location.href='/homepage'">
+        <main>
+            <div style="display: inline-block; vertical-align: middle; margin-right: 20px;">
+                {% for usuario in bdtLogin %}
+                    {% if usuario[2] == '1' %}
+                        <span style="color: red;">Username: {{ usuario[0] }} - Usuário desativado</span>
+                    {% else %}
+                        <span style="color: black;">Username: {{ usuario[0] }}</span>
+                    {% endif %}
+                    {% if usuario[2] == '1' %}
+                        <form action="/ativarUsuario" method="post">
+                            <input type="hidden" name="username" value="{{ usuario[0] }}" class="botao">
+                            <input type="submit" value="Ativar" class="botao">
+                        </form>
+                    {% else %}
+                        <form action="/desativarUsuario" method="post">
+                            <input type="hidden" name="username" value="{{ usuario[0] }}" class="botao">
+                            <input type="submit" value="Desativar" class="botao">
+                        </form>
+                    {% endif %}
+                {% endfor %}  
+            </div>
+            <input type="button" value="Homepage" class="botao" onclick="window.location.href='/homepage'">
+        </main>
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

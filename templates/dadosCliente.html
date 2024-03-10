@@ -9,15 +9,14 @@
     </head>
     <body>
         <h1 class="topbar">Dados do Cliente</h1>
-        <main style="text-align: center;">
+        <main>
             <form action="/mostrarDadosCliente" method="post">
-                <br></br>
-                <p>NIF: <input type="text" name="nif" size="9" required></p>
-                <br></br>
-                <input type="submit" value="Buscar" class="botao">
-                <input type="reset" value="Limpar" class="botao">
-                <input type="button" value="Homepage" onclick="window.location='/homepage'" class="botao">
-                <br><br>
+                <p style="text-align: center;">NIF: <input type="text" name="nif" size="9" required></p>
+                <div class="botoes">
+                    <input type="submit" value="Buscar" class="botao">
+                    <input type="reset" value="Limpar" class="botao">
+                    <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
+                </div>
             </form>
         </main>
         {% set msg_cliente_semRegisto= get_flashed_messages(category_filter=["cliente_semRegisto"]) %}

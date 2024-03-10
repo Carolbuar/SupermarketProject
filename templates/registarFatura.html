@@ -8,12 +8,17 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-        <h1 class="topbar">Registo de Fatura Mercadona</h1><br>
+        <h1 class="topbar">Registo de Fatura Mercadona</h1>
+        {% set msg_faturaFinalizadaComSucesso= get_flashed_messages(category_filter=['faturaFinalizadaComSucesso']) %}
+
+        {% if msg_faturaFinalizadaComSucesso %}
+            <div class="flash_confirmacao">
+                {{msg_faturaFinalizadaComSucesso[0]}}
+            </div>
+        {% endif %}
         <main style="text-align: center;">
             <form action="/registarFatura" method="post">
-                <br>
                 <p>NIF: <input type="text" name="nif" size="9"></p>
-                <br>
                 <div class="botoes">
                     <input type="submit" value="Iniciar Fatura" class="botao">
                     <input type="button" value="Homepage" class="botao" onclick="window.location.href='/homepage'">

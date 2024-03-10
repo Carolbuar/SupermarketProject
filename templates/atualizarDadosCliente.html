@@ -12,17 +12,14 @@
         <main>
             {% for cliente in bdtClientes %}
             <form action="/atualizarDadosC" method="post">
-                <br>
-                <p>NIF: <input type="text" name="nif" value="{{ cliente[0] }}" size="9" readonly></p><br>
-                <p>Nome: <input type="text" name="nome" value="{{ cliente[1] }}" size="70" required></p><br>
-                <p>Morada: <input type="text" name="morada" value="{{ cliente[2] }}" size="70" required></p><br>
-                <p>Email: <input type="text" name="email" value="{{ cliente[3] }}" size="50" required></p><br>
-                <p>Telefone: <input type="text" name="telefone" value="{{ cliente[4] }}" size="20" required></p><br>
-                <br>
+                <p>NIF: <input type="text" name="nif" value="{{ cliente[0] }}" size="9" readonly></p>
+                <p>Nome: <input type="text" name="nome" value="{{ cliente[1] }}" size="70" required></p>
+                <p>Morada: <input type="text" name="morada" value="{{ cliente[2] }}" size="70" required></p>
+                <p>Email: <input type="text" name="email" value="{{ cliente[3] }}" size="50" required></p>
+                <p>Telefone: <input type="text" name="telefone" value="{{ cliente[4] }}" size="20" required></p>
                 <div class="botoes">             
                     <input type="submit" value="Atualizar" class="botao">
                     <input type="button" value="Voltar" class="botao" onclick="window.history.go(-1)">
-                    <br>
                 </div>
             </form>
             {% endfor %}

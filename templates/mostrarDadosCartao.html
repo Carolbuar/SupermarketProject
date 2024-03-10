@@ -9,19 +9,22 @@
     </head>
     <body>
         <h1 class="topbar">Dados do Cartao</h1>
-        {% for cartao in bdtValorCartao %}
-        <b>Número do Cartão: </b>{{ cartao[0] }}</br>
-        <b>Nif: </b>{{ cartao[1] }}</br>
-        <b>Situação: </b>
-            {% if cartao[3]=='0' %}
-                ATIVO</br><br>
-            {% else%}
-                DESATIVADO</br><br>
-            {% endif%}
-        <b>Valor Total Disponível: </b>{{valor_total}}€</br>      
-        <br><br>
-        <input type="button" value="Homepage" onclick="window.location='/homepage'">
-        {% endfor %}
+        <main>
+            {% for cartao in bdtValorCartao %}
+            <p><strong>Número do Cartão: </strong>{{ cartao[0] }}</p>
+            <p><strong>Nif: </strong>{{ cartao[1] }}</p>
+            <p><strong>Situação: </strong></b>
+                {% if cartao[3]=='0' %}
+                    ATIVO
+                {% else%}
+                    DESATIVADO
+                {% endif%}</p>
+            <p><strong>Valor Total Disponível: </strong>{{valor_total}}€</p>
+            {% endfor %}
+            <div class="botoes">
+            <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
+            </div>
+        </main>
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

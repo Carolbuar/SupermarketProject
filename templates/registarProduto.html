@@ -13,43 +13,34 @@
             {% set msg_produto_registadoComSucesso= get_flashed_messages(category_filter=["produto_registadoComSucesso"]) %}
 
             {% if msg_produto_registadoComSucesso %}
-                <div class="flash_produto_registadoComSucesso">
+                <div class="flash_confirmacao">
                     {{msg_produto_registadoComSucesso[0]}}
                 </div>
             {% endif %}
-            <form action="/registarProduto" method="POST">
-                <label>Descrição do Produto:</label>
-                <input type="text" name="descricao" required>
-                <br><br>
-                <label>Valor de Venda:</label>
-                <input type="text" name="valor_venda" required>
-                <br><br>
-                <label>Estoque:</label>
-                <input type="text" name="stock" required>
-                <br><br>
-                <label>Categoria:</label>
-                    <select name="categoria" required>
-                    <option value="" disabled selected>Selecione a categoria</option>
-                    <option value="Frutas&Legumes">Frutas&Legumes</option>
-                    <option value="Carnes&Peixes">Carnes&Peixes</option>
-                    <option value="Limpeza">Limpeza</option>
-                    <option value="Conservas">Conservas</option>
-                    <option value="Mercearia">Mercearia</option>
-                    <option value="Bebidas">Bebidas</option>
-                    </select>
-                <br><br>
-                <label>Foto:</label>
-                <br>
-                <input type="textarea" name="foto">
-                <br><br>
-                <label>Data Validade:</label>
-                <br>
-                <input type="date" name="data_validade" required><br><br>
-                <button type="submit" class="botao">Registar Produto</button>
-                <button type="reset" class="botao">Limpar</button>
-                <button class="botao" onclick="window.location='/homepage'">Homepage</button>
-                <br><br>
-            </form>
+            <main>
+                <form action="/registarProduto" method="POST">
+                    <p>Descrição do Produto: <input type="text" name="descricao" required></p>
+                    <p>Valor de Venda: <input type="text" name="valor_venda" required></p>
+                    <p>Estoque: <input type="text" name="stock" required></p>
+                    <p>Categoria:
+                        <select name="categoria" required>
+                        <option value="" disabled selected>Selecione a categoria</option>
+                        <option value="Frutas&Legumes">Frutas&Legumes</option>
+                        <option value="Carnes&Peixes">Carnes&Peixes</option>
+                        <option value="Limpeza">Limpeza</option>
+                        <option value="Conservas">Conservas</option>
+                        <option value="Mercearia">Mercearia</option>
+                        <option value="Bebidas">Bebidas</option>
+                        </select></p>
+                    <p>Foto: <input type="textarea" name="foto"></p>
+                    <p>Data Validade: <input type="date" name="data_validade" required></p>
+                    <div class="botoes">
+                        <button type="submit" class="botao">Registar Produto</button>
+                        <button type="reset" class="botao">Limpar</button>
+                        <button class="botao" onclick="window.location='/homepage'">Homepage</button>
+                    </div>
+                </form>
+            </main>
         </section>
 
     </body>

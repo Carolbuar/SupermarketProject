@@ -8,19 +8,16 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-        <h1 class="topbar">Registo de Novo Cartão Mercadona</h1><br>
+        <h1 class="topbar">Registo de Novo Cartão Mercadona</h1>
         <main>
             <form action="/registarCartao" method="post">
-                <br><br>
                 <p>NIF: <input type="text" name="nif" size="9" required></p>
                 <p>Número do Cartao: <input type="text" name="n_cartao" size="12" required></p>
-                <br><br>
                 <div class="botoes">
                     <input type="submit" value="Associar Cartao" class="botao">
                     <input type="button" value="Registar Cliente" class="botao" onclick="window.location='/registarCliente'">
                     <input type="reset" value="Limpar" class="botao">
                     <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
-                    <br><br>
                 </div>     
             </form>
         </main>

@@ -22,16 +22,15 @@
         </style>
     </head>
     <body>
-        <h1 class="topbar">Registo de Nova Fatura Mercadona</h1><br>
+        <h1 class="topbar">Registo de Nova Fatura Mercadona</h1>
         <main>
-            <h2>Fatura nº {{session['id_fatura']}}</h2><br>
-            <h3 class="bold-text">Registo dos Produtos</h3> 
+            <h2>Fatura nº {{session['id_fatura']}}</h2>
+            <h3>Registo dos Produtos</h3> 
             {% for item in session['produtosDaFatura'] %}
                 <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
             {% endfor %}
-            <br>
             {% for item in bdIdDescr %}
-                {{ item[1] }}&nbsp;{{ item[2] }}
+                <span style="margin-left: 10px;">{{ item[1] }}&nbsp;{{ item[2] }}</span>
             {% endfor %}
             <form action="/registarLinhaFatura2" method="post">
                 <input type="text" placeholder="Insira a quantidade" name="qtd" style="background-color: greenyellow; margin-right: 15px;" required>

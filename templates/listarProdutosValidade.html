@@ -9,11 +9,17 @@
     </head>
     <body>
         <h1 class="topbar">Listagem dos Produtos com Validade Próxima</h1>
-        <form action="/listarProdutosValidadeProxima" method="post">
-            <br><br>
-            <input type="submit" value="Gerar Lista" class="botao">
-            <input type="button" value="Homepage" class="botao" onclick="window.location.href='/homepage'"></br></br>
-        </form>
+        <main>
+            <form action="/listarProdutosValidadeProxima" method="post">
+                <div class="botoes">
+                    <span class="escondido" style="margin-right: 40px;">
+                        <input type="submit" value="Gerar Lista" class="botao">
+                        <p style="width: 200px;">Produtos com validade nos próximos 3 dias</p>
+                    </span>
+                    <input type="button" value="Homepage" class="botao" onclick="window.location.href='/homepage'">
+                </div>
+            </form>
+        </main>
         {% for produto in bdtProdutosValidadeProxima %}
             <p>Cód. Produto: {{ produto[0] }}</p>
             <p>Descrição: {{ produto[1] }}</p>
@@ -21,7 +27,6 @@
             <p>Validade: {{ produto[6] }}</p>
             <br>
         {% endfor %}
-
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

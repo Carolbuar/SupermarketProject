@@ -4,7 +4,6 @@
 {%block linkExtra%}<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">{%endblock%}
 {%block content%}
     <h1 class="topbar">Área de Gestão do Colaborador</h1>
-    <br>
     <div class="sidebar">
         <div class="logo"></div>
             <ul class="menu">
@@ -12,66 +11,65 @@
                     <a href="/registarCliente" target="_self" class="botoes">
                     <i class="uil uil-head-side"></i>
                     <span>Registar Cliente</span></a>
-                </li><br>
+                </li>
                 <li>
                     <a href="/dadosCliente" target="_self" class="botoes">
                     <i class="uil uil-list-ul"></i>
                     <span>Dados do Cliente</span></a>
-                </li><br>
+                </li>
                 <li>
                     <a href="/registarCartao" target="_self" class="botoes">
                     <i class="uil uil-credit-card"></i>
                     <span>Registar Cartão</span></a>
-                </li><br>
+                </li>
                 <li>
                     <a href="/consultarCartao" target="_self" class="botoes">
                     <i class="uil uil-credit-card-search"></i>
                     <span>Consultar Dados Cartão</span></a>
-                </li><br>
+                </li>
                 <li>
                     <a href="/cancelarCartao" target="_self" class="botoes">
                     <i class="uil uil-credit-card-search"></i>
                     <span>Cancelar/Substituir Cartão</span></a>
-                </li><br>
+                </li>
                 <li>
                     <a href="/listarProdutos" target="_self" class="botoes">
                     <i class="uil uil-list-ul"></i>
                     <span>Listagem de Produtos</span></a>
-                </li><br>
+                </li>
                 <li>
                     <a href="/registarFatura" target="_self" class="botoes">
                     <i class="uil uil-invoice"></i>
                     <span>Registar Fatura</span></a>
-                </li><br>
+                </li>
                 <li>
                     <a href="/listarProdutosValidadeProxima" target="_self" class="botoes">
                     <i class="uil uil-calender"></i>
                     <span>Lista de Produtos Próximos da Validade</span></a>
-                </li><br>
+                </li>
 
                 {% if session['usuario_autenticado'] == 'admin' %}
                 <li>
                     <a href="/registarUsuario" target="_self" class="botaoAD">
                     <i class="uil uil-head-side"></i>
                     <span>Registar Dados para Login</span></a>
-                </li><br>
+                </li>
                 <li>
                     <a href="/listarUsuarios" target="_self" class="botaoAD">
                     <i class="uil uil-head-side"></i>
                     <span>Desativar Usuario</span></a>
-                </li><br>
+                </li>
                 <li>
                     <a href="/registarProduto" target="_self" class="botaoAD">
                     <i class="uil uil-head-side"></i>
                     <span>Registar Novo Produto</span></a>
-                </li><br>
+                </li>
                 <li>
                     <a href="/desativarProduto" target="_self" class="botaoAD">
                     <i class="uil uil-head-side"></i>
                     <span>Desativar/Ativar Produto</span></a>
-                </li><br>
+                </li>
                 {%endif%}
-
                 <li>
                     <a href="/logout" target="_self" class="botaoAD">
                     <i class="uil uil-signout"></i>

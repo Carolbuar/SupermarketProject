@@ -13,7 +13,6 @@
 body{
     background-size: cover;
     background-color:   rgb(188, 243, 191);
-    margin-bottom: 100px;
 }
 main{
     background-color:  white;
@@ -22,25 +21,40 @@ main{
     width: 750px;
     padding: 10px;
     margin: auto;
-    margin-top: 10px;
+    margin-bottom: 20px;
     text-align: justify;
 }
 .topbar{
     background-color:#00754D;
     color: white;
     padding: 10px;
+    margin-bottom: 30px;
     text-align: center;
     text-shadow: 2px 2px 4px rgb(0, 0, 0);
     font-size: 40px;
 }
 h2{
     font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-left: 10px;
 }
 h3{
     font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+form{
+    margin: 10px;
+}
+p{
+    margin: 10px;
 }
 .botoes{
     text-align: center;
+    margin: 5px;
+    margin-top: 20px;
 }
 .botao{
     background-color: #00754D;
@@ -61,7 +75,26 @@ h3{
     text-decoration: none;
     text-shadow: 1px 1px 2px rgb(0, 0, 0);
     cursor: pointer;
-    padding: 5px;
+    padding: 2px;
+    height: 18px;
+    font-size: 14px;
+}
+.escondido > p {
+    display: none;
+}
+.escondido:hover>p{
+    display: inline-block;
+    background-color:  greenyellow ;
+    width: 750px;
+}
+div.flash_confirmacao{
+    position: fixed;
+    top: 60px;
+    background-color: rgb(22, 200, 51);
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
 }
 footer{
     position: fixed;

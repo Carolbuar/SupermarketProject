@@ -25,9 +25,13 @@ footer{
     padding: 10px;
     text-align: center;
 }
+
+li{
+    margin-bottom: 20px;
+}
 .sidebar{
     position: absolute;
-    top: 65px;
+    top: 68px;
     left: 0;
     bottom: 0;
     width: 330px;
@@ -50,7 +54,7 @@ footer{
     padding: 15px;
 }
 .menu{
-    height: 88%;
+    height: 85%;
     position: relative;
     list-style: none;
 }
@@ -69,7 +73,7 @@ footer{
     gap: 5px;
 }
 .botoes:hover{
-    background-color: #00754D;
+    background-color: gray;
 }
 .botaoAD{
     background-color: #b12020;
@@ -84,7 +88,7 @@ footer{
     gap: 5px;
 }
 .botaoAD:hover{
-    background-color: #7e1717c3;
+    background-color:gray;
 }
 /*SCROLL BAR*/
 ::-webkit-scrollbar{ 

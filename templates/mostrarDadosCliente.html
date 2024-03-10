@@ -11,22 +11,19 @@
         <h1 class="topbar">Dados do Cliente</h1>
         <main>
             {% for cliente in bdtClientes %}
-            <br>
-            NIF: {{ cliente[0] }} <br>
-            Nome: {{ cliente[1] }} <br>
-            Morada: {{ cliente[2] }} <br>
-            Email: {{ cliente[3] }} <br>
-            Telefone: {{ cliente[4] }} <br>
-            Número Cartão Mercadona: {{ cliente[5] }} <br>
-            <form action="/atualizarDadosCliente" method="post">
-                <br>
-                <div class="botoes">
-                <input type="hidden" name="nif_display" value="{{ cliente[0] }}" size="9" class="botao" readonly>
-                <input type="submit" value="Atualizar Registo" class="botao">
-                <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
-                <br><br>
-                </div>
-            </form>
+                <p>NIF: {{ cliente[0] }}</p>
+                <p>Nome: {{ cliente[1] }}</p>
+                <p>Morada: {{ cliente[2] }}</p>
+                <p>Email: {{ cliente[3] }}</p>
+                <p>Telefone: {{ cliente[4] }}</p>
+                <p>Número Cartão Mercadona: {{ cliente[5] }}</p>
+                <form action="/atualizarDadosCliente" method="post">
+                    <div class="botoes">
+                        <input type="hidden" name="nif_display" value="{{ cliente[0] }}" size="9" class="botao" readonly>
+                        <input type="submit" value="Atualizar Registo" class="botao">
+                        <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
+                    </div>
+                </form>
             {% endfor %}
         </main>
     </body>

@@ -1157,8 +1157,9 @@ def finalizarFatura2():
     session.pop('valorUtilizado', None)
            
     conexao.close()
-    
-    return redirect("/homepage")
+
+    flash('FATURA FINALIZADA COM SUCESSO!','faturaFinalizadaComSucesso')  
+    return render_template("registarFatura.html")
 
 @app.route("/listarUsuarios")
 def listarUsuarios():

@@ -11,17 +11,14 @@
         <h1 class="topbar">Dados do Cartão</h1>
         <main> 
             <form action="/substituirNumeroCartao" method="post">
-                <br>
-                <p>Nº CARTÃO: <input type="text" name="n_cartao" size="12" value="n_cartao" required></p><br>
+                <p>Nº CARTÃO: <input type="text" name="n_cartao" size="12" value="n_cartao" required></p>
                 <p>NOVO CARTAO: <input type="text" name="novo_cartao" size="12" required></p>
-                <br><br>
                 <div class="botoes">
                     <input type="submit" value="Substituir" class="botao">
                     <input type="reset" value="Limpar" class="botao">
                     <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
                     <input type="button" value="Voltar" class="botao" onclick="window.history.go(-1)">
                 </div>
-                <br>
             </form>
         </main>
         {% set msg_cartaoSubstituidoComSucesso= get_flashed_messages(category_filter=['cartaoSubstituidoComSucesso']) %}
