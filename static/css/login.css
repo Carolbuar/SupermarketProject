@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
 
 body{
     font-size: 20px;
@@ -25,7 +26,7 @@ div.flash_confirmacao{
     text-align: center;
     width: 100%; 
 }
-div#form_fundo{
+div.form_fundo{
     background-color: white;
     margin: 20% 35% 20% 35%;
     padding: 20px;
@@ -36,7 +37,7 @@ div#form_fundo{
     align-items: center;
     justify-content: center;
 }
-div#form_frente{
+div.form_frente{
     background-color:#00754D;
     margin: 15px;
     text-align: center;

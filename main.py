@@ -305,6 +305,7 @@ def registarProduto():
     stock = request.form.get('stock')
     categoria = request.form.get('categoria')
     foto = request.form.get('foto')
+    data_validade= request.form.get('data_validade')
 
     conexao = mysql.connector.connect(
         host='localhost',
@@ -315,8 +316,8 @@ def registarProduto():
 
     if conexao.is_connected():
         cursor = conexao.cursor()
-        sql = "INSERT INTO t_produto (descricao, valor_venda, stock, categoria, foto) VALUES (%s, %s, %s, %s, %s);"
-        val = (descricao, valor_venda, stock, categoria, foto)
+        sql = "INSERT INTO t_produto (descricao, valor_venda, stock, categoria, foto, data_validade) VALUES (%s, %s, %s, %s, %s, %s);"
+        val = (descricao, valor_venda, stock, categoria, foto, data_validade)
         cursor.execute(sql, val)
 
         conexao.commit()

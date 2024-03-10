@@ -16,6 +16,19 @@
                 display: inline-block;
                 vertical-align: middle;
             }
+            .produtos{
+                background-color:  rgb(255, 255, 255);
+                border-radius: 10px;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.179);
+                width: 160px;
+                padding: 10px;
+                text-align: justify;
+                margin-right: 20px;
+                margin-left: 20px;
+                margin-bottom: 20px;
+                margin-top: 20px;
+                width: 20%;
+            }
         </style>
     </head>
     <body>
@@ -44,23 +57,43 @@
             </form>
             <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'"><br></br>
         </main>
-        
+        <div style="margin: auto;">
         {% if bdtProdutos !=null %}
             {% if bdtProdutos|length > 0 %}
+            <div style="display: flex; flex-wrap: wrap;">
                 {% for produto in bdtProdutos %}
-                <p><img width=80 src="{{ produto[5]}}"></p>
-                <p>{{ produto[1] }}</p>
-                <p>{{ produto[2] }}€</p>
-                <p> Codigo: {{ produto[0] }}</p>
-                <p>Stock: {{ produto[3] }}</p>
-                <p>Categoria: {{ produto[4] }}</p>
-                <br></br>
+                <div class="produtos">
+                    <table width="400">
+                        <tr>
+                            <td rowspan="6" aling="center" valing="middle"><img width=80 src="{{ produto[5]}}"></td>
+                            <td>Cód.:{{ produto[0] }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ produto[1] }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ produto[2] }}€</td>
+                        </tr>
+                        <tr>
+                            <td>Stock: {{ produto[3] }}</td>
+                        </tr>
+                        <tr>
+                            <td>Categoria: {{ produto[4] }}</td>
+                        </tr>
+                        <tr>
+                            <td>Data Validade: {{ produto[6] }}</td>
+                        </tr>
+                    </table>
+                </div>
                 {% endfor %}
+            </div>
                 {% set bdtProdutos = null %}
             {% else %}
                 <p>Nenhum produto encontrado.</p>
             {% endif %}
         {% endif %}
+        </div>
+    
 
         {% if bdtProdutoEspecifico !=null %}
             {% if bdtProdutoEspecifico|length > 0 %}
