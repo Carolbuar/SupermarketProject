@@ -26,12 +26,23 @@
                 margin-left: 20px;
                 margin-bottom: 20px;
                 margin-top: 20px;
-                width: 20%;
+                width: 22%;
+            }
+            section{
+                margin-right: 20px;
+                margin-left: 20px;
             }
         </style>
     </head>
     <body>
-        <h1 class="topbar">Listagem dos Produtos</h1>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Listagem dos Produtos</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <main style="width: 1400px; text-align: center;" >
             <form action="/listarProdutosPorCodigo" method="post">
                 Código Produto: <input type="text" name="id_prod" size="9" required>
@@ -53,75 +64,117 @@
             <form action="/listarProdutos" method="post">
                 <input type="submit" value="Listar todos os produtos" class="botao">
             </form>
-            <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'"><br></br>
         </main>
-            {% if bdtProdutos !=null %}
-            {% if bdtProdutos|length > 0 %}
-            <div style="display: flex; flex-wrap: wrap;">
-                {% for produto in bdtProdutos %}
-                <div class="produtos">
-                    <table>
-                        <tr>
-                            <td rowspan="6" aling="center" valing="middle"><img width=80 src="{{ produto[5]}}"></td>
-                            <td>Cód.:{{ produto[0] }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ produto[1] }}</td>
-                        </tr>
-                        <tr>
-                            <td>Preço: {{ produto[2] }}€</td>
-                        </tr>
-                        <tr>
-                            <td>Stock: {{ produto[3] }}</td>
-                        </tr>
-                        <tr>
-                            <td>Categoria: {{ produto[4] }}</td>
-                        </tr>
-                        <tr>
-                            <td>Data Validade: {{ produto[6] }}</td>
-                        </tr>
-                    </table>
+            <section style="margin: auto;">
+                {% if bdtProdutos !=null %}
+                {% if bdtProdutos|length > 0 %}
+                <div style="display: flex; flex-wrap: wrap; margin-left: 70px;">
+                    {% for produto in bdtProdutos %}
+                    <div class="produtos">
+                        <table>
+                            <tr>
+                                <td rowspan="6" aling="center" valing="middle"><img width=80 src="{{ produto[5]}}"></td>
+                                <td>Cód.:{{ produto[0] }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ produto[1] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Preço: {{ produto[2] }}€</td>
+                            </tr>
+                            <tr>
+                                <td>Stock: {{ produto[3] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Categoria: {{ produto[4] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Data Validade: {{ produto[6] }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
-                {% set bdtProdutos = null %}
-            {% else %}
-                <p>Nenhum produto encontrado.</p>
+                    {% set bdtProdutos = null %}
+                {% else %}
+                    <p>Nenhum produto encontrado.</p>
+                {% endif %}
             {% endif %}
-        {% endif %}
-        
+        </section>
     
-        {% if bdtProdutoEspecifico !=null %}
-            {% if bdtProdutoEspecifico|length > 0 %}
-                {% for produto in bdtProdutoEspecifico %}
-                <p><img width=80 src="{{ produto[5]}}"></p>
-                <p>{{ produto[1] }}</p>
-                <p>{{ produto[2] }}€</p>
-                <p> Codigo: {{ produto[0] }}</p>
-                <p>Stock: {{ produto[3] }}</p>
-                <p>Categoria: {{ produto[4] }}</p>
-                {% endfor %}
+        <section style="margin: auto;">
+            {% if bdtProdutoEspecifico !=null %}
+                {% if bdtProdutoEspecifico|length > 0 %}
+                <div style="display: flex; flex-wrap: wrap; margin-left: 70px;">
+                    {% for produto in bdtProdutoEspecifico %}
+                    <div class="produtos">
+                        <table>
+                            <tr>
+                                <td rowspan="6" aling="center" valing="middle"><img width=80 src="{{ produto[5]}}"></td>
+                                <td>Cód.:{{ produto[0] }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ produto[1] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Preço: {{ produto[2] }}€</td>
+                            </tr>
+                            <tr>
+                                <td>Stock: {{ produto[3] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Categoria: {{ produto[4] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Data Validade: {{ produto[6] }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% endfor %}
+                </div>
                 {% set bdtProdutoEspecifico = null %}
-            {% else %}
-                <p>Nenhum produto encontrado.</p>
+                {% else %}
+                    <p>Nenhum produto encontrado.</p>
+                {% endif %}
             {% endif %}
-        {% endif %}
+        </section>
 
-        {% if bdtProdutosCategoria !=null %}
-            {% if bdtProdutosCategoria|length > 0 %}
-                {% for produto in bdtProdutosCategoria %}
-                <p><img width=80 src="{{ produto[5]}}"></p>
-                <p>{{ produto[1] }}</p>
-                <p>{{ produto[2] }}€</p>
-                <p>Codigo: {{ produto[0] }}</p>
-                <p>Stock: {{ produto[3] }}</p>
-                <p>Categoria: {{ produto[4] }}</p>
-                {% endfor %}
+        <section style="margin: auto;">
+            {% if bdtProdutosCategoria !=null %}
+                {% if bdtProdutosCategoria|length > 0 %}
+                <div style="display: flex; flex-wrap: wrap; margin-left: 70px;">
+                    {% for produto in bdtProdutosCategoria %}
+                    <div class="produtos">
+                        <table>
+                            <tr>
+                                <td rowspan="6" aling="center" valing="middle"><img width=80 src="{{ produto[5]}}"></td>
+                                <td>Cód.:{{ produto[0] }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ produto[1] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Preço: {{ produto[2] }}€</td>
+                            </tr>
+                            <tr>
+                                <td>Stock: {{ produto[3] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Categoria: {{ produto[4] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Data Validade: {{ produto[6] }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% endfor %}
+                </div>
                 {% set bdtProdutosCategoria = null %}
-            {% else %}
-                <p>Nenhum produto encontrado.</p>
+                {% else %}
+                    <p>Nenhum produto encontrado.</p>
+                {% endif %}
             {% endif %}
-        {% endif %}
+        </section>
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

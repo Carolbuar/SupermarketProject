@@ -3,7 +3,13 @@
 {%block linkCSS%}<link rel="stylesheet" href="/static/css/homepage.css">{%endblock%}
 {%block linkExtra%}<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">{%endblock%}
 {%block content%}
-    <h1 class="topbar">Área de Gestão do Colaborador</h1>
+    <header>
+        <img src="../static/imagens/mercadona-logo.png" alt="">
+        <nav>
+            <h1>Área de Gestão do Colaborador</h1>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
     <div class="sidebar">
         <div class="logo"></div>
             <ul class="menu">
@@ -28,7 +34,7 @@
                     <span>Consultar Dados Cartão</span></a>
                 </li>
                 <li>
-                    <a href="/cancelarCartao" target="_self" class="botoes">
+                    <a href="/renderCancelarCartao" target="_self" class="botoes">
                     <i class="uil uil-credit-card-search"></i>
                     <span>Cancelar/Substituir Cartão</span></a>
                 </li>
@@ -70,11 +76,6 @@
                     <span>Desativar/Ativar Produto</span></a>
                 </li>
                 {%endif%}
-                <li>
-                    <a href="/logout" target="_self" class="botaoAD">
-                    <i class="uil uil-signout"></i>
-                    <span>Logout</span></a>
-                </li>
             </ul>
         </div>
     </div>

@@ -20,7 +20,7 @@ div.flash_alerta{
 div.flash_confirmacao{
     position: fixed;
     top: 0;
-    background-color: rgb(22, 200, 51);
+    background-color:#01d661;
     font-size: 30px;
     font-weight: bold;
     text-align: center;

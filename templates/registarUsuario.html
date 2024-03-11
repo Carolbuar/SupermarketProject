@@ -10,19 +10,24 @@
     <body>
         {% set message1 = get_flashed_messages(category_filter=["usernameUtilizado"]) %}
         {% set message2 = get_flashed_messages(category_filter=["usuario_registadoComSucesso"]) %}
-
         {% if message1 %}
             <div class="flash_alerta">
                 {{message1[0]}}
             </div>
         {% endif %}
-
         {% if message2 %}
-            <div class="flash_alerta">
+            <div class="flash_confirmacao">
                 {{message2[0]}}
             </div>
         {% endif %}
-        <h1 class="topbar">REGISTO NOVO USUARIO</h1>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Registo Novo Usuário</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <main>
             <form action="/registarUsuario" method="post">
                 <p>Username: <input type="text" name="username" size="30" required></p>

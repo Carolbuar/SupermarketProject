@@ -8,13 +8,19 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-        <h1 class="topbar">Desativar Produto</h1>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Desativar Produto</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <main>
             <form action="/listarProdutosAdm" method="post">
                 <p style="text-align: center;">Código Produto: <input type="text" name="id_prod" size="9" required></p>
                 <div class="botoes">
                     <input type="submit" value="Listar Produto" class="botao">
-                    <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
                 </div>
             </form>
         </main>
@@ -22,13 +28,13 @@
         {% set msg_produtoDesativadoComSucesso= get_flashed_messages(category_filter=['produtoDesativadoComSucesso']) %}
 
         {% if msg_produtoAtivadoComSucesso %}
-            <div class="flash_produtoAtivadoComSucesso">
+            <div class="flash_confirmacao">
                 {{msg_produtoAtivadoComSucesso[0]}}
             </div>
         {% endif %}
 
         {% if msg_produtoDesativadoComSucesso %}
-            <div class="flash_produtoDesativadoComSucesso">
+            <div class="flash_confirmacao">
                 {{msg_produtoDesativadoComSucesso[0]}}
             </div>
         {% endif %}

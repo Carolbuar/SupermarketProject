@@ -8,7 +8,14 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-        <h1 class="topbar">Dados do Cartao</h1>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Dados do Cartao</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <main>
             {% for cartao in bdtValorCartao %}
             <p><strong>Número do Cartão: </strong>{{ cartao[0] }}</p>
@@ -22,7 +29,7 @@
             <p><strong>Valor Total Disponível: </strong>{{valor_total}}€</p>
             {% endfor %}
             <div class="botoes">
-            <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
+                <input type="button" value="Voltar" class="botao" onclick="window.location.href='/consultarCartao'">
             </div>
         </main>
     </body>

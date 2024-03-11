@@ -8,6 +8,14 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Registo de Nova Fatura Mercadona</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <h1 class="topbar">Listagem dos Produtos com Validade Próxima</h1>
         <main>
             <form action="/listarProdutosValidadeProxima" method="post">
@@ -16,7 +24,6 @@
                         <input type="submit" value="Gerar Lista" class="botao">
                         <p style="width: 200px;">Produtos com validade nos próximos 3 dias</p>
                     </span>
-                    <input type="button" value="Homepage" class="botao" onclick="window.location.href='/homepage'">
                 </div>
             </form>
         </main>

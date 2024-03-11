@@ -8,13 +8,20 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-        <h1 class="topbar">Registo de Nova Fatura Mercadona</h1>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Registo de Nova Fatura Mercadona</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <main>
             <h2>Fatura nº {{session['id_fatura']}}</h2>
             <h3>Registo dos Produtos</h3>
             {% for item in session['produtosDaFatura'] %}
-            <form action="/cancelarProduto" method="post">
-                <span>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</span>
+            <form action="/cancelarProduto" method="post" style="display: flex; justify-content: space-between;">
+                <span style="width: 250px;">{{ item[2] }}</span><span style="width: 5px;">{{ item[3] }}</span><span style="width: 5px;">{{ item[4] }}</span>
                 <input type="hidden" name="lfParaCancelar" value="{{ item[0] }}">
                 <input type="submit" value="x" class="botaoC">
             </form>
@@ -32,7 +39,7 @@
         {% set msg_produtoDesativado= get_flashed_messages(category_filter=['produtoDesativado']) %}
 
         {% if msg_produtoDesativado %}
-            <div class="flash_produtoDesativado">
+            <div class="flash_alerta">
                 {{msg_produtoDesativado[0]}}
             </div>
         {% endif %}

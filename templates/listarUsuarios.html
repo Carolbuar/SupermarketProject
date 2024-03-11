@@ -8,7 +8,14 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-        <h1 class="topbar">Dados dos Usuarios para Login</h1>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Dados dos Usuarios para Login</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <main>
             <div style="display: inline-block; vertical-align: middle; margin-right: 20px;">
                 {% for usuario in bdtLogin %}

@@ -8,7 +8,14 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-        <h1 class="topbar">Registo de Novo Cartão Mercadona</h1>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Registo de Novo Cartão Mercadona</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <main>
             <form action="/registarCartao" method="post">
                 <p>NIF: <input type="text" name="nif" size="9" required></p>
@@ -17,26 +24,24 @@
                     <input type="submit" value="Associar Cartao" class="botao">
                     <input type="button" value="Registar Cliente" class="botao" onclick="window.location='/registarCliente'">
                     <input type="reset" value="Limpar" class="botao">
-                    <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
                 </div>     
             </form>
         </main>
         {% set msg_cliente_naoRegistado = get_flashed_messages(category_filter=["cliente_naoRegistado"]) %}
         {% set msg_cliente_jaComCartao= get_flashed_messages(category_filter=["cliente_jaComCartao"]) %}
         {% set msg_cartao_associadoComSucesso= get_flashed_messages(category_filter=["cartao_associadoComSucesso"]) %}
-
         {% if msg_cliente_naoRegistado %}
-            <div class="flash_cliente_naoRegistado">
+            <div class="flash_alerta">
                 {{msg_cliente_naoRegistado[0]}}
             </div>
         {% endif %}
         {% if msg_cliente_jaComCartao %}
-            <div class="flash_cliente_jaComCartao">
+            <div class="flash_alerta">
                 {{msg_cliente_jaComCartao[0]}}
             </div>
         {% endif %}
         {% if msg_cartao_associadoComSucesso %}
-            <div class="flash_cartao_associadoComSucesso">
+            <div class="flash_confirmacao">
                 {{msg_cartao_associadoComSucesso[0]}}
             </div>
         {% endif %}

@@ -8,21 +8,26 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-        <h1 class="topbar">Dados do Cartao</h1>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Dados do Cartao</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <main>   
             <form action="/consultarCartao" method="post">
                 <p>NÚMERO DO CARTÃO: <input type="text" name="n_cartao" size="20" required></p>
                 <div class="botoes">
                     <input type="submit" value="Consultar" class="botao">
                     <input type="reset" value="Limpar" class="botao">
-                    <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
                 </div>   
             </form>
         </main>
         {% set msg_cartaoInexistente= get_flashed_messages(category_filter=["cartaoNaoExistente"]) %}
-
         {% if msg_cartaoInexistente %}
-            <div class="flash_cartaoInexistente">
+            <div class="flash_alerta">
                 {{msg_cartaoInexistente[0]}}
             </div>
         {% endif %}

@@ -12,17 +12,23 @@
         {% set msg_cliente_registadoComSucesso= get_flashed_messages(category_filter=["cliente_registadoComSucesso"]) %}
 
         {% if msg_cliente_jaComRegisto %}
-            <div class="flash_cliente_jaComRegisto">
+            <div class="flash_alerta">
                 {{msg_cliente_jaComRegisto[0]}}
             </div>
         {% endif %}
         {% if msg_cliente_registadoComSucesso %}
-            <div class="flash_cliente_registadoComSucesso">
+            <div class="flash_confirmacao">
                 {{msg_cliente_registadoComSucesso[0]}}
             </div>
         {% endif %}
-
-        <h1 class="topbar">Registo de Clientes</h1>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Registo de Clientes</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <main>
             <form action="/registarCliente" method="post">
                 <p>NIF: <input type="text" name="nif" size="9" required></p>
@@ -33,7 +39,6 @@
                 <div class="botoes">
                     <input type="submit" value="Registar" class="botao">
                     <input type="reset" value="Limpar" class="botao">
-                    <input type="button" value="Homepage" onclick="window.location='/homepage'" class="botao">
                 </div>
             </form>
         </main>   

@@ -8,7 +8,14 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-        <h1 class="topbar">Registo de Nova Fatura Mercadona</h1>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Registo de Nova Fatura Mercadona</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <main>
             <h2>Fatura nº {{session['id_fatura']}}</h2>
             <h3>Listagem dos Produtos</h3>

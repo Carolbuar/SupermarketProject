@@ -22,23 +22,30 @@
         </style>
     </head>
     <body>
-        <h1 class="topbar">Registo de Nova Fatura Mercadona</h1>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Registo de Nova Fatura Mercadona</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <main>
             <h2>Fatura nº {{session['id_fatura']}}</h2>
             <h3>Registo dos Produtos</h3> 
             {% for item in session['produtosDaFatura'] %}
-                <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
-            {% endfor %}
-            {% for item in bdIdDescr %}
-                <span style="margin-left: 10px;">{{ item[1] }}&nbsp;{{ item[2] }}</span>
+            <p style="display: flex; justify-content: space-between;width: 650px;"><span style="width: 250px;">{{ item[2] }}</span><span style="width: 5px;">{{ item[3] }}</span><span style="width: 5px;">{{ item[4] }}</span></p>
             {% endfor %}
             <form action="/registarLinhaFatura2" method="post">
-                <input type="text" placeholder="Insira a quantidade" name="qtd" style="background-color: greenyellow; margin-right: 15px;" required>
+                {% for item in bdIdDescr %}
+                <span style="width: 250px;">{{ item[2] }}</span>
+                {% endfor %}
+                <input type="text" placeholder="Quantidade" size="8" name="qtd" style="background-color: greenyellow; margin-right: 15px;" required>
                 <input type="submit" value="Incluir" class="botao">
             </form>
             {% set msg_qtdMenorQzero= get_flashed_messages(category_filter=["qtdMenorQzero"]) %}
             {% if msg_qtdMenorQzero %}
-            <div class="flash_qtd_menorQzero">
+            <div class="flash_alerta">
                 {{msg_qtdMenorQzero[0]}}
             </div>
             {% endif %}

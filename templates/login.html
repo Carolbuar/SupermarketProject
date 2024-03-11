@@ -15,19 +15,19 @@
     {% endif %}
 
     {% if msg_usuarioNaoLogado %}
-        <div class="flash_alerta">
+        <div class="flash_erro">
             {{msg_usuarioNaoLogado[0]}}
         </div>
     {% endif %}
 
     {% if msg_dadosInvalidosLogin %}
-        <div class="flash_alerta">
+        <div class="flash_erro">
             {{msg_dadosInvalidosLogin[0]}}
         </div>
     {% endif %}
 
     {% if msg_usuarioInativoLogin %}
-        <div class="flash_alerta">
+        <div class="flash_erro">
             {{msg_usuarioInativoLogin[0]}}
         </div>
     {% endif %}

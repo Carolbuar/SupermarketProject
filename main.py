@@ -245,8 +245,8 @@ def atualizarDadosCliente():
     
     return render_template("atualizarDadosCliente.html", bdtClientes=bdtClientes)
 
-@app.route("/atualizarDadosC", methods=['POST'])
-def atualizarDadosC():
+@app.route("/atualizarDados", methods=['POST'])
+def atualizarDados():
     if verificar_autenticacao()==True:
         pass
     else:
@@ -612,7 +612,7 @@ def verificarCliente():
 
     return redirect("/registarCartao")
 
-@app.route("/cancelarCartao")
+@app.route("/renderCancelarCartao")
 def rendercancelarCartao():
     if verificar_autenticacao()==True:
         pass
@@ -621,14 +621,15 @@ def rendercancelarCartao():
         return redirect('/login')
     return render_template("cancelarCartao.html")
 
-@app.route("/cancelarCartao", methods=['POST','GET'])
+@app.route("/cancelarCartao")
 def cancelarCartao():
     if verificar_autenticacao()==True:
         pass
     else:
         flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
         return redirect('/login')
-    n_cartao = request.form.get('n_cartao')
+    
+    n_cartao = session['nCartao']
     
     conexao = mysql.connector.connect(
         host='localhost',
@@ -654,17 +655,23 @@ def cancelarCartao():
     cursor.close()
     conexao.close()
 
-    return redirect("/cancelarCartao")
+    return redirect("/renderCancelarCartao")
 
-@app.route("/substituirCartao", methods=['GET', 'POST'])
-def substituirCartao():
+@app.route("/acaoCartao", methods=['GET', 'POST'])
+def acaoCartao():
     if verificar_autenticacao()==True:
         pass
     else:
         flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
         return redirect('/login')
     n_cartao=request.form.get('n_cartao')
-    return render_template("substituirCartao.html", n_cartao=n_cartao)
+    session['nCartao']=n_cartao
+    acao=request.form.get('acao')
+
+    if acao=="substituir":
+        return render_template("substituirCartao.html")
+    else:
+        return redirect("/cancelarCartao")
 
 @app.route("/substituirNumeroCartao", methods=['POST','GET'])
 def substituirNumeroCartao():
@@ -885,6 +892,7 @@ def registarLinhaFatura2():
     else:
         flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
         return redirect('/login')
+    
     qtd=int(request.form.get('qtd'))
     id_produto=session['id_produto']
     id_linhaFat=session['id_linhaFatura']
@@ -914,7 +922,7 @@ def registarLinhaFatura2():
         valor_lf= qtd * valor_unit
 
         sql = "UPDATE t_linhafat SET qtd = %s, valor_linhaFat=%s WHERE id_linhaFat = %s;"
-        cursor.execute(sql, (qtd, valor_lf, id_linhaFat,))
+        cursor.execute(sql, (qtd, valor_lf, session['id_linhaFatura'],))
         conexao.commit()
 
         sql2 = "SELECT * FROM t_linhafat WHERE id_fatura=%s"

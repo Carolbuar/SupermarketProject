@@ -8,36 +8,45 @@
         <link rel="stylesheet" href="/static/css/base.css">
     </head>
     <body>
-        <h1 class="topbar">Cancelar Cartão</h1>
+        <header>
+            <img src="../static/imagens/mercadona-logo.png" alt="">
+            <nav>
+                <h1>Cancelar/Substituir Cartão</h1>
+                <a href="/homepage">Homepage</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
         <main>  
-            <form action="/cancelarCartao" method="post">
+            <form action="/acaoCartao" method="post">
                 <p>Nº CARTÃO: <input type="text" name="n_cartao" size="12" required></p>
+                <p>Escolha a ação:
+                    <select name="acao">
+                        <option value="cancelar">Cancelar</option>
+                        <option value="substituir">Substituir</option>
+                    </select>
+                </p>
                 <div class="botoes">
-                    <input type="submit" value="Cancelar" class="botao">
-                    <input type="button" value="Substituir" class="botao" onclick="window.location.href='/substituirCartao'">
-                    <input type="reset" value="Limpar" class="botao">
-                    <input type="button" value="Homepage" class="botao" onclick="window.location='/homepage'">
+                    <input type="submit" value="Executar" class="botao">
                 </div>
             </form>
         </main>  
         {% set msg_cartaoCanceladoComSucesso= get_flashed_messages(category_filter=['cartaoCanceladoComSucesso']) %}
         {% set msg_cartaoJaConstaCancelado= get_flashed_messages(category_filter=['cartaoJaConstaCancelado']) %}
         {% set msg_cartaoAindaAtivo= get_flashed_messages(category_filter=['cartaoAindaAtivo']) %}
-
         {% if msg_cartaoCanceladoComSucesso %}
-            <div class="flash_cartaoCanceladoComSucesso">
+            <div class="flash_confirmacao">
                 {{msg_cartaoCanceladoComSucesso[0]}}
             </div>
         {% endif %}  
 
         {% if msg_cartaoJaConstaCancelado %}
-            <div class="flash_cartaoJaConstaCancelado">
+            <div class="flash_alerta">
                 {{msg_cartaoJaConstaCancelado[0]}}
             </div>
         {% endif %}   
         
         {% if msg_cartaoAindaAtivo %}
-            <div class="flash_cartaoAindaAtivo">
+            <div class="flash_alerta">
                 {{msg_cartaoAindaAtivo[0]}}
             </div>
         {% endif %} 

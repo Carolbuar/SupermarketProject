@@ -5,12 +5,38 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    border: none;
-    outline: none;
     font-family: "Roboto", sans-serif, Arial, Helvetica;
     font-weight: 400;
     font-style: normal;
     font-size: 18px;
+}
+header{
+    padding:40px 5px 10px 5px;
+    background-color: white;
+    margin-bottom: 20px;
+}
+nav{
+    background-color: #00754D;
+    color: white;
+    vertical-align: middle;
+    text-align: right;
+    font-size: 30px;
+    height: 60px ;
+    padding: 5px;
+}
+h1{
+    margin-right: 30px;
+    padding: 5px;
+    text-shadow: 2px 2px 4px rgb(0, 0, 0);
+    font-size: 40px;
+    display: inline;
+}
+a{
+    color: white;
+    text-decoration: none;
+    margin-right: 30px;
+    padding: 5px;
+    text-shadow: 1px 1px 2px rgb(0, 0, 0);
 }
 body{
     background: url(../imagens/lojaMaster.jpg) no-repeat;
@@ -19,19 +45,22 @@ body{
     height: 105vh;
 }
 footer{
-    position: fixed;
+    background-color: #00754D;
+    color: white;
+    position:fixed;
     bottom: 0;
     width: 100%;
-    padding: 10px;
+    height: 35px;
+    padding: 5px;
     text-align: center;
+    text-shadow: 1px 1px 2px rgb(0, 0, 0);
 }
-
 li{
     margin-bottom: 20px;
 }
 .sidebar{
     position: absolute;
-    top: 68px;
+    top: 152px;
     left: 0;
     bottom: 0;
     width: 330px;
@@ -40,14 +69,6 @@ li{
     overflow: hidden;
     transition: all 0.5s linear;
     background-color: #fff;
-}
-.topbar{
-    background-color:#00754D;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    text-shadow: 2px 2px 4px rgb(0, 0, 0);
-    font-size: 40px;
 }
 .logo{
     height: 20px;
@@ -71,6 +92,7 @@ li{
     padding: 5px;
     font-size: 40px;
     gap: 5px;
+    text-shadow: 1px 1px 2px rgb(0, 0, 0);
 }
 .botoes:hover{
     background-color: gray;
