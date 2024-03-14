@@ -790,8 +790,10 @@ def registarFatura():
     else:
         flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
         return redirect('/login')
+    
     nif=request.form.get('nif')
     data_atual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
     if 'produtosDaFatura' in session:
         session.pop('produtosDaFatura', None)
 
@@ -808,11 +810,10 @@ def registarFatura():
     cursor.execute(sql, (nif, data_atual,))
     conexao.commit()
 
-    sql1 = "SELECT id_fatura FROM t_fatura WHERE data= %s and nif=%s;"
+    sql1 = "SELECT * FROM t_fatura WHERE data= %s and nif=%s;"
     cursor.execute(sql1, (data_atual, nif,))
-    id_fatura_raw = cursor.fetchone()
-    id_fatura = id_fatura_raw[0]
-    session['id_fatura']=id_fatura
+    dadosFatura = cursor.fetchall()
+    session['id_fatura']=dadosFatura[0][0]
 
     cursor.close()
     conexao.close()
@@ -835,10 +836,9 @@ def registarLinhaFatura():
     else:
         flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
         return redirect('/login')
-    id_produto=request.form.get('id_produto')
-    session['id_produto']=id_produto
-    id_fatura=session['id_fatura']
-
+    
+    session['id_produto']=request.form.get('id_produto')
+        
     conexao = mysql.connector.connect(
         host='localhost',
         user='root',
@@ -847,25 +847,24 @@ def registarLinhaFatura():
     )
 
     cursor = conexao.cursor()
-    sql = "SELECT descricao, ativo FROM t_produto WHERE id_produto = %s;"
-    cursor.execute(sql, (id_produto,))
-    resultado= cursor.fetchone()
-    descricao= resultado[0]
-    ativo = resultado[1]
+    sql = "SELECT * FROM t_produto WHERE id_produto = %s;"
+    cursor.execute(sql, (session['id_produto'],))
+    resultado= cursor.fetchall()
+    session['descricaoItem']= resultado[0][1]
+    ativo = resultado[0][7]
 
     if ativo=='0':
 
         sql1 = "INSERT INTO t_linhafat (id_produto, descricao, id_fatura) VALUES (%s, %s, %s);"
-        val= (id_produto, descricao, id_fatura)
+        val= (session['id_produto'], session['descricaoItem'], session['id_fatura'])
         cursor.execute(sql1, val)
         conexao.commit()
 
-        sql2 = "SELECT * FROM t_linhafat WHERE id_produto = %s and qtd is null LIMIT 1;"
-        cursor.execute(sql2, (id_produto,))
+        sql2 = "SELECT * FROM t_linhafat WHERE id_produto = %s and qtd is null and id_fatura=%s;"
+        cursor.execute(sql2, (session['id_produto'], session['id_fatura'],))
         bdIdDescr = cursor.fetchall()
-        id_linhaFatura= bdIdDescr[0][0]
-        session['id_linhaFatura'] = id_linhaFatura
-    
+        session['id_linhaFatura']= bdIdDescr[0][0]
+            
     else: 
         flash('PRODUTO DESATIVADO. SE PRECISO CONTACTE O ADMINISTRADOR', 'produtoDesativado')
         return render_template("registarLinhaFatura.html")
@@ -894,10 +893,7 @@ def registarLinhaFatura2():
         return redirect('/login')
     
     qtd=int(request.form.get('qtd'))
-    id_produto=session['id_produto']
-    id_linhaFat=session['id_linhaFatura']
-    id_fatura=session['id_fatura']
-
+        
     if qtd <= 0:
         flash('A QUANTIDADE DEVE SER MAIOR DO QUE ZERO','qtdMenorQzero')
         return redirect("/registarLinhaFatura2")
@@ -909,13 +905,11 @@ def registarLinhaFatura2():
         database='mercadona'
     )
 
-    bdtLinhaFatura=[]
- 
     if conexao.is_connected():
         cursor = conexao.cursor()
 
         sql1 = "SELECT valor_venda FROM t_produto WHERE id_produto = %s;"
-        cursor.execute(sql1, (id_produto,))
+        cursor.execute(sql1, (session['id_produto'],))
         valor_unit_raw = cursor.fetchone()
         valor_unit = float(valor_unit_raw[0])
         
@@ -926,15 +920,18 @@ def registarLinhaFatura2():
         conexao.commit()
 
         sql2 = "SELECT * FROM t_linhafat WHERE id_fatura=%s"
-        cursor.execute(sql2,(id_fatura,))
-        bdtLinhaFatura= cursor.fetchall()
-        session['produtosDaFatura'] = bdtLinhaFatura
-
+        cursor.execute(sql2,(session['id_fatura'],))
+        session['produtosDaFatura']= cursor.fetchall()
+        
         cursor.close()
-    
+
+    session.pop('id_produto', None)
+    session.pop('id_linhaFatura', None)
+    session.pop('descricaoItem', None)
+
     conexao.close()
     
-    return render_template("registarLinhaFatura.html", bdtLinhaFatura=bdtLinhaFatura)
+    return render_template("registarLinhaFatura.html")
 
 @app.route("/cancelarProduto", methods=['GET', 'POST'])
 def cancelarProduto():
@@ -1026,8 +1023,7 @@ def finalizarFatura():
     else:
         flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
         return redirect('/login')
-    id_fatura=session['id_fatura']
-                 
+                     
     conexao = mysql.connector.connect(
         host='localhost',
         user='root',
@@ -1038,33 +1034,32 @@ def finalizarFatura():
     cursor = conexao.cursor()
 
     sql = "SELECT sum(qtd) from t_linhafat where id_fatura=%s;"
-    cursor.execute(sql, (id_fatura,))
-    qtd_total_itens = cursor.fetchone()[0]
-    session['qtdItens']=qtd_total_itens
+    cursor.execute(sql, (session['id_fatura'],))
+    qtd_total_itens = cursor.fetchone()
+    session['qtdItens']=qtd_total_itens[0]
     
     sql1 = "SELECT sum(valor_linhaFat) from t_linhafat where id_fatura=%s;"
-    cursor.execute(sql1, (id_fatura,))
-    valor_total_itens = cursor.fetchone()[0]
-    valor_total_fatura = round(valor_total_itens, 2)
-    session['valorFatura']=valor_total_fatura
-
+    cursor.execute(sql1, (session['id_fatura'],))
+    valor_total_fatura = cursor.fetchone()[0]
+    session['valorFatura'] = round(valor_total_fatura, 2)
+    
     sql4 = "SELECT nif FROM t_fatura WHERE id_fatura = %s;"
-    cursor.execute(sql4, (id_fatura,))
-    nif= cursor.fetchone()[0]
-    session['nif']=int(nif)
+    cursor.execute(sql4, (session['id_fatura'],))
+    nif= cursor.fetchone()
+    session['nif']=int(nif[0])
 
     if session['nif'] != 0:
         sql3 = "SELECT valorCartao from t_cartao where nif=%s and ativo='0';"
         cursor.execute(sql3, (session['nif'],))
-        valorCartao = cursor.fetchone()[2] 
-        session['valorCartao'] = valorCartao
+        valorCartao = cursor.fetchone()
+        session['valorCartao'] = valorCartao[0]
     else:
         session['valorCartao'] = '0'
 
     cursor.nextset()
 
     sql2 = "UPDATE t_fatura SET valor_fatura = %s WHERE id_fatura = %s;"
-    cursor.execute(sql2, (session['valorFatura'], id_fatura,))
+    cursor.execute(sql2, (session['valorFatura'], session['id_fatura'],))
     conexao.commit()
     
     cursor.close()
@@ -1127,9 +1122,9 @@ def finalizarFatura2():
     else:
         flash('USUARIO NAO AUTENTICADO. REALIZE SEU LOGIN.','usuarioNaoLogado')
         return redirect('/login')
+    
     valorFaturaFinal=session['valorFatura']
     produtosDaFatura= session['produtosDaFatura']
-    nif=session['nif']
 
     conexao = mysql.connector.connect(
         host='localhost',
@@ -1143,7 +1138,7 @@ def finalizarFatura2():
 
         valorCartao=int(valorFaturaFinal/10)
         sql = "UPDATE t_cartao SET valorCartao= valorCartao + %s WHERE nif = %s and ativo='0';"
-        cursor.execute(sql, (valorCartao, nif,))
+        cursor.execute(sql, (valorCartao, session['nif'],))
         conexao.commit()
     
     for item in produtosDaFatura:
@@ -1155,8 +1150,6 @@ def finalizarFatura2():
     cursor.close() 
 
     session.pop('id_fatura', None)
-    session.pop('id_produto', None)
-    session.pop('id_linhaFatura', None)
     session.pop('produtosDaFatura', None)
     session.pop('valorFatura', None)
     session.pop('nif', None)

@@ -20,33 +20,32 @@
             <h2>Fatura nº {{session['id_fatura']}}</h2>
             <h3>Listagem dos Produtos</h3>
             {% for item in session['produtosDaFatura'] %}
-                <p>{{ item[1] }}&nbsp;{{ item[2] }}&nbsp;{{ item[3] }}&nbsp;{{ item[4] }}</p>
+                <p style="display: flex; justify-content: space-between;width: 650px;"><span style="width: 250px;">{{ item[2] }}</span><span style="width: 5px;">{{ item[3] }}</span><span style="width: 5px;">{{ item[4] }}</span></p>
             {% endfor %}
             <h3 style="margin-top: 30px;">Quantidade Total de Itens: {{session['qtdItens']}}</h3>
             <h3>Valor Total: {{session['valorFatura']}}€ </h3>
             {% if session['nif'] != 0 %}
-                <h3>Valor Disponível no Cartão Promocional:</h3>{{session['valorCartao']}}€
+                <h3>Valor Disponível no Cartão Promocional: {{session['valorCartao']}}€</h3>
                 {% set msg_valorCartaoInsuficiente= get_flashed_messages(category_filter=['valorCartaoInsuficiente']) %}
-
                 {% if msg_valorCartaoInsuficiente %}
                 <div class="flash_confirmacao">
                     {{msg_valorCartaoInsuficiente[0]}}
                 </div>
                 {% endif %}
-                <form action="/utilizarValorCartao" method="post">
+                <form action="/utilizarValorCartao" method="post" style="margin-left: 0 ;">
                     <p>Valor: <input type="text" name="valorCartaoAutilizar" size="5" required></p>
-                    <input type="submit" value="Utilizar">
+                    <input type="submit" value="Utilizar" class="botao">
                 </form>
             {%endif%}
-            <div class="botoes" style="text-align: left;">
-                {% if 'valorUtilizado' not in session  %}
+            {% if 'valorUtilizado' not in session  %}
+                <div class="botoes" style="text-align: left; margin-left: 0 ;">
                     <form action="/cancelarFatura" method="post">
-                        <input type="button" value="Voltar" class="botao" onclick="window.location.href='/registarLinhaFatura'">
-                        <input type="hidden" name="lfParaCancelar" value="{{session['id_fatura']}}" class="botao">
-                        <input type="submit" value="Cancelar Fatura" class="botao">
+                    <input type="button" value="Voltar" class="botao" onclick="window.location.href='/registarLinhaFatura'">
+                    <input type="hidden" name="lfParaCancelar" value="{{session['id_fatura']}}" class="botao">
+                    <input type="submit" value="Cancelar Fatura" class="botao">
                     </form>
-                {% endif %}
-            </div>
+                </div>
+            {% endif %}
             <div style="text-align: right;">
                 <input type="button" value="Confirmar Pagamento" class="botao" onclick="window.location.href='/finalizarFatura2'">
             </div>

@@ -26,9 +26,8 @@
             </form>
         </main>
         {% set msg_cliente_semRegisto= get_flashed_messages(category_filter=["cliente_semRegisto"]) %}
-
         {% if msg_cliente_semRegisto %}
-            <div class="flash_cliente_semRegisto">
+            <div class="flash_alerta">
                 {{msg_cliente_semRegisto[0]}}
             </div>
         {% endif %}

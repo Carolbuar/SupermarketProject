@@ -32,15 +32,15 @@
         </header>
         <main>
             <h2>Fatura nº {{session['id_fatura']}}</h2>
-            <h3>Registo dos Produtos</h3> 
-            {% for item in session['produtosDaFatura'] %}
-            <p style="display: flex; justify-content: space-between;width: 650px;"><span style="width: 250px;">{{ item[2] }}</span><span style="width: 5px;">{{ item[3] }}</span><span style="width: 5px;">{{ item[4] }}</span></p>
-            {% endfor %}
-            <form action="/registarLinhaFatura2" method="post">
-                {% for item in bdIdDescr %}
-                <span style="width: 250px;">{{ item[2] }}</span>
+            <h3>Registo dos Produtos</h3>
+            {%if 'produtosDaFatura' in session %}
+                {% for item in session['produtosDaFatura'] %}
+                <p style="display: flex; justify-content: space-between;width: 650px;"><span style="width: 250px;">{{ item[2] }}</span><span style="width: 5px;">{{ item[3] }}</span><span style="width: 5px;">{{ item[4] }}</span></p>
                 {% endfor %}
-                <input type="text" placeholder="Quantidade" size="8" name="qtd" style="background-color: greenyellow; margin-right: 15px;" required>
+            {%endif%}
+            <form action="/registarLinhaFatura2" method="post">
+                <span style="width: 250px;">{{ session['descricaoItem'] }}</span>
+                <input type="text" placeholder="Quantidade" size="8" name="qtd" style="background-color: rgb(173, 174, 171); margin-right: 15px;" required>
                 <input type="submit" value="Incluir" class="botao">
             </form>
             {% set msg_qtdMenorQzero= get_flashed_messages(category_filter=["qtdMenorQzero"]) %}

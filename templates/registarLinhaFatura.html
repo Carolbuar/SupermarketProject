@@ -19,17 +19,19 @@
         <main>
             <h2>Fatura nº {{session['id_fatura']}}</h2>
             <h3>Registo dos Produtos</h3>
-            {% for item in session['produtosDaFatura'] %}
-            <form action="/cancelarProduto" method="post" style="display: flex; justify-content: space-between;">
-                <span style="width: 250px;">{{ item[2] }}</span><span style="width: 5px;">{{ item[3] }}</span><span style="width: 5px;">{{ item[4] }}</span>
-                <input type="hidden" name="lfParaCancelar" value="{{ item[0] }}">
-                <input type="submit" value="x" class="botaoC">
-            </form>
-            {% endfor %}
+            {%if 'produtosDaFatura' in session %}
+                {% for item in session['produtosDaFatura'] %}
+                <form action="/cancelarProduto" method="post" style="display: flex; justify-content: space-between;">
+                    <span style="width: 250px;">{{ item[2] }}</span><span style="width: 5px;">{{ item[3] }}</span><span style="width: 5px;">{{ item[4] }}</span>
+                    <input type="hidden" name="lfParaCancelar" value="{{ item[0] }}">
+                    <input type="submit" value="x" class="botaoC">
+                </form>
+                {% endfor %}
+            {%endif%}
             <form action="/registarLinhaFatura" method="post">
                 Código do Produto: <input type="text" name="id_produto" size="11" required>
                 <input type="submit" value="Adicionar" class="botao">
-                {% if session['produtosDaFatura'] %}
+                {% if 'produtosDaFatura' in session %}
                     <div class="botoes" style="text-align: right;">
                         <input type="button" value="Finalizar Fatura" class="botao" onclick="window.location.href='/finalizarFatura'">
                     </div>

@@ -8,10 +8,21 @@ body{
     background-size: cover;
     display: flex;
 }
+div.flash_erro{
+    position: fixed;
+    top: 0;
+    margin-bottom: 5px;
+    background-color: red;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%; 
+}
 div.flash_alerta{
     position: fixed;
     top: 0;
-    background-color: red;
+    margin-bottom: 5px;
+    background-color:#FFA300;
     font-size: 30px;
     font-weight: bold;
     text-align: center;
@@ -20,8 +31,9 @@ div.flash_alerta{
 div.flash_confirmacao{
     position: fixed;
     top: 0;
+    margin-bottom: 5px;
     background-color:#01d661;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: bold;
     text-align: center;
     width: 100%; 

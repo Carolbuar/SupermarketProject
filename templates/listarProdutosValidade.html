@@ -11,12 +11,11 @@
         <header>
             <img src="../static/imagens/mercadona-logo.png" alt="">
             <nav>
-                <h1>Registo de Nova Fatura Mercadona</h1>
+                <h1>Listagem dos Produtos com Validade Próxima</h1>
                 <a href="/homepage">Homepage</a>
                 <a href="/logout">Logout</a>
             </nav>
         </header>
-        <h1 class="topbar">Listagem dos Produtos com Validade Próxima</h1>
         <main>
             <form action="/listarProdutosValidadeProxima" method="post">
                 <div class="botoes">
@@ -26,14 +25,14 @@
                     </span>
                 </div>
             </form>
+            {% for produto in bdtProdutosValidadeProxima %}
+                <p>Cód. Produto: {{ produto[0] }}</p>
+                <p>Descrição: {{ produto[1] }}</p>
+                <p>Stock: {{ produto[3] }}</p>
+                <p>Validade: {{ produto[6] }}</p>
+                <br>
+            {% endfor %}
         </main>
-        {% for produto in bdtProdutosValidadeProxima %}
-            <p>Cód. Produto: {{ produto[0] }}</p>
-            <p>Descrição: {{ produto[1] }}</p>
-            <p>Stock: {{ produto[3] }}</p>
-            <p>Validade: {{ produto[6] }}</p>
-            <br>
-        {% endfor %}
     </body>
     <footer>
         <p>&copy; 2024 Mercadona. Todos os direitos reservados.</p>

@@ -31,11 +31,18 @@
         </header>
         <main>
             <form action="/registarCliente" method="post">
-                <p>NIF: <input type="text" name="nif" size="9" required></p>
-                <p>Nome: <input type="text" name="nome" size="60" required></p>
-                <p>Morada: <input type="text" name="morada" size="60"></p>
-                <p>Email: <input type="email" name="email" size="50"></p>
-                <p>Telefone: <input type="text" name="telefone" size="20"></p>
+                <div class="grid-container"></div>
+                    <div class="grid-item">NIF: </div>
+                    <div class="grid-item"><input type="text" name="nif" size="9" required></div>
+                    <div class="grid-item">Nome: </div>
+                    <div class="grid-item"><input type="text" name="nome" size="60" required></div>
+                    <div class="grid-item">Morada: </div>
+                    <div class="grid-item"><input type="text" name="morada" size="60"></div>
+                    <div class="grid-item">Email: </div>
+                    <div class="grid-item"><input type="email" name="email" size="50"></div>
+                    <div class="grid-item">Telefone: </div>
+                    <div class="grid-item"><input type="text" name="telefone" size="20"></div>
+                </div>  
                 <div class="botoes">
                     <input type="submit" value="Registar" class="botao">
                     <input type="reset" value="Limpar" class="botao">
