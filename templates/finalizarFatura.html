@@ -24,7 +24,7 @@
             {% endfor %}
             <h3 style="margin-top: 30px;">Quantidade Total de Itens: {{session['qtdItens']}}</h3>
             <h3>Valor Total: {{session['valorFatura']}}€ </h3>
-            {% if session['nif'] != 0 %}
+            {% if session['nif'] != 0 and session['nCartao'] != '0' %}
                 <h3>Valor Disponível no Cartão Promocional: {{session['valorCartao']}}€</h3>
                 {% set msg_valorCartaoInsuficiente= get_flashed_messages(category_filter=['valorCartaoInsuficiente']) %}
                 {% if msg_valorCartaoInsuficiente %}

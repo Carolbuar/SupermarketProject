@@ -1048,7 +1048,12 @@ def finalizarFatura():
     nif= cursor.fetchone()
     session['nif']=int(nif[0])
 
-    if session['nif'] != 0:
+    sql5 = "SELECT n_cartao FROM t_cliente WHERE nif = %s;"
+    cursor.execute(sql5, (session['nif'],))
+    nCartao= cursor.fetchone()
+    session['nCartao']= nCartao[0]
+
+    if session['nif'] != 0 and session['nCartao'] != '0':
         sql3 = "SELECT valorCartao from t_cartao where nif=%s and ativo='0';"
         cursor.execute(sql3, (session['nif'],))
         valorCartao = cursor.fetchone()
@@ -1077,10 +1082,7 @@ def utilizarValorCartao():
     valorAutilizar=float(request.form.get('valorCartaoAutilizar'))
     session['valorUtilizado']=valorAutilizar
     valorFatura=float(session['valorFatura'])
-    id_fatura=session['id_fatura']
-    qtd_total_itens=session['qtdItens']
-    nif=session['nif']
-    valorCartao= session['valorCartao']
+    valorCartao= float(session['valorCartao'])
     
     if valorAutilizar>valorCartao:
         flash('VALOR SUPERIOR AO DISPONÍVEL!', 'valorCartaoInsuficiente')
@@ -1099,21 +1101,22 @@ def utilizarValorCartao():
     cursor = conexao.cursor()
     
     sql = "UPDATE t_fatura SET valor_fatura = %s WHERE id_fatura = %s;"
-    cursor.execute(sql, (novoValorFatura, id_fatura,))
+    cursor.execute(sql, (session['valorFatura'], session['id_fatura'],))
     conexao.commit()
 
     sql1 = "UPDATE t_cartao SET valorCartao= valorCartao - %s WHERE nif = %s and ativo='0';"
-    cursor.execute(sql1, (valorAutilizar, nif,))
+    cursor.execute(sql1, (session['valorUtilizado'], session['nif'],))
     conexao.commit()
 
     sql2 = "SELECT valorCartao from t_cartao where nif=%s and ativo='0';"
-    cursor.execute(sql2, (nif,))
-    session['valorCartao'] = cursor.fetchone()[0]
+    cursor.execute(sql2, (session['nif'],))
+    novoValorCartao = cursor.fetchone()
+    session['valorCartao']=novoValorCartao[0]
     
     cursor.close()
     conexao.close()
     
-    return render_template("finalizarFatura.html", qtd_total_itens=qtd_total_itens)
+    return render_template("finalizarFatura.html")
 
 @app.route("/finalizarFatura2", methods=['GET','POST'])
 def finalizarFatura2():
@@ -1156,6 +1159,7 @@ def finalizarFatura2():
     session.pop('qtdItens', None)
     session.pop('valorCartao', None)
     session.pop('valorUtilizado', None)
+    session.pop('nCartao', None)
            
     conexao.close()
 
