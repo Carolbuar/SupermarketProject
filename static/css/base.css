@@ -74,6 +74,7 @@ div.flash_erro{
     position: fixed;
     top: 0;
     margin-bottom: 5px;
+    margin-left: 0;
     background-color: red;
     font-size: 20px;
     font-weight: bold;
@@ -84,6 +85,7 @@ div.flash_alerta{
     position: fixed;
     top: 0;
     margin-bottom: 5px;
+    margin-left: 0;
     background-color:#FFA300;
     font-size: 20px;
     font-weight: bold;
@@ -94,6 +96,7 @@ div.flash_confirmacao{
     position: fixed;
     top: 0;
     margin-bottom: 5px;
+    margin-left: 0;
     background-color:#01d661;
     font-size: 20px;
     font-weight: bold;

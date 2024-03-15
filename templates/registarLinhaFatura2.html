@@ -45,7 +45,7 @@
             </form>
             {% set msg_qtdMenorQzero= get_flashed_messages(category_filter=["qtdMenorQzero"]) %}
             {% if msg_qtdMenorQzero %}
-            <div class="flash_alerta">
+            <div class="flash_alerta" style="margin-left: 0;">
                 {{msg_qtdMenorQzero[0]}}
             </div>
             {% endif %}

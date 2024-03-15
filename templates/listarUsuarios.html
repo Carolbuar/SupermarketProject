@@ -17,8 +17,8 @@
             </nav>
         </header>
         <main>
-            <div style="display:inline-flexbox; vertical-align: middle; margin-right: 20px;">
-                {% for usuario in bdtLogin %}
+            {% for usuario in bdtLogin %}
+                <div style="display:flex; align-items: center; margin-right: 20px;">
                     {% if usuario[2] == '1' %}
                         <span style="color: red;">Username: {{ usuario[0] }} - Usuário desativado</span>
                     {% else %}
@@ -30,13 +30,13 @@
                             <input type="submit" value="Ativar" class="botao">
                         </form>
                     {% else %}
-                        <form action="/desativarUsuario" method="post">
+                        <form action="/desativarUsuario" method="post" style="display:inline-flexbox;">
                             <input type="hidden" name="username" value="{{ usuario[0] }}" class="botao">
                             <input type="submit" value="Desativar" class="botao">
                         </form>
                     {% endif %}
-                {% endfor %}  
-            </div>
+                </div>
+            {% endfor %} 
         </main>
     </body>
     <footer>

@@ -1089,7 +1089,7 @@ def utilizarValorCartao():
         return render_template("finalizarFatura.html")
 
     novoValorFatura=valorFatura-valorAutilizar
-    session['valorFatura']=novoValorFatura
+    session['valorFatura']=round(novoValorFatura,2)
 
     conexao = mysql.connector.connect(
         host='localhost',
